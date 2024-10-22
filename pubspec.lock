@@ -110,6 +110,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_infinite_marquee:
+    dependency: "direct main"
+    description:
+      name: flutter_infinite_marquee
+      sha256: d33cbfc5618674921695acd45269f355c788d3041a345b38a66d545a223ad99d
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   flutter_lints:
     dependency: "direct dev"
     description:

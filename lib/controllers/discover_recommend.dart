@@ -5,13 +5,34 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:gif_view/gif_view.dart';
-
+import '../view/auto_scroll_horizontal_list.dart';
+import 'package:flutter_infinite_marquee/flutter_infinite_marquee.dart';
 class DiscoverRecommendWidget extends StatefulWidget {
   @override
   _DiscoverRecommendWidgetState createState() => _DiscoverRecommendWidgetState();
 }
 
 class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
+ //图片数组
+  final List<String> imageList = [
+    'assets/images/icon_home_whole.png',
+    'assets/images/icon_home_renew.png',
+    'assets/images/icon_home_soft.png',
+  ];
+  //文字数组
+  final List<String> titleList = ['整装', '翻新', '软装'];
+
+  final List<String> _items = [
+    '三字经',
+    '水到渠成',
+    '如鱼',
+    '潜移默化',
+    '帅',
+    '人生苦短',
+    '我用Flutter',
+    '黑云压城城欲摧',
+    '悬壶问道，月光转照'
+ ];
 
   @override
   Widget build(BuildContext context) {
@@ -52,40 +73,73 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
+                        InkWell(
+                          onTap: () {
+                            print('点击了推荐');
+                          },
+                          child:                         Container(
                           color: HexColor('#F8F8F8'),
                           height: 88.h,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                child: Row(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.fromLTRB(20.w, 20.h, 0, 0),
-                                        child: Text('装修计算器', style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold)),
-                                      ),
-                                      //右侧箭头在上面那个Padding的右侧,居中上面那个控件
-                                      Padding(
-                                        padding: EdgeInsets.fromLTRB(10.w, 20.h, 0 , 0),
-                                        child: Icon(Icons.arrow_forward_ios, size: 16.sp, color: Colors.black),
-                                      ),
-                                    ],
-                                  ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(20.w, 4.h, 0, 0),
-                                child: Text('王女士・13室1厅1厨1卫・120m²・22w',style: TextStyle(fontSize: 12.sp, color: HexColor('#999999')),),
-                              
-                              ),
-      
-                            ],
-                          )
-                        ),
+                                Container(
+                                  child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.fromLTRB(20.w, 20.h, 0, 0),
+                                          child: Text('装修计算器', style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold)),
+                                        ),
+                                        //右侧箭头在上面那个Padding的右侧,居中上面那个控件
+                                        Padding(
+                                          padding: EdgeInsets.fromLTRB(10.w, 20.h, 0 , 0),
+                                          child: Icon(Icons.arrow_forward_ios, size: 16.sp, color: Colors.black),
+                                        ),
+                                      ],
+                                    ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(20.w, 4.h, 0, 0),
+                                  child: Text('王女士・13室1厅1厨1卫・120m²・22w',style: TextStyle(fontSize: 12.sp, color: HexColor('#999999')),),
+                                ),
+
+                              ],
+                            )
+                          ),
+                        ),  
                         Container(
                           color: Colors.white,
                           height: 88.h,
+                          child: Row(
+                            children: [
+                              //从图片数组和文字数组中取值，一排按钮可点击
+                              for (int i = 0; i < imageList.length; i++)
+                                Expanded(
+                                  child: InkWell(
+                                    onTap: () {
+                                      print('点击了第$i个按钮');
+                                    },  
+                                    child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                        Image.asset(
+                                          imageList[i],
+                                          width: 40.w,
+                                          height: 40.h,
+                                        ),
+                                        SizedBox(height: 8.h),
+                                        Text(
+                                          titleList[i],
+                                          style: TextStyle(fontSize: 12.sp),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                )
+                            ],
+                          ),
+                         
 
                         )
                       ],
@@ -103,7 +157,165 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
                  ],
               ),
             ),
-            // Expanded(child: Container(color: Colors.green)),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Container(
+                margin: EdgeInsets.only(top: 24.h),
+                height: 180.h,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6),
+                  color: HexColor('#F8F8F8'),
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.all(12.h),
+                      child: Row(children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h), // 控制Text的内边距
+                          decoration: BoxDecoration(
+                            color: Colors.black, // 背景颜色
+                            borderRadius: BorderRadius.circular(6.0), // 圆角
+                          ),
+                          child: Text(
+                            '招标',
+                            style: TextStyle(
+                              fontSize: 11.sp,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '本月招标 ',
+                                style: TextStyle(
+                                  fontSize: 12.sp, // 普通文本的字体大小
+                                  color: Colors.black, // 普通文本的颜色
+                                ),
+                              ),
+                              TextSpan(
+                                text: '98', // 数字部分
+                                style: TextStyle(
+                                  fontSize: 12.sp, // 数字的字体大小
+                                  color: HexColor('#FFA555'),
+                                  fontWeight: FontWeight.bold, // 可以设置为加粗
+                                ),
+                              ),
+                              TextSpan(
+                                text: ' 家',
+                                style: TextStyle(
+                                  fontSize: 12.sp, // 普通文本的字体大小
+                                  color: Colors.black, // 普通文本的颜色
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),    
+                      ],
+                      ),
+                    ),
+                    AutoScrollHorizontalList(
+                      itemCount: 5,
+                      scrollSpeed: 100.0, // 每秒滚动100像素
+                      scrollInterval: 100, // 每100毫秒滚动一次
+                      height: 80.h,
+                      itemWidth: 150.w,
+                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 5.h),
+                      backgroundColor: HexColor('#F8F8F8'),
+                      itemBuilder: (context, index) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,  
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Column(
+                            children: [
+                              Padding(padding: EdgeInsets.all(10.h), child: Text('汤臣一品陈女士发起',style: TextStyle(color: HexColor('#222222'),fontSize: 11.sp),)),
+                              Padding(padding: EdgeInsets.only(top: 1 .h), child: Text('整装招标',style: TextStyle(color: HexColor('#999999'),fontSize: 11.sp),)),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(12.h), 
+                      height: 30.h,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: Colors.white,
+
+                      ),
+                      child: InfiniteMarquee(
+                        frequency: const Duration(milliseconds: 40),
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (BuildContext context, int index) {
+                          String item = '${_items[index % _items.length]}  $index';
+                          return GestureDetector(
+                            onTap: () {
+                              print('点击了$item');
+                            },
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                  height: 30.h,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 6),
+                                  margin: const EdgeInsets.symmetric(vertical: 8),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10)
+                                  ),
+      
+                                  child: Row(
+                                    children: [
+                                      Image.asset('assets/images/icon_home_trumpet.png',width: 12.w,height: 12.h),
+                                      SizedBox(width: 8.w), // 这里插入一个SizedBox，用于添加间距
+                                      Text(item,style: TextStyle(fontSize: 12.sp,color: HexColor('#666666')),),
+                                      Text('招标成功',style: TextStyle(fontSize: 12.sp,color: HexColor('#FFA555')),),
+                                      const Spacer(),
+                                      Icon(Icons.arrow_forward_ios,size: 12.sp,color: HexColor('#666666')),
+                                    ],
+                                  ),
+                             ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(16.w, 24.h, 16.w, 0),
+             
+              child: Stack(
+                children: [
+                  Container(
+                    height: 80.h,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      color: HexColor('#F8F8F8'),
+                    ),
+                  ),
+                  Positioned.fill( // 使用 Positioned.fill 确保图片覆盖整个 Container
+                    child: Image.asset(
+                      'assets/images/icon_home_map.png',
+                      fit: BoxFit.cover, // 设置图片覆盖方式
+                    ),
+                  ),
+                ],
+            ),
+
+
+            )
           ],
         )
       )
