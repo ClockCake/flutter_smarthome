@@ -294,7 +294,6 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(16.w, 24.h, 16.w, 0),
-             
               child: Stack(
                 children: [
                   Container(
@@ -303,6 +302,24 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6),
                       color: HexColor('#F8F8F8'),
+                    ),
+                    child: Row(
+                      children: [
+                        SizedBox(width: 16.w),
+                        Image(image: AssetImage('assets/images/icon_home_house.png')),
+                        SizedBox(width: 16.w),
+                        Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('在线工地', style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold)),
+                              SizedBox(height: 4.h),
+                              Text('已有34586个工地正在施工', style: TextStyle(fontSize: 12.sp, color: HexColor('#999999'))),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
                   ),
                   Positioned.fill( // 使用 Positioned.fill 确保图片覆盖整个 Container
@@ -313,9 +330,31 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
                   ),
                 ],
             ),
+           ),
+          Text('推荐案例', style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold)),
+          SizedBox(height: 16.h),
+           //列表平铺
+          Column(
+            children: List.generate(10, (index)  {
+              return Container(
+                child: Column(
+                  children: [
+                     Padding(
+                      padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0),
+                      child: Row(
+                        children: [
+                          Text('案例', style: TextStyle(fontSize: 11.sp, color: Colors.white, backgroundColor: Colors.black)),
+                          SizedBox(width: 8.w),
+                          Text('王女士・13室1厅1厨1卫・120m²・22w', style: TextStyle(fontSize: 15.sp, color: HexColor('#222222'))),
+                        ],
+                      )
 
-
-            )
+                     )
+                  ],
+                ),
+              );
+           }),
+          )
           ],
         )
       )
