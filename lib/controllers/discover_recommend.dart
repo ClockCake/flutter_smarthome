@@ -7,6 +7,7 @@ import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:gif_view/gif_view.dart';
 import '../view/auto_scroll_horizontal_list.dart';
 import 'package:flutter_infinite_marquee/flutter_infinite_marquee.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 class DiscoverRecommendWidget extends StatefulWidget {
   @override
   _DiscoverRecommendWidgetState createState() => _DiscoverRecommendWidgetState();
@@ -331,7 +332,14 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
                 ],
             ),
            ),
-          Text('推荐案例', style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold)),
+         Container(
+            alignment: Alignment.centerLeft, // 左对齐
+            padding: EdgeInsets.only(left:16.w,top: 16.h),
+            child: Text(
+              '推荐案例',
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+            ),
+          ),
           SizedBox(height: 16.h),
            //列表平铺
           Column(
@@ -343,13 +351,60 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
                       padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0),
                       child: Row(
                         children: [
-                          Text('案例', style: TextStyle(fontSize: 11.sp, color: Colors.white, backgroundColor: Colors.black)),
+                          Container(
+                            width: 40.w,
+                            height: 20.h,
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Center(
+                              child: Text('案例', style: TextStyle(fontSize: 11.sp, color: Colors.white)),
+                            ),
+                          ),
                           SizedBox(width: 8.w),
-                          Text('王女士・13室1厅1厨1卫・120m²・22w', style: TextStyle(fontSize: 15.sp, color: HexColor('#222222'))),
+                          Text('另类美式风，打造独一无二的家', style: TextStyle(fontSize: 15.sp, color: HexColor('#222222'))),
                         ],
                       )
-
-                     )
+                     ),
+                     Padding(
+                      padding: EdgeInsets.fromLTRB(16.w, 6.h, 16.w, 0),
+                      child: Center(
+                        child: Text('采用浅色为主、深色为辅的装修理念，灰色的墙壁、蓝色的墙柜和橡木色的地板，拒绝美式的沉闷就这么简单',style: TextStyle(fontSize: 13.sp,color: HexColor('#666666')),)
+                      ),
+                    ),
+                    //一排可横向滚动的图片的,间距 8，然后 一屏显示3个，图片宽高比 16:9
+                    SizedBox(height: 8.h),
+                    Container(
+                      height: 100.h,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 6,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            // margin: EdgeInsets.only(left: 16.w),
+                            // width: 120.w,
+                            // height: 100.h,
+                            // decoration: BoxDecoration(
+                            //   borderRadius: BorderRadius.circular(6),
+                            //   image: const DecorationImage(
+                            //     //显示网络图片
+                            //     image: CachedNetworkImageProvider(
+                            //       "https://image.itimes.me/i/2024/07/26/66a30d068028b.jpg",
+                            //     ),
+                            //     fit: BoxFit.cover,
+                            //   ),
+                            // ),
+                          );
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 16.h),
+                    //分割线
+                    Container(
+                      height: 1.h,
+                      color: HexColor('#F8F8F8'),
+                    ),
                   ],
                 ),
               );

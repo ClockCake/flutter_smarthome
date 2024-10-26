@@ -36,15 +36,16 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2   #图标库
   dio: ^5.0.0 #网络请求库
-  flutter_screenutil: ^5.6.0 #屏幕适配库
+  flutter_screenutil: ^5.5.4 #屏幕适配库
   oktoast: ^3.0.0 #toast库
   pull_to_refresh: ^2.0.0 #下拉刷新库
   provider: ^6.0.0 #状态管理库
-  flashy_tab_bar2: ^0.0.10 #底部导航栏库
+  flashy_tab_bar2: ^0.0.6 #底部导航栏库
   contained_tab_bar_view: ^0.8.0 #SegmentedControl库
   card_swiper: ^3.0.1 #Banner库
-  gif_view: ^0.4.4 #gif库
+  gif_view: ^0.3.1 #gif库
   flutter_infinite_marquee: ^1.0.0 #跑马灯库
+  cached_network_image: ^3.2.1 #图片缓存库
 
 
   
