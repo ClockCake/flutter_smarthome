@@ -45,7 +45,7 @@ dependencies:
   card_swiper: ^3.0.1 #Banner库
   gif_view: ^0.3.1 #gif库
   flutter_infinite_marquee: ^1.0.0 #跑马灯库
-  cached_network_image: ^3.2.1 #图片缓存库
+  cached_network_image: ^3.2.3 #图片缓存库
 
 
   

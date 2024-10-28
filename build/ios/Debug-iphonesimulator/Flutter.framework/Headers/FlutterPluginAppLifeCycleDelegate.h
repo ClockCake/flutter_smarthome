@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef FLUTTER_SHELL_PLATFORM_DARWIN_IOS_FRAMEWORK_HEADERS_FLUTTERPLUGINAPPLIFECYCLEDELEGATE_H_
-#define FLUTTER_SHELL_PLATFORM_DARWIN_IOS_FRAMEWORK_HEADERS_FLUTTERPLUGINAPPLIFECYCLEDELEGATE_H_
+#ifndef FLUTTER_FLUTTERPLUGINAPPLIFECYCLEDELEGATE_H_
+#define FLUTTER_FLUTTERPLUGINAPPLIFECYCLEDELEGATE_H_
 
 #import "FlutterPlugin.h"
 
@@ -16,17 +16,17 @@ FLUTTER_DARWIN_EXPORT
 @interface FlutterPluginAppLifeCycleDelegate : NSObject <UNUserNotificationCenterDelegate>
 
 /**
- * Registers `delegate` to receive life cycle callbacks via this FlutterPluginAppLifeCycleDelegate
+ * Registers `delegate` to receive life cycle callbacks via this FlutterPluginAppLifecycleDelegate
  * as long as it is alive.
  *
- * `delegate` will only be referenced weakly.
+ * `delegate` will only referenced weakly.
  */
 - (void)addDelegate:(NSObject<FlutterApplicationLifeCycleDelegate>*)delegate;
 
 /**
  * Calls all plugins registered for `UIApplicationDelegate` callbacks.
  *
- * @return `NO` if any plugin vetos application launch.
+ * @return `NO` if any plugin vetoes application launch.
  */
 - (BOOL)application:(UIApplication*)application
     didFinishLaunchingWithOptions:(NSDictionary*)launchOptions;
@@ -34,7 +34,7 @@ FLUTTER_DARWIN_EXPORT
 /**
  * Calls all plugins registered for `UIApplicationDelegate` callbacks.
  *
- * @return `NO` if any plugin vetos application launch.
+ * @return `NO` if any plugin vetoes application launch.
  */
 - (BOOL)application:(UIApplication*)application
     willFinishLaunchingWithOptions:(NSDictionary*)launchOptions;
@@ -145,4 +145,4 @@ FLUTTER_DARWIN_EXPORT
 
 NS_ASSUME_NONNULL_END
 
-#endif  // FLUTTER_SHELL_PLATFORM_DARWIN_IOS_FRAMEWORK_HEADERS_FLUTTERPLUGINAPPLIFECYCLEDELEGATE_H_
+#endif  // FLUTTER_FLUTTERPLUGINAPPLIFECYCLEDELEGATE_H_

@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#ifndef FLUTTER_SHELL_PLATFORM_DARWIN_COMMON_FRAMEWORK_HEADERS_FLUTTERCODECS_H_
-#define FLUTTER_SHELL_PLATFORM_DARWIN_COMMON_FRAMEWORK_HEADERS_FLUTTERCODECS_H_
+#ifndef FLUTTER_FLUTTERCODECS_H_
+#define FLUTTER_FLUTTERCODECS_H_
 
 #import <Foundation/Foundation.h>
 
@@ -279,13 +279,11 @@ FLUTTER_DARWIN_EXPORT
  * - FlutterStandardDataTypeFloat64: 64-bit floats
  */
 typedef NS_ENUM(NSInteger, FlutterStandardDataType) {
-  // NOLINTBEGIN(readability-identifier-naming)
   FlutterStandardDataTypeUInt8,
   FlutterStandardDataTypeInt32,
   FlutterStandardDataTypeInt64,
   FlutterStandardDataTypeFloat32,
   FlutterStandardDataTypeFloat64,
-  // NOLINTEND(readability-identifier-naming)
 };
 
 /**
@@ -346,17 +344,17 @@ FLUTTER_DARWIN_EXPORT
 /**
  * The type of the encoded values.
  */
-@property(readonly, nonatomic, assign) FlutterStandardDataType type;
+@property(readonly, nonatomic) FlutterStandardDataType type;
 
 /**
  * The number of value items encoded.
  */
-@property(readonly, nonatomic, assign) UInt32 elementCount;
+@property(readonly, nonatomic) UInt32 elementCount;
 
 /**
  * The number of bytes used by the encoding of a single value item.
  */
-@property(readonly, nonatomic, assign) UInt8 elementSize;
+@property(readonly, nonatomic) UInt8 elementSize;
 @end
 
 /**
@@ -475,4 +473,4 @@ FLUTTER_DARWIN_EXPORT
 
 NS_ASSUME_NONNULL_END
 
-#endif  // FLUTTER_SHELL_PLATFORM_DARWIN_COMMON_FRAMEWORK_HEADERS_FLUTTERCODECS_H_
+#endif  // FLUTTER_FLUTTERCODECS_H_

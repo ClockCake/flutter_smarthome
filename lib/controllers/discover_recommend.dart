@@ -382,19 +382,19 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
                         itemCount: 6,
                         itemBuilder: (context, index) {
                           return Container(
-                            // margin: EdgeInsets.only(left: 16.w),
-                            // width: 120.w,
-                            // height: 100.h,
-                            // decoration: BoxDecoration(
-                            //   borderRadius: BorderRadius.circular(6),
-                            //   image: const DecorationImage(
-                            //     //显示网络图片
-                            //     image: CachedNetworkImageProvider(
-                            //       "https://image.itimes.me/i/2024/07/26/66a30d068028b.jpg",
-                            //     ),
-                            //     fit: BoxFit.cover,
-                            //   ),
-                            // ),
+                            margin: EdgeInsets.only(left: 16.w),
+                            width: 120.w,
+                            height: 100.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              image: const DecorationImage(
+                                //显示网络图片
+                                image: CachedNetworkImageProvider(
+                                  "https://image.itimes.me/i/2024/07/26/66a30d068028b.jpg",
+                                ),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           );
                         },
                       ),
