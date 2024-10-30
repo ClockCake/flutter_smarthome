@@ -3,6 +3,7 @@ import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
 import 'controllers/discover_home.dart';
 import 'controllers/login_page.dart';
+import 'controllers/personal_home.dart';
 class BaseTabBarController extends StatefulWidget {
   @override
   _BaseTabBarControllerState createState() => _BaseTabBarControllerState();
@@ -16,7 +17,7 @@ class _BaseTabBarControllerState extends State<BaseTabBarController> {
       DiscoverHomeWidget(),
       Center(child: Text("Home Page222")),
       Center(child: Text("Search Page333")),
-      LoginPage()
+      PersonalHomeWidget(),
 
     ];
     return Scaffold(

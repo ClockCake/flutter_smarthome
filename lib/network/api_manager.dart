@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-
+import '../utils/user_manager.dart';
+import '../models/user_model.dart';
 /// ApiManager 是一个单例类，用于管理网络请求
 class ApiManager {
   // 单例模式
@@ -13,6 +14,8 @@ class ApiManager {
 
   ApiManager._internal() {
     // 初始化 Dio
+    UserModel? user = UserManager.instance.user;
+
     _dio = Dio(
       BaseOptions(
         baseUrl: _baseUrl, // 基础请求地址
@@ -20,6 +23,8 @@ class ApiManager {
         receiveTimeout: Duration(milliseconds: 3000), // 响应超时时间（毫秒）
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
+          'TerminalId': 'ce5c98bea83e4d3289f3fc5f25c445a6',
+          "Authorization": user?.accessToken ?? '',
         },
       ),
     );
@@ -58,7 +63,7 @@ class ApiManager {
         if (response.data is Map<String, dynamic>) {
           final code = response.data['code'];
           // 假设 0 表示成功，可以根据实际API调整
-          if (code == 0) {
+          if (code == 200) {
             return handler.next(response);
           } else {
             // 获取错误信息，假设错误信息在 msg 字段中

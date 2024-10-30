@@ -3,7 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:oktoast/oktoast.dart';
 import '../network/api_manager.dart';
-
+import '../utils/user_manager.dart';
+import '../models/user_model.dart';
+import '../base_tabbar_controller.dart';
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -304,20 +306,24 @@ class _LoginPageState extends State<LoginPage> {
     final code = _codeController.text.trim();
 
     try {
-      // 发起登录请求
-      // final response = await ApiManager().post(
-      //   '/login',
-      //   data: {
-      //     'phone': phone,
-      //     'code': code,
-      //   },
-      // );
+      //发起登录请求
+      final response = await ApiManager().post(
+        '/api/login/via-code',
+        data: {
+          'mobile': phone,
+          'code': code,
+        },
+      );
 
-      // if (response != null) {
-      //   // 处理登录成功
-      //   // 例如：保存token、跳转页面等
-      //   Navigator.pushReplacementNamed(context, '/home');
-      // }
+      if (response != null) {
+        // 处理登录成功
+        UserModel user = UserModel.fromJson(response);
+        await UserManager.instance.saveUser(user);
+        // 在登录页面登录成功后
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => BaseTabBarController()),
+        );
+      }
     } catch (e) {
       showToast('登录失败，请重试');
     }
@@ -325,6 +331,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -335,6 +343,7 @@ class _LoginPageState extends State<LoginPage> {
           _buildLoginButton(),
           const Spacer(),
           _buildAgreement(),
+          SizedBox(height: 30.h + bottomPadding),
         ],
       ),
     );

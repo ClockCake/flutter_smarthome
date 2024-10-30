@@ -47,7 +47,7 @@ dependencies:
   flutter_infinite_marquee: ^1.0.0 #跑马灯库
   cached_network_image: ^3.2.3 #图片缓存库
   flutter_easyloading: ^3.0.5 #加载loading库
-
+  shared_preferences: ^2.2.2 #本地存储库
   
 
 dev_dependencies:
