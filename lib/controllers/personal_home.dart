@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import '../models/user_model.dart';
 import '../utils/user_manager.dart';
+import './personal_setting.dart';
 class PersonalHomeWidget extends StatefulWidget {
   const PersonalHomeWidget({super.key});
 
@@ -75,17 +76,19 @@ class _PersonalHomeWidgetState extends State<PersonalHomeWidget> {
       child: Column(
         children: [
           SizedBox(height: topPadding - 250.h),
-          //设置 icon 按钮
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               IconButton(
                 icon: Image.asset('assets/images/icon_personal_setting.png',width: 24.w,height: 24.h),
                 onPressed: () {
-                  // 点击设置按钮
-                  print('点击设置按钮');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PersonalSettingWidget()),
+                  );
                 },
               ),
+              
             ],
           ),
           // SizedBox(height: 48.h),

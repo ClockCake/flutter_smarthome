@@ -5,21 +5,32 @@
 .packages
 .pub-cache/
 .pub/
-/build/
+**/build/
+*.stamp
+**/*.stamp
+
+# IDE related
 .idea/
 *.iml
 *.ipr
 *.iws
+.vscode/
 
 # iOS specific
 ios/Flutter/Flutter.framework
 ios/Flutter/Flutter.podspec
-ios/.symlinks/
-ios/Pods/
-ios/Runner.xcworkspace/
 ios/Flutter/App.framework
 ios/Flutter/engine/
 ios/Flutter/GeneratedPluginRegistrant.*
+ios/.symlinks/
+ios/Pods/
+ios/Runner.xcworkspace/
+**/Debug-iphonesimulator/
+**/CodeResources
+**/kernel_blob.bin
+**/FMDB/
+ios/build/
+ios/DerivedData/
 
 # Android specific
 android/.gradle/
@@ -27,6 +38,21 @@ android/app/*.keystore
 android/app/build/
 android/local.properties
 android/.idea/
+android/build/
+android/captures/
+android/gradle/
+android/*.iml
 
-# VS Code specific
-.vscode/
+# Generated files
+**/gen_dart_plugin_registrant.stamp
+**/gen_localizations.stamp
+**/_composite.stamp
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Coverage
+coverage/
