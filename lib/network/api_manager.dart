@@ -1,8 +1,12 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_smarthome/controllers/login_page.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter/material.dart';
 import '../utils/user_manager.dart';
 import '../models/user_model.dart';
+import '../utils/global.dart';  
+
 /// ApiManager 是一个单例类，用于管理网络请求
 class ApiManager {
   // 单例模式
@@ -21,17 +25,20 @@ class ApiManager {
         baseUrl: _baseUrl, // 基础请求地址
         connectTimeout: Duration(milliseconds: 5000), // 连接超时时间（毫秒）
         receiveTimeout: Duration(milliseconds: 3000), // 响应超时时间（毫秒）
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-          'TerminalId': 'ce5c98bea83e4d3289f3fc5f25c445a6',
-          "Authorization": user?.accessToken ?? '',
-        },
       ),
     );
 
     // 添加拦截器
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) {
+        // 在每次请求时动态获取最新的 token
+        final UserModel? user = UserManager.instance.user;
+        options.headers = {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'TerminalId': 'ce5c98bea83e4d3289f3fc5f25c445a6',
+          "Authorization": user?.accessToken ?? '',
+        };
+
         // 打印请求信息
         print('┌────── Request ──────');
         print('│ URL: ${options.baseUrl}${options.path}');
@@ -62,7 +69,37 @@ class ApiManager {
         // 检查响应体中的 code 字段
         if (response.data is Map<String, dynamic>) {
           final code = response.data['code'];
-          // 假设 0 表示成功，可以根据实际API调整
+          // token 过期重新登录的逻辑
+          if (code == 401) {
+            // 清除本地用户数据
+            UserManager.instance.clearUser();
+            
+            showToast(
+              response.data['msg'] ?? '登录已过期，请重新登录',
+              position: ToastPosition.bottom,
+            );
+
+            // 延迟执行跳转，确保 toast 消息能够显示
+            Future.delayed(Duration(milliseconds: 1500), () {
+              // 获取全局 context
+              final context = _getGlobalContext();
+              if (context != null) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+              }
+            });
+
+            // 返回错误给业务层
+            final error = DioException(
+              requestOptions: response.requestOptions,
+              response: response,
+              error: '登录已过期',
+            );
+            return handler.reject(error);
+          }
+
+          //成功返回数据
           if (code == 200) {
             return handler.next(response);
           } else {
@@ -179,5 +216,11 @@ class ApiManager {
     } catch (e) {
       return null;
     }
+  }
+
+
+    // 获取全局 context 的方法
+  BuildContext? _getGlobalContext() {
+    return navigatorKey.currentContext;  
   }
 }

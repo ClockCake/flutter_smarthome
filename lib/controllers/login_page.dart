@@ -47,6 +47,22 @@ class _LoginPageState extends State<LoginPage> {
         children: [
           Positioned(
             left: 24.w,
+            top: MediaQuery.of(context).padding.top + 20.h,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              
+              child: Icon(
+                //关闭按钮 
+                Icons.close,
+                color: HexColor('#222222'),
+                size: 24.sp,
+              ),
+            ),
+          ),
+          Positioned(
+            left: 24.w,
             bottom: 20.h,
             child: Text(
               '手机验证码登录',

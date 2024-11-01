@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
+import 'package:flutter_smarthome/utils/network_image_helper.dart';
 import 'package:gif_view/gif_view.dart';
 import '../view/auto_scroll_horizontal_list.dart';
 import 'package:flutter_infinite_marquee/flutter_infinite_marquee.dart';
@@ -385,13 +386,10 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
                             margin: EdgeInsets.only(left: 16.w),
                             width: 120.w,
                             height: 100.h,
-                            decoration: BoxDecoration(
+                            child: ClipRRect(
                               borderRadius: BorderRadius.circular(6),
-                              image: const DecorationImage(
-                                //显示网络图片
-                                image: CachedNetworkImageProvider(
-                                  "https://image.itimes.me/i/2024/07/26/66a30d068028b.jpg",
-                                ),
+                              child: NetworkImageHelper().getCachedNetworkImage(
+                                imageUrl: 'https://image.itimes.me/i/2024/07/26/66a30d068028b.jpg',
                                 fit: BoxFit.cover,
                               ),
                             ),

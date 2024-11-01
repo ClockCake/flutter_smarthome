@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smarthome/controllers/login_page.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import '../models/user_model.dart';
 import '../utils/user_manager.dart';
@@ -32,15 +33,23 @@ class _PersonalHomeWidgetState extends State<PersonalHomeWidget> {
   @override
   void initState() {
     super.initState();
-    // 在 initState 中初始化
     _updateLoginState();
+    // 添加状态监听
+    UserManager.instance.notifier.addListener(_updateLoginState);
   }
 
-  // 更新登录状态的方法
+  @override
+  void dispose() {
+    // 移除状态监听
+    UserManager.instance.notifier.removeListener(_updateLoginState);
+    super.dispose();
+  }
+
+  // 更新登录状态
   void _updateLoginState() {
     setState(() {
       user = UserManager.instance.user;
-      isLogin = user != null;
+      isLogin = UserManager.instance.isLoggedIn;
     });
   }
 
@@ -130,8 +139,10 @@ class _PersonalHomeWidgetState extends State<PersonalHomeWidget> {
               ),
               onTap: () {
                 if (!isLogin) {
-                  // 跳转到登录页面
-                  Navigator.pushNamed(context, '/login').then((_) {
+                  Navigator.push(
+                    context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                  ).then((_) {
                     // 登录页面返回后更新状态
                     _updateLoginState();
                   });

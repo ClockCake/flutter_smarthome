@@ -1,18 +1,31 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
 import 'base_tabbar_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart'; 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import './utils/user_manager.dart';
 import './controllers/login_page.dart';
+final navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await UserManager.instance.init();
+  // 全局设置证书验证豁免
+  HttpOverrides.global = MyHttpOverrides();
   runApp(
     OKToast(
       child: MyApp(),
     ),
   );
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -24,6 +37,7 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) {
         return MaterialApp(
+          navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
           home: FutureBuilder<bool>(
             // 检查是否已登录

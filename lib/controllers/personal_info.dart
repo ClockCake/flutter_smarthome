@@ -4,6 +4,8 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/dialog/bottom_sheet_selector.dart';
 import 'package:flutter_smarthome/dialog/nickname_dialog.dart';
+import 'package:flutter_smarthome/network/api_manager.dart';
+import 'package:oktoast/oktoast.dart';
 import '../models/user_model.dart';
 import '../utils/user_manager.dart';
 class PersonalInfoWidget extends StatefulWidget {
@@ -16,12 +18,24 @@ class PersonalInfoWidget extends StatefulWidget {
 class _PersonalInfoWidgetState extends State<PersonalInfoWidget> {
   UserModel? user; // 用户信息
   int? _selectedGenderIndex; // 选中的性别索引
+  //用户字典
+  Map<String, dynamic> userDict = {};
 
   @override
   void initState() {
     super.initState();
     user = UserManager.instance.user;
+    userDict = {
+      'nickname': user?.nickname,
+      'avatar': user?.avatar,
+      'sex':user?.sex,
+      'city': user?.city,
+      'profile': user?.profile,
+
+    };
   }
+
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -168,6 +182,11 @@ class _PersonalInfoWidgetState extends State<PersonalInfoWidget> {
         onConfirm: () {
           // 处理确认逻辑
           print(controller.text);
+          _handleEditPersonalInfo();
+          UserManager.instance.updateUser((p0) => 
+            p0.nickname = controller.text
+          );
+
           Navigator.pop(context);
         },
       ),
@@ -208,5 +227,23 @@ void showGenderSelector(BuildContext context) {
         print('选中了: ${index == 0 ? '男' : '女'}');
       },
     );
+  }
+
+
+  Future<void> _handleEditPersonalInfo() async {
+    try {
+      //发起登录请求
+      final apiManager = ApiManager();
+      final response = await apiManager.put(
+        '/api/personal/edit/info',
+        data: userDict,
+      );
+
+      if (response != null) {
+        showToast('修改成功');
+      }
+    } catch (e) {
+      showToast('修改失败，请重试');
+    }
   }
 }
