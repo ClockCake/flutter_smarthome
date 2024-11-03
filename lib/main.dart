@@ -53,9 +53,7 @@ class MyApp extends StatelessWidget {
               }
               
               // 根据登录状态返回相应页面
-              return snapshot.data == true 
-                ? BaseTabBarController() 
-                : LoginPage();
+              return BaseTabBarController();
             },
           ),
           builder: EasyLoading.init(), // 在这里初始化 EasyLoading

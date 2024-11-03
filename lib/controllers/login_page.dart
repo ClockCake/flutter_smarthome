@@ -336,9 +336,12 @@ class _LoginPageState extends State<LoginPage> {
         UserModel user = UserModel.fromJson(response);
         await UserManager.instance.saveUser(user);
         // 在登录页面登录成功后
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => BaseTabBarController()),
-        );
+        // Navigator.of(context).pushReplacement(
+        //   MaterialPageRoute(builder: (context) => BaseTabBarController()),
+        // );
+        Navigator.pop(context);
+
+
       }
     } catch (e) {
       showToast('登录失败，请重试');

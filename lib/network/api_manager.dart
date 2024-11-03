@@ -218,7 +218,44 @@ class ApiManager {
     }
   }
 
+  /// 上传单个图片
+  /// [path] 请求路径
+  /// [filePath] 图片文件的本地路径
+  /// [fileName] 上传的文件名称，可选
+  /// [formName] 表单中的字段名称，默认为 'file'
+  Future<dynamic> uploadImage(
+    String path, 
+    String filePath, {
+    String? fileName,
+    String formName = 'file',
+  }) async {
+    try {
+      // 创建 MultipartFile
+      final file = await MultipartFile.fromFile(
+        filePath,
+        filename: fileName ?? filePath.split('/').last,
+      );
+      
+      // 创建 FormData
+      final formData = FormData.fromMap({
+        formName: file,
+      });
 
+      // 发送请求
+      Response response = await _dio.post(
+        path,
+        data: formData,
+        options: Options(
+          contentType: 'multipart/form-data',
+        ),
+      );
+      
+      return response.data['data'];
+    } catch (e) {
+      print('图片上传失败: $e');
+      return null;
+    }
+  }
     // 获取全局 context 的方法
   BuildContext? _getGlobalContext() {
     return navigatorKey.currentContext;  

@@ -1,3 +1,6 @@
+import 'dart:ffi';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -5,9 +8,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/dialog/bottom_sheet_selector.dart';
 import 'package:flutter_smarthome/dialog/nickname_dialog.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
+import 'package:flutter_smarthome/utils/image_picker.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:dio/dio.dart';
 import '../models/user_model.dart';
 import '../utils/user_manager.dart';
+import 'package:city_pickers/city_pickers.dart';
+
 class PersonalInfoWidget extends StatefulWidget {
   const PersonalInfoWidget({super.key});
 
@@ -79,7 +86,7 @@ class _PersonalInfoWidgetState extends State<PersonalInfoWidget> {
               ],
               ),
               onTap: () {
-                print('点击了头像');
+                showAvatarDialog(context);
               },
             ),
             //分割线
@@ -160,13 +167,48 @@ class _PersonalInfoWidgetState extends State<PersonalInfoWidget> {
                 Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
               ],
               ),
-              onTap: () {
-                print('点击了城市');
+              onTap: ()  {
+                getResult().then((value) {
+                  if (value == null) {
+                    return;
+                  }
+                  String address = '${value?.provinceName}-${value?.cityName}-${value?.areaName}';
+                  userDict['city'] = address;
+                  _handleEditPersonalInfo().then((value) => {
+                    UserManager.instance.updateUser((p0) => 
+                      p0.city = address
+                    ),
+                  });
+                });
               },
             ),
           ],
         ),
     );
+  }
+
+  //修改头像
+  void showAvatarDialog(BuildContext context) async{
+    final File? imageFile = await ImagePickerUtils.showImagePickerDialog(context);
+
+    // 处理选择结果
+    if (imageFile != null) {
+      userDict['avatar'] = await uploadImage(imageFile);
+      _handleEditPersonalInfo().then((value) {
+        UserManager.instance.updateUser((p0) => 
+          p0.avatar = userDict['avatar']
+        );
+      });
+      // 可以在这里进行图片上传等操作
+      print('选中的图片路径: ${imageFile.path}');
+    }
+  } 
+
+   // 上传图片
+  Future<String?> uploadImage(File imageFile) async {
+
+    final response = await ApiManager().uploadImage('/api/personal/file/upload/oss', imageFile.path);
+    return response.data['url'];
   }
 
   //修改昵称
@@ -181,17 +223,18 @@ class _PersonalInfoWidgetState extends State<PersonalInfoWidget> {
         onCancel: () => Navigator.pop(context),
         onConfirm: () {
           // 处理确认逻辑
-          print(controller.text);
-          _handleEditPersonalInfo();
-          UserManager.instance.updateUser((p0) => 
-            p0.nickname = controller.text
-          );
-
-          Navigator.pop(context);
+          userDict['nickname'] = controller.text;
+          _handleEditPersonalInfo().then((value) {
+            UserManager.instance.updateUser((p0) => 
+              p0.nickname = controller.text
+            );
+            Navigator.pop(context);
+          });
         },
       ),
     );
   }
+
 
   //更改简介
   void showProfileDialog(BuildContext context) {
@@ -204,9 +247,15 @@ class _PersonalInfoWidgetState extends State<PersonalInfoWidget> {
         title: '更改简介',
         onCancel: () => Navigator.pop(context),
         onConfirm: () {
-          // 处理确认逻辑
-          print(controller.text);
-          Navigator.pop(context);
+          userDict['profile'] = controller.text;
+          _handleEditPersonalInfo().then((value) {
+            UserManager.instance.updateUser((p0) => 
+              p0.profile = controller.text
+            );
+            Navigator.pop(context);
+
+          });
+
         },
       ),
     );
@@ -220,19 +269,33 @@ void showGenderSelector(BuildContext context) {
       initialSelectedIndex: _selectedGenderIndex,
       title: '选择性别',  // 可选
       onSelected: (index) {
+        userDict['sex'] = index == 0 ? '1' : '2';
         setState(() {
           _selectedGenderIndex = index;
         });
-        // 处理选中逻辑
-        print('选中了: ${index == 0 ? '男' : '女'}');
+
+        _handleEditPersonalInfo().then((value) {
+          UserManager.instance.updateUser((p0) => 
+            p0.sex = index == 0 ? '1' : '2'
+          );
+        });
+
       },
     );
+  }
+
+  //修改城市
+  Future<Result?> getResult () async {
+    
+    Result? cityPickerResult = await CityPickers.showCityPicker(
+      context: context,
+    );
+    return cityPickerResult;
   }
 
 
   Future<void> _handleEditPersonalInfo() async {
     try {
-      //发起登录请求
       final apiManager = ApiManager();
       final response = await apiManager.put(
         '/api/personal/edit/info',
@@ -241,6 +304,10 @@ void showGenderSelector(BuildContext context) {
 
       if (response != null) {
         showToast('修改成功');
+        setState(() {
+           
+        });
+
       }
     } catch (e) {
       showToast('修改失败，请重试');

@@ -91,10 +91,22 @@ class _PersonalHomeWidgetState extends State<PersonalHomeWidget> {
               IconButton(
                 icon: Image.asset('assets/images/icon_personal_setting.png',width: 24.w,height: 24.h),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => PersonalSettingWidget()),
-                  );
+                  if (!isLogin) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    ).then((_) {
+                      // 登录页面返回后更新状态
+                      _updateLoginState();
+                    });
+                    return;
+                  }else{
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PersonalSettingWidget()),
+                    );     
+                  }
+
                 },
               ),
               
