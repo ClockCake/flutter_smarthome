@@ -53,10 +53,11 @@ class _DiscoverHomeWidget extends State<DiscoverHomeWidget> {
                 ],
                 tabBarProperties: const TabBarProperties(
                   indicatorColor: Colors.black,
-                  indicatorWeight: 1.0,
+                  indicatorWeight: 2.0,
                   labelColor: Colors.black,
                   unselectedLabelColor: Colors.grey,
                   labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  indicatorSize: TabBarIndicatorSize.label,
                 ),
 
                 views: [

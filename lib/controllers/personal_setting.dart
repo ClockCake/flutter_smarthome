@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/models/user_model.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
+import 'package:flutter_smarthome/utils/cache_util.dart';
+import 'package:flutter_smarthome/utils/custom_webview.dart';
 import 'package:flutter_smarthome/utils/user_manager.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart'; // Add this import
+import 'package:package_info_plus/package_info_plus.dart';
 import './personal_info.dart';
 class PersonalSettingWidget extends StatefulWidget {
   const PersonalSettingWidget({super.key});
@@ -15,6 +19,23 @@ class PersonalSettingWidget extends StatefulWidget {
 class _PersonalSettingWidgetState extends State<PersonalSettingWidget> {
   //标题数组
   List<String> _titleList = ['个人信息', '收货地址管理', '隐私政策', '清除缓存', '版本'];
+
+  String? _cacheSize; // 新增状态变量来存储缓存大小
+
+  @override
+  void initState() {
+    super.initState();
+    _updateCacheSize(); // 初始化时获取缓存大小
+  }
+
+  // 新增更新缓存大小的方法
+  Future<void> _updateCacheSize() async {
+    final size = await CacheUtil.getCacheSize();
+    setState(() {
+      _cacheSize = size;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,23 +58,62 @@ class _PersonalSettingWidgetState extends State<PersonalSettingWidget> {
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
                   title: Text(_titleList[index]),
-                  trailing: Icon(Icons.keyboard_arrow_right),
-                  onTap: () {
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min, // 重要：让 Row 收缩到内容大小
+                    children: [
+                      if (index == 3)
+                        Text(_cacheSize ?? '')
+                      else if (index == 4)
+                        FutureBuilder<String>(
+                          future: PackageInfo.fromPlatform().then((info) => info.version),
+                          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: CircularProgressIndicator(strokeWidth: 2),
+                              );
+                            }
+                            return Text(snapshot.data ?? '');
+                          },
+                        ),
+                      SizedBox(width: 4),
+                      Icon(Icons.keyboard_arrow_right),
+                    ],
+                  ),
+
+                  onTap: () async{
                     switch (index) {
                       case 0:
                         Navigator.push(context, MaterialPageRoute(builder: (context) => PersonalInfoWidget()));
                         break;
                       case 1:
-                        Navigator.pushNamed(context, '/address_manage');
+                       
                         break;
                       case 2:
-                        Navigator.pushNamed(context, '/privacy_policy');
+                        //隐私政策
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const CustomWebView(
+                              url: 'https://www.baidu.com',
+                              title: '网页标题',
+                            ),
+                          ),
+                        );
+
                         break;
                       case 3:
                         //清除缓存
+                        await CacheUtil.clearCacheAndUpdate();
+                        setState(() {
+                          _cacheSize = ''; // 清除缓存后将缓存大小设置为空字符串
+                        });
+                        showToast('清除缓存成功');
                         break;
                       case 4:
                         //版本
+                        showToast('当前已是最新版本');
                         break;
                       default:
                     }
@@ -130,6 +190,6 @@ class _PersonalSettingWidgetState extends State<PersonalSettingWidget> {
       showToast('退出登录失败: ${e.toString()}');
     }
   }
-
+  
 }
 

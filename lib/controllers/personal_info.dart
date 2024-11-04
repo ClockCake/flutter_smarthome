@@ -208,7 +208,7 @@ class _PersonalInfoWidgetState extends State<PersonalInfoWidget> {
   Future<String?> uploadImage(File imageFile) async {
 
     final response = await ApiManager().uploadImage('/api/personal/file/upload/oss', imageFile.path);
-    return response.data['url'];
+    return response['url'];
   }
 
   //修改昵称

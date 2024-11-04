@@ -3,9 +3,6 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class ImagePickerUtils {
-  static final ImagePicker _picker = ImagePicker();
-  
-  // 显示选择菜单
   static Future<File?> showImagePickerDialog(BuildContext context) async {
     return await showModalBottomSheet<File?>(
       context: context,
@@ -34,10 +31,9 @@ class ImagePickerUtils {
                 leading: const Icon(Icons.photo_camera, color: Colors.black),
                 title: const Text('拍照'),
                 onTap: () async {
-                  Navigator.pop(context); // 关闭底部菜单
                   final file = await _pickImage(ImageSource.camera);
-                  if (file != null && context.mounted) {
-                    Navigator.of(context, rootNavigator: true).pop(file); // 返回文件
+                  if (context.mounted) {
+                    Navigator.pop(context, file); // 直接返回文件结果
                   }
                 },
               ),
@@ -45,10 +41,9 @@ class ImagePickerUtils {
                 leading: const Icon(Icons.photo_library, color: Colors.black),
                 title: const Text('从相册选择'),
                 onTap: () async {
-                  Navigator.pop(context); // 关闭底部菜单
                   final file = await _pickImage(ImageSource.gallery);
-                  if (file != null && context.mounted) {
-                    Navigator.of(context, rootNavigator: true).pop(file); // 返回文件
+                  if (context.mounted) {
+                    Navigator.pop(context, file); // 直接返回文件结果
                   }
                 },
               ),
@@ -63,7 +58,7 @@ class ImagePickerUtils {
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.red),
                 ),
-                onTap: () => Navigator.pop(context, null), // 返回 null
+                onTap: () => Navigator.pop(context, null),
               ),
             ],
           ),
@@ -71,6 +66,10 @@ class ImagePickerUtils {
       },
     );
   }
+
+
+  // ImagePicker instance
+  static final ImagePicker _picker = ImagePicker();
 
   // 选择图片
   static Future<File?> _pickImage(ImageSource source) async {

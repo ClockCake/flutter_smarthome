@@ -116,28 +116,33 @@ class _PersonalHomeWidgetState extends State<PersonalHomeWidget> {
           Row(
             children: [
               SizedBox(width:16.w),
-              //默认头像
-            ClipOval(
-              child: isLogin 
-                ? Image.network(
-                    user?.avatar ?? '',
-                    width: 64.w,
-                    height: 64.h,
-                    // 加载失败时显示默认头像
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
+              ClipOval(
+                child: Container(
+                  width: 64.w,  // 确保宽高一致
+                  height: 64.w, // 使用相同的单位(w)
+                  child: isLogin 
+                    ? Image.network(
+                        user?.avatar ?? '',
+                        width: 64.w,
+                        height: 64.w, // 修改为和宽度一样使用w
+                        fit: BoxFit.cover, // 添加 fit 属性确保图片填充
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            'assets/images/icon_default_avatar.png',
+                            width: 64.w,
+                            height: 64.w,
+                            fit: BoxFit.cover,
+                          );
+                        },
+                      )
+                    : Image.asset(
                         'assets/images/icon_default_avatar.png',
                         width: 64.w,
-                        height: 64.h,
-                      );
-                    },
-                  )
-                : Image.asset(
-                    'assets/images/icon_default_avatar.png',
-                    width: 64.w,
-                    height: 64.h,
-                  ),
-            ),
+                        height: 64.w,
+                        fit: BoxFit.cover,
+                      ),
+                ),
+              ),
             SizedBox(width: 16.w),
             //Text 点击事件
             InkWell(
