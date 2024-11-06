@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
+import 'package:flutter_smarthome/controllers/furnish_form.dart';
 import 'discover_recommend.dart';
 class DiscoverHomeWidget extends StatefulWidget {
   const DiscoverHomeWidget({super.key});
@@ -62,7 +63,7 @@ class _DiscoverHomeWidget extends State<DiscoverHomeWidget> {
 
                 views: [
                   DiscoverRecommendWidget(),
-                  Container(color: Colors.green), 
+                  FurnishFormWidget(),
                   Container(color: Colors.red),
 
                 ],
