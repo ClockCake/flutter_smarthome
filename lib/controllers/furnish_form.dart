@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smarthome/controllers/recommend_designer_list.dart';
+import 'package:flutter_smarthome/dialog/simple_bottom_sheet_selector.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
+import 'package:oktoast/oktoast.dart';
 
 class FurnishFormWidget extends StatefulWidget {
   const FurnishFormWidget({super.key});
@@ -15,14 +18,41 @@ class FurnishFormWidget extends StatefulWidget {
 class _FurnishFormWidgetState extends State<FurnishFormWidget> {
  //获取的网络数据字典数组
   List<Map<String, dynamic>> _areaList = [];
+  // 记录选中的索引
+  int? areaselectedIndex;
+
   List<Map<String, dynamic>> _houseTypeList = [];
+  int? houseTypeSelectedIndex;
+
   List<Map<String, dynamic>> _decorationTypeList = [];
+  int? decorationTypeSelectedIndex;
+
+  //姓名
+  final nameController = TextEditingController();
+  //联系方式
+  final phoneController = TextEditingController();
+  //x室
+  final roomController = TextEditingController();
+  //x厅
+  final hallController = TextEditingController();
+  //x厨
+  final kitchenController = TextEditingController();
+  //x卫
+  final toiletController = TextEditingController();
+  //房屋面积
+  final areaController = TextEditingController();
+  //需求备注
+  final remarkController = TextEditingController();
+
  @override
   void initState() {
     super.initState();
-    _fetchData();
+    _fetchAreaData();
+    _fetchHouseType('crm_room_type,crm_decorate_type'); 
   }
   void dispose() {
+    nameController.dispose(); 
+    phoneController.dispose(); 
     super.dispose();
   }
   @override
@@ -86,6 +116,7 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
               SizedBox(width: 16.w,),
               Expanded(
                 child: TextField(
+                  controller: nameController,
                   decoration: InputDecoration(
                     hintText: '请输入姓名',
                     hintStyle: TextStyle(color: HexColor('#999999'), fontSize: 14.sp),
@@ -102,6 +133,7 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
               SizedBox(width: 16.w,),
               Expanded(
                 child: TextField(
+                  controller: phoneController,
                   decoration: InputDecoration(
                     hintText: '请输入手机号',
                     hintStyle: TextStyle(color: HexColor('#999999'), fontSize: 14.sp),
@@ -117,26 +149,36 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
               Text('所在区域', style: TextStyle(fontSize: 14.sp),),
               SizedBox(width: 16.w,),
               Expanded(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          print('点击了所在区域');
-                        },
-                        child: TextField( //不可点击
-                          readOnly: true,
-                          decoration: InputDecoration(
-                            hintText: '请选择所在区域',
-                            hintStyle: TextStyle(color: HexColor('#999999'), fontSize: 14.sp),
-                            border: InputBorder.none,
+                child: GestureDetector( // 改用 GestureDetector
+                  onTap: () {
+                    showAreaSelector();
+                  },
+                  child: Container( 
+                    width: double.infinity,
+                    height: 48.h,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            areaselectedIndex != null 
+                                ? _areaList[areaselectedIndex!]['name'] // 显示选中的区域名称
+                                : '请选择所在区域',
+                            style: TextStyle(
+                              color: areaselectedIndex != null 
+                                  ? Colors.black 
+                                  : HexColor('#999999'),
+                              fontSize: 14.sp,
+                            ),
                           ),
                         ),
-                      )
+                        Icon(Icons.arrow_forward_ios, 
+                          color: HexColor('#999999'), 
+                          size: 16.sp,
+                        ),
+                      ],
                     ),
-                    Icon(Icons.arrow_forward_ios, color: HexColor('#999999'), size: 16.sp,),
-                  ],
-                )
+                  ),
+                ),
               ),
             ],
           ),
@@ -146,21 +188,36 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
               Text('房屋类型', style: TextStyle(fontSize: 14.sp),),
               SizedBox(width: 16.w,),
               Expanded(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField( //不可点击
-                        readOnly: true,
-                        decoration: InputDecoration(
-                          hintText: '请选择房屋类型',
-                          hintStyle: TextStyle(color: HexColor('#999999'), fontSize: 14.sp),
-                          border: InputBorder.none,
+                child: GestureDetector( // 改用 GestureDetector
+                  onTap: () {
+                    showHouseTypeSelector();
+                  },
+                  child: Container( 
+                    width: double.infinity,
+                    height: 48.h,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            houseTypeSelectedIndex!= null 
+                                ? _houseTypeList[houseTypeSelectedIndex!]['label'] 
+                                : '请选择房屋类型',
+                            style: TextStyle(
+                              color: houseTypeSelectedIndex != null 
+                                  ? Colors.black 
+                                  : HexColor('#999999'),
+                              fontSize: 14.sp,
+                            ),
+                          ),
                         ),
-                      ),
+                        Icon(Icons.arrow_forward_ios, 
+                          color: HexColor('#999999'), 
+                          size: 16.sp,
+                        ),
+                      ],
                     ),
-                    Icon(Icons.arrow_forward_ios, color: HexColor('#999999'), size: 16.sp,),
-                  ],
-                )
+                  ),
+                ),
               ),
             ],
           ),
@@ -175,6 +232,7 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
                   children: [
                     Expanded(
                       child: TextField(
+                        controller: roomController,
                         decoration: InputDecoration(
                           hintStyle: TextStyle(color: HexColor('#999999'), fontSize: 14.sp),
                           border: InputBorder.none,
@@ -185,6 +243,7 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
                     SizedBox(width: 16.w,),
                     Expanded(
                       child: TextField(
+                        controller: hallController,
                         decoration: InputDecoration(
                           hintStyle: TextStyle(color: HexColor('#999999'), fontSize: 14.sp),
                           border: InputBorder.none,
@@ -195,6 +254,7 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
                     SizedBox(width: 16.w,),
                     Expanded(
                       child: TextField(
+                        controller: kitchenController,
                         decoration: InputDecoration(
                           hintStyle: TextStyle(color: HexColor('#999999'), fontSize: 14.sp),
                           border: InputBorder.none,
@@ -205,6 +265,7 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
                     SizedBox(width: 16.w,),
                     Expanded(
                       child: TextField(
+                        controller: toiletController,
                         decoration: InputDecoration(
                           hintStyle: TextStyle(color: HexColor('#999999'), fontSize: 14.sp),
                           border: InputBorder.none,
@@ -242,22 +303,37 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
               Text('装修类型', style: TextStyle(fontSize: 14.sp),),
               SizedBox(width: 16.w,),
               Expanded(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField( //不可点击
-                        readOnly: true,
-                        decoration: InputDecoration(
-                          hintText: '请选择装修类型',
-                          hintStyle: TextStyle(color: HexColor('#999999'), fontSize: 14.sp),
-                          border: InputBorder.none,
-                        ),
+                  child: GestureDetector( // 改用 GestureDetector
+                    onTap: () {
+                      showDecorationTypeSelector();
+                    },
+                    child: Container( 
+                      width: double.infinity,
+                      height: 48.h,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              decorationTypeSelectedIndex != null 
+                                  ? _decorationTypeList[decorationTypeSelectedIndex!]['label'] 
+                                  : '请选择装修类型',
+                              style: TextStyle(
+                                color: decorationTypeSelectedIndex != null 
+                                    ? Colors.black 
+                                    : HexColor('#999999'),
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ),
+                          Icon(Icons.arrow_forward_ios, 
+                            color: HexColor('#999999'), 
+                            size: 16.sp,
+                          ),
+                        ],
                       ),
                     ),
-                    Icon(Icons.arrow_forward_ios, color: HexColor('#999999'), size: 16.sp,),
-                  ],
-                )
-              ),
+                  ),
+                ),
             ],
           ),
           Divider(height: 1.h, color: HexColor('#E5E5E5'),),
@@ -288,10 +364,14 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
       padding: EdgeInsets.all(16.w),
       child: InkWell(
         onTap: () {
-          print('点击了确认按钮');
+          // _onSubmit();
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const RecommendDesignerListWidget()),
+          );
         },
         child: Container(
-          height: 48.h,
+          height: 44.h,
           decoration: BoxDecoration(
             color: HexColor('#111111'),
             borderRadius: BorderRadius.circular(6),
@@ -306,7 +386,8 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
   
 
   //网络请求
-  Future<void> _fetchData() async {
+  // 获取区域数据
+  Future<void> _fetchAreaData() async {
    try {
       final apiManager = ApiManager();
       final response = await apiManager.get(
@@ -317,7 +398,8 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
       );
 
       if (response != null) {
-        _areaList = response;
+      // 首先获取 data 字段的数据
+       _areaList = List<Map<String, dynamic>>.from(response);
         setState(() {
            
         });
@@ -327,5 +409,178 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
       print(e);
     }
   }
+
+  //获取房屋类型
+  Future<void> _fetchHouseType(String path) async {
+    try {
+      final apiManager = ApiManager();
+      final response = await apiManager.get(
+        '/api/home/dict/$path',
+        queryParameters: null,
+      );
+
+      if (response != null) {
+        _houseTypeList = List<Map<String, dynamic>>.from(response['crm_room_type']);
+        _decorationTypeList = List<Map<String, dynamic>>.from(response['crm_decorate_type']);
+        setState(() {
+           
+        });
+
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  //显示区域选择器
+  void showAreaSelector() {
+    List<Map<String, dynamic>> items = [];
+    for (var item in _areaList) {
+      items.add({
+        'title': item['name'],
+        'id': item['id'],
+      });
+    }
+    SimpleBottomSheetSelector.show(
+      context,
+      items: items,
+      initialSelectedIndex: areaselectedIndex,
+      onSelected: (index) {
+        setState(() {
+          areaselectedIndex = index;
+        });
+        print('选中了：${items[index]['title']}');
+      },
+   );
+  }
+
+  //显示房屋类型选择器
+  void showHouseTypeSelector() {
+    if (_houseTypeList.isNotEmpty) {
+      List<Map<String, dynamic>> items = [];
+      for (var item in _houseTypeList) {
+        items.add({
+          'title': item['label'],
+          'id': item['id'],
+        });
+      }
+      SimpleBottomSheetSelector.show(
+        context,
+        items: items,
+        onSelected: (index) {
+          setState(() {
+            houseTypeSelectedIndex = index;
+          });
+          print('选中了：${items[index]['title']}');
+        },
+      );
+    }
+  }
+
+  //显示装修类型选择器
+  // ignore: unused_element
+  void showDecorationTypeSelector() {
+    if (_decorationTypeList.isNotEmpty) {
+      List<Map<String, dynamic>> items = [];
+      for (var item in _decorationTypeList) {
+        items.add({
+          'title': item['label'],
+          'id': item['id'],
+        });
+      }
+      SimpleBottomSheetSelector.show(
+        context,
+        items: items,
+        onSelected: (index) {
+          setState(() {
+            decorationTypeSelectedIndex = index;
+          });
+          print('选中了：${items[index]['title']}');
+        },
+      );
+    }
+  }
   
+  // 点击后效验参数
+  void _onSubmit() {
+    if (nameController.text.isEmpty) {
+      print('请输入姓名');
+      return;
+    }
+    if (phoneController.text.isEmpty) {
+      print('请输入手机号');
+      return;
+    }
+    if (areaselectedIndex == null) {
+      print('请选择所在区域');
+      return;
+    }
+    if (houseTypeSelectedIndex == null) {
+      print('请选择房屋类型');
+      return;
+    }
+    if (roomController.text.isEmpty) {
+      print('请输入房屋户型');
+      return;
+    }
+    if (hallController.text.isEmpty) {
+      print('请输入房屋户型');
+      return;
+    }
+    if (kitchenController.text.isEmpty) {
+      print('请输入房屋户型');
+      return;
+    }
+    if (toiletController.text.isEmpty) {
+      print('请输入房屋户型');
+      return;
+    }
+    if (areaController.text.isEmpty) {
+      print('请输入房屋面积');
+      return;
+    }
+    if (decorationTypeSelectedIndex == null) {
+      print('请选择装修类型');
+      return;
+    }
+    if (remarkController.text.isEmpty) {
+      print('请输入需求备注');
+      return;
+    }
+
+  }
+  
+  //提交表单数据
+  Future<void> _submitForm() async {
+    try {
+      final apiManager = ApiManager();
+      final response = await apiManager.post(
+        '/api/home/furnish/submit',
+        data: {
+          'name': nameController.text,
+          'phone': phoneController.text,
+          'regiond': _areaList[areaselectedIndex!]['label'],
+          'roomType':_houseTypeList[houseTypeSelectedIndex!]['id'],
+          'area': areaController.text,
+          'decorateType': _decorationTypeList[decorationTypeSelectedIndex!]['id'],
+          'bedroomNumber': roomController.text,
+          'livingRoomNumber': hallController.text,
+          'kitchenRoomNumber': kitchenController.text,
+          'toiletRoomNumber': toiletController.text,
+          'remark': remarkController.text,
+        },
+      );
+      if (response != null) {
+          showToast('提交成功');
+          if (!mounted) return;
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const RecommendDesignerListWidget()),
+          );
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 }
+  
