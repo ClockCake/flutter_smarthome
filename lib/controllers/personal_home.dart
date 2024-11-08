@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/controllers/login_page.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
+import 'package:flutter_smarthome/utils/network_image_helper.dart';
 import '../models/user_model.dart';
 import '../utils/user_manager.dart';
 import './personal_setting.dart';
@@ -118,27 +119,19 @@ class _PersonalHomeWidgetState extends State<PersonalHomeWidget> {
               SizedBox(width:16.w),
               ClipOval(
                 child: Container(
-                  width: 64.w,  // 确保宽高一致
-                  height: 64.w, // 使用相同的单位(w)
+                  width: 48.w,  // 确保宽高一致
+                  height: 48.w, // 使用相同的单位(w)
                   child: isLogin 
-                    ? Image.network(
-                        user?.avatar ?? '',
-                        width: 64.w,
-                        height: 64.w, // 修改为和宽度一样使用w
-                        fit: BoxFit.cover, // 添加 fit 属性确保图片填充
-                        errorBuilder: (context, error, stackTrace) {
-                          return Image.asset(
-                            'assets/images/icon_default_avatar.png',
-                            width: 64.w,
-                            height: 64.w,
-                            fit: BoxFit.cover,
-                          );
-                        },
-                      )
+                    ? NetworkImageHelper().getNetworkImage(
+                      imageUrl: user?.avatar ?? '',
+                      width: 48.w,
+                      height: 48.w,
+                      fit: BoxFit.cover,
+                    )
                     : Image.asset(
                         'assets/images/icon_default_avatar.png',
-                        width: 64.w,
-                        height: 64.w,
+                        width: 48.w,
+                        height: 48.w,
                         fit: BoxFit.cover,
                       ),
                 ),

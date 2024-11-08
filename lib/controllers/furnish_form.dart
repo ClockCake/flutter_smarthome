@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smarthome/controllers/furnish_record_list.dart';
 import 'package:flutter_smarthome/controllers/recommend_designer_list.dart';
 import 'package:flutter_smarthome/dialog/simple_bottom_sheet_selector.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
+import 'package:flutter_smarthome/utils/login_redirect.dart';
+import 'package:flutter_smarthome/utils/user_manager.dart';
 import 'package:oktoast/oktoast.dart';
 
 class FurnishFormWidget extends StatefulWidget {
@@ -16,6 +19,9 @@ class FurnishFormWidget extends StatefulWidget {
 }
 
 class _FurnishFormWidgetState extends State<FurnishFormWidget> {
+
+  late bool isLogin; // 是否登录
+
  //获取的网络数据字典数组
   List<Map<String, dynamic>> _areaList = [];
   // 记录选中的索引
@@ -47,18 +53,40 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
  @override
   void initState() {
     super.initState();
-    _fetchAreaData();
-    _fetchHouseType('crm_room_type,crm_decorate_type'); 
+    _updateLoginState();
+
   }
   void dispose() {
     nameController.dispose(); 
     phoneController.dispose(); 
     super.dispose();
   }
+
+    // 更新登录状态
+  void _updateLoginState() {
+    setState(() {
+      isLogin = UserManager.instance.isLoggedIn;
+      if (isLogin) {
+        _fetchAreaData();
+        _fetchHouseType('crm_room_type');
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      body: isLogin == false ? 
+      Center(
+        child: GoLoginButton(
+          onLoginSuccess: () {
+            // 登录成功后刷新页面
+            setState(() {
+              _updateLoginState();
+            });
+          },
+        ),
+      ) :
+      SingleChildScrollView(
         padding: EdgeInsets.all(16.w),
         child: Column(
           children: [
@@ -90,12 +118,20 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Row(
-                children: [
-                  Icon(Icons.book, color: HexColor('#FFA555'), size: 16.sp,),
-                  SizedBox(width: 4.w,),
-                  Text('装修记录', style: TextStyle(color: HexColor('#FFA555'), fontSize: 12.sp),),
-                ],
+              child:InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const FurnishRecordListWidget()),
+                  );
+                },
+                child:  Row(
+                  children: [
+                    Icon(Icons.book, color: HexColor('#FFA555'), size: 16.sp,),
+                    SizedBox(width: 4.w,),
+                    Text('装修记录', style: TextStyle(color: HexColor('#FFA555'), fontSize: 12.sp),),
+                  ],
+                )
               ),
             ),
           ],
@@ -286,6 +322,7 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
               SizedBox(width: 16.w,),
               Expanded(
                 child: TextField(
+                  controller: areaController,
                   decoration: InputDecoration(
                     hintText: '请输入房屋面积',
                     hintStyle: TextStyle(color: HexColor('#999999'), fontSize: 14.sp),
@@ -344,6 +381,7 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
               SizedBox(width: 16.w,),
               Expanded(
                 child: TextField(
+                  controller: remarkController,
                   decoration: InputDecoration(
                     hintText: '请输入需求备注',
                     hintStyle: TextStyle(color: HexColor('#999999'), fontSize: 14.sp),
@@ -364,11 +402,11 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
       padding: EdgeInsets.all(16.w),
       child: InkWell(
         onTap: () {
-          // _onSubmit();
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const RecommendDesignerListWidget()),
-          );
+           _onSubmit();
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const RecommendDesignerListWidget()),
+          // );
         },
         child: Container(
           height: 44.h,
@@ -547,6 +585,7 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
       print('请输入需求备注');
       return;
     }
+    _submitForm();
 
   }
   
@@ -559,10 +598,10 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
         data: {
           'name': nameController.text,
           'phone': phoneController.text,
-          'regiond': _areaList[areaselectedIndex!]['label'],
-          'roomType':_houseTypeList[houseTypeSelectedIndex!]['id'],
+          'region': _areaList[areaselectedIndex!]['name'],
+          'roomType':_houseTypeList[houseTypeSelectedIndex!]['value'],
           'area': areaController.text,
-          'decorateType': _decorationTypeList[decorationTypeSelectedIndex!]['id'],
+          'decorateType': _decorationTypeList[decorationTypeSelectedIndex!]['value'],
           'bedroomNumber': roomController.text,
           'livingRoomNumber': hallController.text,
           'kitchenRoomNumber': kitchenController.text,
@@ -570,17 +609,32 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
           'remark': remarkController.text,
         },
       );
-      if (response != null) {
-          showToast('提交成功');
-          if (!mounted) return;
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const RecommendDesignerListWidget()),
-          );
-      }
+        showToast('提交成功');
+        if (!mounted) return;
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const RecommendDesignerListWidget()),
+        );
+        _clearForm();
+        
     } catch (e) {
       print(e);
     }
+  }
+
+  //清空表单数据
+  void _clearForm() {
+    nameController.clear();
+    phoneController.clear();
+    roomController.clear();
+    hallController.clear();
+    kitchenController.clear();
+    toiletController.clear();
+    areaController.clear();
+    remarkController.clear();
+    areaselectedIndex = null;
+    houseTypeSelectedIndex = null;
+    decorationTypeSelectedIndex = null;
   }
 }
   

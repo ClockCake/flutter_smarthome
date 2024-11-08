@@ -145,7 +145,7 @@ class ApiManager {
           errorMsg = '接收超时，请稍后重试';
         } else if (error.type == DioExceptionType.badResponse) {
           // 如果是业务逻辑错误，错误信息已经在 onResponse 中处理
-          errorMsg = error.error?.toString() ?? '服务器异常';
+          errorMsg = error.response?.data['msg'] ?? '请求失败';
         } else {
           errorMsg = '请求失败，请检查网络';
         }
@@ -173,7 +173,7 @@ class ApiManager {
       // 只返回数据部分，假设数据在 data 字段中
       return response.data['data'];
     } catch (e) {
-      return null;
+       rethrow;  
     }
   }
 
@@ -188,7 +188,7 @@ class ApiManager {
       );
       return response.data['data'];
     } catch (e) {
-      return null;
+       rethrow;  
     }
   }
 
@@ -201,7 +201,8 @@ class ApiManager {
       );
       return response.data['data'];
     } catch (e) {
-      return null;
+      rethrow;  
+
     }
   }
 
@@ -214,7 +215,8 @@ class ApiManager {
       );
       return response.data['data'];
     } catch (e) {
-      return null;
+      rethrow;  
+
     }
   }
 

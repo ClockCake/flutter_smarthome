@@ -23,6 +23,8 @@ class NetworkImageHelper {
     double? width,
     double? height,
     BoxFit? fit,
+    String defaultImageAsset = 'assets/images/icon_default_avatar.png', // 添加默认图片路径参数
+
     Widget Function(BuildContext, String)? placeholder,
     Widget Function(BuildContext, String, dynamic)? errorWidget,
   }) {

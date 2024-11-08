@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
+import 'package:flutter_smarthome/controllers/discover_infomation.dart';
 import 'package:flutter_smarthome/controllers/furnish_form.dart';
 import 'discover_recommend.dart';
 class DiscoverHomeWidget extends StatefulWidget {
@@ -59,17 +60,18 @@ class _DiscoverHomeWidget extends State<DiscoverHomeWidget> {
                   unselectedLabelColor: Colors.grey,
                   labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   indicatorSize: TabBarIndicatorSize.label,
+                  
                 ),
 
                 views: [
                   DiscoverRecommendWidget(),
                   FurnishFormWidget(),
-                  Container(color: Colors.red),
+                  DiscoverInformationWidget(),
 
                 ],
 
                 onChange: (index) => print(index),
-                // 可选：根据需要添加其他参数
+                
               ),
             ),
             

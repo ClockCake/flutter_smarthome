@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
             top: MediaQuery.of(context).padding.top + 20.h,
             child: GestureDetector(
               onTap: () {
-                Navigator.of(context).pop();
+                Navigator.pop(context, false);
               },
               
               child: Icon(
@@ -339,7 +339,7 @@ class _LoginPageState extends State<LoginPage> {
         // Navigator.of(context).pushReplacement(
         //   MaterialPageRoute(builder: (context) => BaseTabBarController()),
         // );
-        Navigator.pop(context);
+        Navigator.pop(context, true);
 
 
       }
