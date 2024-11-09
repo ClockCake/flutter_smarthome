@@ -3,177 +3,194 @@ import 'package:flutter_smarthome/controllers/login_page.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter/material.dart';
+import 'package:dio/io.dart';
 import '../utils/user_manager.dart';
 import '../models/user_model.dart';
 import '../utils/global.dart';  
+import 'dart:io';
 
-/// ApiManager 是一个单例类，用于管理网络请求
+
 class ApiManager {
-  // 单例模式
   static final ApiManager _instance = ApiManager._internal();
-
-  factory ApiManager() {
-    return _instance;
-  }
+  factory ApiManager() => _instance;
+  late Dio _dio;
+  final String _baseUrl = 'http://erf.gazo.net.cn:6380';
 
   ApiManager._internal() {
-    // 初始化 Dio
-    UserModel? user = UserManager.instance.user;
+    _initDio();
+  }
 
+  void _initDio() {
     _dio = Dio(
       BaseOptions(
-        baseUrl: _baseUrl, // 基础请求地址
-        connectTimeout: Duration(milliseconds: 5000), // 连接超时时间（毫秒）
-        receiveTimeout: Duration(milliseconds: 3000), // 响应超时时间（毫秒）
+        baseUrl: _baseUrl,
+        connectTimeout: const Duration(milliseconds: 5000),
+        receiveTimeout: const Duration(milliseconds: 3000),
+        validateStatus: (status) => true,
       ),
     );
 
-    // 添加拦截器
+    // 添加代理配置
+    (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) {
+      client.findProxy = (uri) {
+        return 'PROXY 127.0.0.1:8888';
+      };
+      client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+      return client;
+    };
+
+    // 已有的拦截器配置
     _dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) {
-        // 在每次请求时动态获取最新的 token
-        final UserModel? user = UserManager.instance.user;
-        options.headers = {
-          'Content-Type': 'application/json; charset=UTF-8',
-          'TerminalId': 'ce5c98bea83e4d3289f3fc5f25c445a6',
-          "Authorization": user?.accessToken ?? '',
-        };
-
-        // 打印请求信息
-        print('┌────── Request ──────');
-        print('│ URL: ${options.baseUrl}${options.path}');
-        print('│ Method: ${options.method}');
-        print('│ Headers: ${options.headers}');
-        if (options.queryParameters.isNotEmpty) {
-          print('│ Query Parameters: ${options.queryParameters}');
-        }
-        if (options.data != null) {
-          print('│ Body: ${options.data}');
-        }
-        print('└────────────────────');
-
-        // 请求前显示加载框
-        EasyLoading.show(status: '加载中...');
-        return handler.next(options);
-      },
-      onResponse: (response, handler) {
-        // 打印响应信息
-        print('┌────── Response ──────');
-        print('│ Status Code: ${response.statusCode}');
-        print('│ Data: ${response.data}');
-        print('└─────────────────────');
-
-        // 请求完成后隐藏加载框
-        EasyLoading.dismiss();
-
-        // 检查响应体中的 code 字段
-        if (response.data is Map<String, dynamic>) {
-          final code = response.data['code'];
-          // token 过期重新登录的逻辑
-          if (code == 401) {
-            // 清除本地用户数据
-            UserManager.instance.clearUser();
-            
-            showToast(
-              response.data['msg'] ?? '登录已过期，请重新登录',
-              position: ToastPosition.bottom,
-            );
-
-            // 延迟执行跳转，确保 toast 消息能够显示
-            Future.delayed(Duration(milliseconds: 1500), () {
-              // 获取全局 context
-              final context = _getGlobalContext();
-              if (context != null) {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => LoginPage()),
-                );
-              }
-            });
-
-            // 返回错误给业务层
-            final error = DioException(
-              requestOptions: response.requestOptions,
-              response: response,
-              error: '登录已过期',
-            );
-            return handler.reject(error);
-          }
-
-          //成功返回数据
-          if (code == 200) {
-            return handler.next(response);
-          } else {
-            // 获取错误信息，假设错误信息在 msg 字段中
-            final errorMsg = response.data['msg'] ?? '请求失败: code=$code';
-            showToast(
-              errorMsg,
-              position: ToastPosition.bottom,
-            );
-            // 创建一个自定义错误
-            final error = DioException(
-              requestOptions: response.requestOptions,
-              response: response,
-              error: errorMsg,
-            );
-            return handler.reject(error);
-          }
-        }
-        // 如果响应体不是预期的格式，返回错误
-        showToast(
-          '响应格式错误',
-          position: ToastPosition.bottom,
-        );
-        return handler.next(response);
-      },
-      onError: (DioException error, handler) {
-        // 打印错误信息
-        print('┌────── Error ──────');
-        print('│ Type: ${error.type}');
-        print('│ Message: ${error.message}');
-        print('│ Error: ${error.error}');
-        if (error.response != null) {
-          print('│ Response: ${error.response?.data}');
-        }
-        print('└───────────────────');
-
-        // 请求错误时隐藏加载框并显示错误提示
-        EasyLoading.dismiss();
-        String errorMsg = '';
-        if (error.type == DioExceptionType.connectionTimeout) {
-          errorMsg = '连接超时，请稍后重试';
-        } else if (error.type == DioExceptionType.receiveTimeout) {
-          errorMsg = '接收超时，请稍后重试';
-        } else if (error.type == DioExceptionType.badResponse) {
-          // 如果是业务逻辑错误，错误信息已经在 onResponse 中处理
-          errorMsg = error.response?.data['msg'] ?? '请求失败';
-        } else {
-          errorMsg = '请求失败，请检查网络';
-        }
-        showToast(
-          errorMsg,
-          position: ToastPosition.bottom,
-        );
-        return handler.next(error);
-      },
+      onRequest: _handleRequest,
+      onResponse: _handleResponse,
+      onError: _handleError,
     ));
   }
 
-  late Dio _dio;
-  final String _baseUrl = 'http://erf.gazo.net.cn:6380'; // 替换为你的API基础地址
 
-  /// GET 请求
-  /// [path] 请求路径
-  /// [queryParameters] 查询参数
+  void _handleRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    final UserModel? user = UserManager.instance.user;
+    options.headers = {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'TerminalId': 'ce5c98bea83e4d3289f3fc5f25c445a6',
+      "Authorization": user?.accessToken ?? '',
+    };
+
+    _logRequest(options);
+    EasyLoading.show(status: '加载中...');
+    handler.next(options);
+  }
+
+void _handleResponse(Response response, ResponseInterceptorHandler handler) {
+    _logResponse(response);
+    EasyLoading.dismiss();
+
+    // 处理所有响应
+    if (response.data is Map<String, dynamic>) {
+      final code = response.data['code'];
+      final msg = response.data['msg'];
+      if (code == 200) {
+        return handler.next(response);
+
+      }
+      // 处理401认证错误
+      if (code == 401) {
+        _handleAuthError(msg);
+        return handler.reject(
+          DioException(
+            requestOptions: response.requestOptions,
+            response: response,
+            error: msg ?? '认证失败',
+          ),
+        );
+      }
+   
+     // 处理500错误
+      if (code == 500) {
+        showToast(
+          msg ?? '服务器错误',
+          position: ToastPosition.bottom,
+        );
+        // return handler.resolve(
+        //   Response(
+        //     requestOptions: response.requestOptions,
+        //     data: null,  // 返回空数据
+        //   )
+        // );
+      }
+
+    }
+
+ 
+  }
+
+  void _handleError(DioException err, ErrorInterceptorHandler handler) {
+    _logError(err);
+    EasyLoading.dismiss();
+
+    String errorMsg = _getErrorMessage(err);
+    showToast(errorMsg, position: ToastPosition.bottom);
+    
+    handler.next(err);
+  }
+
+  String _getErrorMessage(DioException error) {
+    switch (error.type) {
+      case DioExceptionType.connectionTimeout:
+        return '连接超时，请稍后重试';
+      case DioExceptionType.receiveTimeout:
+        return '接收超时，请稍后重试';
+      case DioExceptionType.badResponse:
+        if (error.response?.data is Map) {
+          return error.response?.data['msg'] ?? '请求失败';
+        }
+        return '服务器响应错误';
+      case DioExceptionType.cancel:
+        return '请求已取消';
+      default:
+        return '请求失败，请检查网络';
+    }
+  }
+
+  void _handleAuthError(String? msg) {
+    UserManager.instance.clearUser();
+    showToast(
+      msg ?? '登录已过期，请重新登录',
+      position: ToastPosition.bottom,
+    );
+
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      final context = _getGlobalContext();
+      if (context != null) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => LoginPage()),
+          (route) => false,
+        );
+      }
+    });
+  }
+
+  void _logRequest(RequestOptions options) {
+    print('┌────── Request ──────');
+    print('│ URL: ${options.baseUrl}${options.path}');
+    print('│ Method: ${options.method}');
+    print('│ Headers: ${options.headers}');
+    if (options.queryParameters.isNotEmpty) {
+      print('│ Query Parameters: ${options.queryParameters}');
+    }
+    if (options.data != null) {
+      print('│ Body: ${options.data}');
+    }
+    print('└────────────────────');
+  }
+
+  void _logResponse(Response response) {
+    print('┌────── Response ──────');
+    print('│ Status Code: ${response.statusCode}');
+    print('│ Data: ${response.data}');
+    print('└─────────────────────');
+  }
+
+  void _logError(DioException error) {
+    print('┌────── Error ──────');
+    print('│ Type: ${error.type}');
+    print('│ Message: ${error.message}');
+    print('│ Error: ${error.error}');
+    if (error.response != null) {
+      print('│ Response: ${error.response?.data}');
+    }
+    print('└───────────────────');
+  }
+
+  BuildContext? _getGlobalContext() => navigatorKey.currentContext;
+
+  // 请求方法保持不变，但错误处理更统一
   Future<dynamic> get(String path, {Map<String, dynamic>? queryParameters}) async {
     try {
-      Response response = await _dio.get(
-        path,
-        queryParameters: queryParameters,
-      );
-      // 只返回数据部分，假设数据在 data 字段中
+      final response = await _dio.get(path, queryParameters: queryParameters);
       return response.data['data'];
     } catch (e) {
-       rethrow;  
+      rethrow;
     }
   }
 
@@ -187,6 +204,7 @@ class ApiManager {
         data: data,
       );
       return response.data['data'];
+
     } catch (e) {
        rethrow;  
     }
@@ -200,6 +218,7 @@ class ApiManager {
         data: data,
       );
       return response.data['data'];
+
     } catch (e) {
       rethrow;  
 
@@ -214,52 +233,39 @@ class ApiManager {
         data: data,
       );
       return response.data['data'];
+
     } catch (e) {
       rethrow;  
 
     }
   }
 
-  /// 上传单个图片
-  /// [path] 请求路径
-  /// [filePath] 图片文件的本地路径
-  /// [fileName] 上传的文件名称，可选
-  /// [formName] 表单中的字段名称，默认为 'file'
+
+
   Future<dynamic> uploadImage(
-    String path, 
+    String path,
     String filePath, {
     String? fileName,
     String formName = 'file',
   }) async {
     try {
-      // 创建 MultipartFile
       final file = await MultipartFile.fromFile(
         filePath,
         filename: fileName ?? filePath.split('/').last,
       );
       
-      // 创建 FormData
-      final formData = FormData.fromMap({
-        formName: file,
-      });
+      final formData = FormData.fromMap({formName: file});
 
-      // 发送请求
-      Response response = await _dio.post(
+      final response = await _dio.post(
         path,
         data: formData,
-        options: Options(
-          contentType: 'multipart/form-data',
-        ),
+        options: Options(contentType: 'multipart/form-data'),
       );
       
       return response.data['data'];
     } catch (e) {
       print('图片上传失败: $e');
-      return null;
+      rethrow;  // 改为抛出错误，让拦截器统一处理
     }
-  }
-    // 获取全局 context 的方法
-  BuildContext? _getGlobalContext() {
-    return navigatorKey.currentContext;  
   }
 }

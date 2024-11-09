@@ -3,8 +3,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/controllers/furnish_record_list.dart';
+import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
+import 'package:flutter_smarthome/utils/string_utils.dart';
 
 class RecommendDesignerListWidget extends StatefulWidget {
   const RecommendDesignerListWidget({super.key});
@@ -14,6 +16,19 @@ class RecommendDesignerListWidget extends StatefulWidget {
 }
 
 class _RecommendDesignerListWidgetState extends State<RecommendDesignerListWidget> {
+  int pageNum = 1;
+  final int pageSize = 10;
+  List<Map<String, dynamic>> _designerList = [];
+  @override 
+  void initState() {
+    super.initState();
+    _getDesignerList();
+  }
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,24 +66,28 @@ class _RecommendDesignerListWidgetState extends State<RecommendDesignerListWidge
 //推荐设计师列表
   Widget _buildDesignerList() {
     return ListView.builder(
-      itemCount: 10,
+      itemCount: _designerList.length,
       itemBuilder: (context, index) {
+        final item = _designerList[index];
+        final result = '${item['excelStyle'] == null || (item['excelStyle'] as List).isEmpty ? "" : StringUtils.joinList(item['excelStyle'])}${item['excelStyle'] == null || (item['excelStyle'] as List).isEmpty ? "" : " | "}${StringUtils.formatDisplay(
+            item['caseNumber'],
+            prefix: '案例作品',
+            suffix: '套',
+        )}';
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 16.h),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //设计师头像
                 SizedBox(width: 16.w),
                 Container(
                   width: 40.w, // 设置宽度
                   height: 40.w, // 设置高度
-                  child: CircleAvatar(
-                    radius: 20.w,
-                    backgroundImage: NetworkImage(
-                      'https://image.itimes.me/i/2024/07/26/66a30d068028b.jpg',
-                    ),
-                    backgroundColor: Colors.transparent,
+                  child: ClipOval(
+                      child: NetworkImageHelper().getCachedNetworkImage(imageUrl: item['avatar']?.toString() ?? "",width: 44.w,height: 44.w,fit: BoxFit.cover),
                   ),
                 ),
                 SizedBox(width: 8.w),
@@ -78,14 +97,15 @@ class _RecommendDesignerListWidgetState extends State<RecommendDesignerListWidge
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '王安',
+                        item['realName'] ?? '',
                         style: TextStyle(
                           fontSize: 15.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      SizedBox(height: 4.h),
                       Text(
-                        '轻奢| 案例作品 200套',
+                        result,
                         style: TextStyle(
                           fontSize: 12.sp,
                           color: HexColor('#999999'),
@@ -95,7 +115,7 @@ class _RecommendDesignerListWidgetState extends State<RecommendDesignerListWidge
                     ],
                   ),
                 ),
-                Spacer(),
+                // Spacer(),
                 //预约按钮
                 GestureDetector(
                   onTap: () {
@@ -123,31 +143,32 @@ class _RecommendDesignerListWidgetState extends State<RecommendDesignerListWidge
 
               ],
             ),
-            SizedBox(height: 12.h),
-            Container(
-              height: 100.h,
-              child: ListView.builder(
-                padding: EdgeInsets.only(left: 52.w,right: 12.w),
-                scrollDirection: Axis.horizontal,
-                itemCount: 6,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.only(left: 8.w),
-                    width: 120.w,
-                    height: 90.h,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(6),
-                      child: NetworkImageHelper().getCachedNetworkImage(
-                        imageUrl: 'https://image.itimes.me/i/2024/07/26/66a30d068028b.jpg',
-                        fit: BoxFit.cover,
+            if (item['caseMainPic'] != null && (item['caseMainPic'] as List).isNotEmpty) 
+              Container(
+                margin: EdgeInsets.only(top: 12.h),
+                height: 100.h,
+                child: ListView.builder(
+                  padding: EdgeInsets.only(left: 16.w,right: 12.w),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: (item['caseMainPic'] as List).length,
+                  itemBuilder: (context, index) {
+                    final List<dynamic> images = item['caseMainPic'];
+                    return Container(
+                      margin: EdgeInsets.only(left: 8.w),
+                      width: 120.w,
+                      height: 90.h,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(6),
+                        child: NetworkImageHelper().getCachedNetworkImage(
+                          imageUrl: images[index],
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
-            SizedBox(height: 16.h),
-            //分割线左右两边 12.w的间距
+            SizedBox(height: 12.h),
             Padding(
               padding: EdgeInsets.only(left: 12.w, right: 12.w),
               child: Divider(
@@ -168,7 +189,7 @@ class _RecommendDesignerListWidgetState extends State<RecommendDesignerListWidge
   Widget _buildChangeButton() {
     return GestureDetector(
       onTap: () {
-        print('换一批');
+        _getDesignerList();
       },
       child: Container(
         padding: EdgeInsets.all(16.w),
@@ -203,5 +224,32 @@ class _RecommendDesignerListWidgetState extends State<RecommendDesignerListWidge
           ),
         ),
     );
+  }
+
+    //获取设计师列表
+  Future<void> _getDesignerList() async {
+    try{
+      final apiManager = ApiManager();
+      final response =  await apiManager.get(
+        '/api/designer//list',
+        queryParameters: {
+          'pageNum': pageNum,
+          'pageSize': pageSize,
+        },
+      );
+      if (response['rows'].isNotEmpty) {
+        final arr = List<Map<String, dynamic>>.from(response['rows']);
+        if(mounted) {
+          setState(() {
+            _designerList = arr;
+          });
+        }
+        pageNum++;
+
+      }
+    }
+    catch(e) {
+      print(e);
+    }
   }
 }

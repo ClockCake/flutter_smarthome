@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smarthome/controllers/rank_case_list.dart';
 import 'package:flutter_smarthome/controllers/rank_designer_list.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 
@@ -51,7 +52,7 @@ class _RankSegmentHomeWidgetState extends State<RankSegmentHomeWidget> {
                      left: 12.w,
                      top: topPadding,
                      child: IconButton(
-                       icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                       icon: const Icon(Icons.arrow_back_ios, color: Colors.white,size: 20,),
                        onPressed: () {
                          Navigator.pop(context);
                        },
@@ -81,7 +82,7 @@ class _RankSegmentHomeWidgetState extends State<RankSegmentHomeWidget> {
                  ),
                  views: [
                     RankDesigherListWidget(),
-                    RankDesigherListWidget(),
+                    RankCaseListWidget(),
                  ],
                  onChange: (index) => print(index),
                ),

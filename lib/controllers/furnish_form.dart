@@ -68,7 +68,7 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
       isLogin = UserManager.instance.isLoggedIn;
       if (isLogin) {
         _fetchAreaData();
-        _fetchHouseType('crm_room_type');
+        _fetchHouseType('crm_room_type,crm_decorate_type');
       }
     });
   }
@@ -542,47 +542,47 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
   // 点击后效验参数
   void _onSubmit() {
     if (nameController.text.isEmpty) {
-      print('请输入姓名');
+      showToast('请输入姓名');
       return;
     }
     if (phoneController.text.isEmpty) {
-      print('请输入手机号');
+      showToast('请输入手机号');
       return;
     }
     if (areaselectedIndex == null) {
-      print('请选择所在区域');
+      showToast('请选择所在区域');
       return;
     }
     if (houseTypeSelectedIndex == null) {
-      print('请选择房屋类型');
+      showToast('请选择房屋类型');
       return;
     }
     if (roomController.text.isEmpty) {
-      print('请输入房屋户型');
+      showToast('请输入房屋户型');
       return;
     }
     if (hallController.text.isEmpty) {
-      print('请输入房屋户型');
+      showToast('请输入房屋户型');
       return;
     }
     if (kitchenController.text.isEmpty) {
-      print('请输入房屋户型');
+      showToast('请输入房屋户型');
       return;
     }
     if (toiletController.text.isEmpty) {
-      print('请输入房屋户型');
+      showToast('请输入房屋户型');
       return;
     }
     if (areaController.text.isEmpty) {
-      print('请输入房屋面积');
+      showToast('请输入房屋面积');
       return;
     }
     if (decorationTypeSelectedIndex == null) {
-      print('请选择装修类型');
+      showToast('请选择装修类型');
       return;
     }
     if (remarkController.text.isEmpty) {
-      print('请输入需求备注');
+      showToast('请输入需求备注');
       return;
     }
     _submitForm();

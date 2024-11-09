@@ -2,30 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_smarthome/controllers/designer_home.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/empty_state.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class RankDesigherListWidget extends StatefulWidget {
-  const RankDesigherListWidget({super.key});
+class RankCaseListWidget extends StatefulWidget {
+  const RankCaseListWidget({super.key});
 
   @override
-  State<RankDesigherListWidget> createState() => _RankDesigherListWidgetState();
+  State<RankCaseListWidget> createState() => _RankCaseListWidgetState();
 }
 
-class _RankDesigherListWidgetState extends State<RankDesigherListWidget> {
+class _RankCaseListWidgetState extends State<RankCaseListWidget> {
   RefreshController _refreshController = RefreshController(initialRefresh: false);
   int pageNum = 1;
   final int pageSize = 10;
-  List<Map<String, dynamic>> _designerList = [];
-
+  List<Map<String, dynamic>> _caseList = [];
+  
   @override
   void initState() {
     super.initState();
-    _getDesignerList();
+    _getCaseList();
   }
 
   @override
@@ -70,99 +69,64 @@ class _RankDesigherListWidgetState extends State<RankDesigherListWidget> {
     );
   }
 
-  Widget _buildListView(){
-    return _designerList.isEmpty ? 
+
+   Widget _buildListView(){
+    return _caseList.isEmpty ? 
       EmptyStateWidget(
         onRefresh: _onRefresh,
         emptyText: '暂无数据',
         buttonText: '点击刷新',
       ) 
     : ListView.builder(
-      itemCount: _designerList.length,
+      itemCount: _caseList.length,
       itemBuilder: (BuildContext context, int index) {
-        return GestureDetector(
-          onTap: () {
-            //跳转到设计师详情页
-            Map<String, dynamic> designer = _designerList[index];
-            Navigator.push(context, MaterialPageRoute(builder: (context) => DesignerHomeWidget(userId: designer['userId'])));
-          },
-          child: _buildListCell(_designerList[index]),
-        );
+        return _buildListCell(_caseList[index]);
       },
     );
   }
- 
-  //单元格 cell
+
+  
   Widget _buildListCell(Map<String, dynamic> item) {
     return Container(
-      width: double.infinity,
-      // height: 220.h,
       color: HexColor('#FBF7F2'),
+      width: double.infinity,
       child: Padding(
-        padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0),
+        padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 16.h),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 16.h, left: 16.w),
-                    child: ClipOval(
-                      child: NetworkImageHelper().getCachedNetworkImage(imageUrl: item['avatar']?.toString() ?? "",width: 44.w,height: 44.w,fit: BoxFit.cover),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 16.h, left: 12.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(item['realName'],style: TextStyle(color: Colors.black,fontSize: 16.sp, fontWeight: FontWeight.bold),),
-                        SizedBox(height: 4.h,),
-                        Text('从业${item['workingYears']}年 ｜ 案例${item['caseNumber']}套',style: TextStyle(color: HexColor('#999999'),fontSize: 12.sp),),
-                        SizedBox(height: 8.h,),
-                        Wrap(
-                          spacing: 4.w,
-                          runSpacing: 4.h,
-                          children: List.generate(
-                          (item['excelStyle'] as List<dynamic>?)?.length ?? 0, 
-                          (index) {
-                            final styles = item['excelStyle'] as List<dynamic>? ?? [];
-                            return Container(
-                              padding: EdgeInsets.fromLTRB(4.w, 2.h, 4.w, 2.h),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(  // 添加边框
-                                  color: HexColor('#D0AF84'),  // 边框颜色
-                                  width: 1.0,  // 边框宽度
-                                ),
-                                borderRadius: BorderRadius.circular(2),
-                              ),
-                              child: Text(
-                                styles[index],
-                                style: TextStyle(
-                                  color: HexColor('#D0AF84'),
-                                  fontSize: 10.sp
-                                ),
-                              ),
-                            );
-                          }),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+               Padding(
+                 padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0),
+                 child: Text(
+                   item['caseTitle'],
+                   style: TextStyle(
+                     fontSize: 15.sp,
+                     color: Colors.black,
+                     fontWeight: FontWeight.bold,
+                   ),
+                 ),
+               ),
+               Padding(
+                 padding: EdgeInsets.fromLTRB(16.w, 6.h, 16.w, 0),
+                 child: Text(
+                   item['caseIntro'],
+                   style: TextStyle(
+                     fontSize: 13.sp,
+                     color: HexColor('#666666'),
+                   ),
+                 ),
+               ),
               if (item['caseMainPic'] != null && (item['caseMainPic'] as List).isNotEmpty) 
                 Container(
-                  margin: EdgeInsets.only(top: 12.h,bottom: 12.h),
+                  margin: EdgeInsets.only(top: 12.h),
                   height: 100.h,
                   child: ListView.builder(
-                    padding: EdgeInsets.only(left: 16.w,right: 12.w),
+                    padding: EdgeInsets.only(left: 12.w,right: 12.w),
                     scrollDirection: Axis.horizontal,
                     itemCount: (item['caseMainPic'] as List).length,
                     itemBuilder: (context, index) {
@@ -181,29 +145,40 @@ class _RankDesigherListWidgetState extends State<RankDesigherListWidget> {
                       );
                     },
                   ),
-                )
-              else
-                SizedBox(height: 8.h),
+               ),
+              Padding(
+                padding: EdgeInsets.only(left:16.w,top: 12.h,bottom: 12.h),
+                child: Text(
+                  item['createTime'],
+                  style: TextStyle(
+                    fontSize: 11.sp,
+                    color: HexColor('#999999'),
+                  ),
+                ),
+              )
             ],
           ),
         ),
+
       ),
+
     );
-    
+
   }
+
 
   void _onRefresh() async {
     pageNum = 1;
-   _designerList.clear();
-    await _getDesignerList();
+   _caseList.clear();
+    await _getCaseList();
     _refreshController.refreshCompleted();
 
   }
 
   void _onLoading() async {
     pageNum++;
-    await _getDesignerList();
-    if (_designerList.isNotEmpty) {
+    await _getCaseList();
+    if (_caseList.isNotEmpty) {
       _refreshController.loadFailed();
     }
     else {
@@ -212,11 +187,11 @@ class _RankDesigherListWidgetState extends State<RankDesigherListWidget> {
   }
 
   //获取设计师列表
-  Future<void> _getDesignerList() async {
+  Future<void> _getCaseList() async {
     try{
       final apiManager = ApiManager();
       final response =  await apiManager.get(
-        '/api/designer//list',
+        '/api/cases/list',
         queryParameters: {
           'pageNum': pageNum,
           'pageSize': pageSize,
@@ -229,7 +204,7 @@ class _RankDesigherListWidgetState extends State<RankDesigherListWidget> {
         final arr = List<Map<String, dynamic>>.from(response['rows']);
         if(mounted) {
           setState(() {
-            _designerList.addAll(arr);
+            _caseList.addAll(arr);
           });
         }
 

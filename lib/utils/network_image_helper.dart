@@ -8,7 +8,8 @@ class NetworkImageHelper {
   // 单例模式
   static final NetworkImageHelper _instance = NetworkImageHelper._internal();
   factory NetworkImageHelper() => _instance;
-  NetworkImageHelper._internal();
+  NetworkImageHelper._internal();  
+  static const String defaultAvatarUrl = 'https://gazo-fileserver.oss-cn-shanghai.aliyuncs.com/2024/9/20240902_60bebec6345cc788ccd58fff25972a3b_20240902160245A065.png';
 
   // 自定义 HttpClient
   HttpClient get _customHttpClient {
@@ -28,8 +29,10 @@ class NetworkImageHelper {
     Widget Function(BuildContext, String)? placeholder,
     Widget Function(BuildContext, String, dynamic)? errorWidget,
   }) {
+    final String finalImageUrl = imageUrl.isEmpty ? defaultAvatarUrl : imageUrl;
+
     return CachedNetworkImage(
-      imageUrl: imageUrl,
+      imageUrl: finalImageUrl,
       width: width,
       height: height,
       fit: fit ?? BoxFit.cover,
