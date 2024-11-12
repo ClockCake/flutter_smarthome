@@ -31,13 +31,13 @@ class ApiManager {
     );
 
     // 添加代理配置
-    (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) {
-      client.findProxy = (uri) {
-        return 'PROXY 127.0.0.1:8888';
-      };
-      client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
-      return client;
-    };
+    // (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) {
+    //   client.findProxy = (uri) {
+    //     return 'PROXY 127.0.0.1:8888';
+    //   };
+    //   client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+    //   return client;
+    // };
 
     // 已有的拦截器配置
     _dio.interceptors.add(InterceptorsWrapper(

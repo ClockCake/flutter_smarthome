@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smarthome/controllers/designer_home.dart';
 import 'package:flutter_smarthome/controllers/furnish_record_list.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
@@ -69,120 +70,129 @@ class _RecommendDesignerListWidgetState extends State<RecommendDesignerListWidge
       itemCount: _designerList.length,
       itemBuilder: (context, index) {
         final item = _designerList[index];
-        final result = '${item['excelStyle'] == null || (item['excelStyle'] as List).isEmpty ? "" : StringUtils.joinList(item['excelStyle'])}${item['excelStyle'] == null || (item['excelStyle'] as List).isEmpty ? "" : " | "}${StringUtils.formatDisplay(
-            item['caseNumber'],
-            prefix: '案例作品',
-            suffix: '套',
-        )}';
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 16.h),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                //设计师头像
-                SizedBox(width: 16.w),
-                Container(
-                  width: 40.w, // 设置宽度
-                  height: 40.w, // 设置高度
-                  child: ClipOval(
-                      child: NetworkImageHelper().getCachedNetworkImage(imageUrl: item['avatar']?.toString() ?? "",width: 44.w,height: 44.w,fit: BoxFit.cover),
-                  ),
-                ),
-                SizedBox(width: 8.w),
-                //设计师信息
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        item['realName'] ?? '',
-                        style: TextStyle(
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 4.h),
-                      Text(
-                        result,
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: HexColor('#999999'),
-                        ),
-                      ),
-                      
-                    ],
-                  ),
-                ),
-                // Spacer(),
-                //预约按钮
-                GestureDetector(
-                  onTap: () {
-                    print('预约');
-                  },
-                  child: Container(
-                    width: 56.w,
-                    height: 28.h,
-                    decoration: BoxDecoration(
-                      color: HexColor('#111111'),
-                      borderRadius: BorderRadius.circular(4.w),
-                    ),
-                    child: Center(
-                      child: Text(
-                        '预约',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12.sp,
-                        ),
-                      ),
-                    )
-                  ),
-                ),
-                SizedBox(width: 16.w,)
 
-              ],
-            ),
-            if (item['caseMainPic'] != null && (item['caseMainPic'] as List).isNotEmpty) 
-              Container(
-                margin: EdgeInsets.only(top: 12.h),
-                height: 100.h,
-                child: ListView.builder(
-                  padding: EdgeInsets.only(left: 16.w,right: 12.w),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: (item['caseMainPic'] as List).length,
-                  itemBuilder: (context, index) {
-                    final List<dynamic> images = item['caseMainPic'];
-                    return Container(
-                      margin: EdgeInsets.only(left: 8.w),
-                      width: 120.w,
-                      height: 90.h,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(6),
-                        child: NetworkImageHelper().getCachedNetworkImage(
-                          imageUrl: images[index],
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            SizedBox(height: 12.h),
-            Padding(
-              padding: EdgeInsets.only(left: 12.w, right: 12.w),
-              child: Divider(
-                height: 1.h,
-                color: Colors.grey[300],
-              ),
-            ),
-          ],
+        return GestureDetector(
+          onTap: (){
+            Map<String, dynamic> designer = _designerList[index];
+            Navigator.push(context, MaterialPageRoute(builder: (context) => DesignerHomeWidget(userId: designer['userId'])));
+          },
+          child: _buildListCell(item),
         );
       },
     );
  }
 
-  
+  Widget _buildListCell(Map<String,dynamic> item){
+    final result = '${item['excelStyle'] == null || (item['excelStyle'] as List).isEmpty ? "" : StringUtils.joinList(item['excelStyle'])}${item['excelStyle'] == null || (item['excelStyle'] as List).isEmpty ? "" : " | "}${StringUtils.formatDisplay(
+        item['caseNumber'],
+        prefix: '案例作品',
+        suffix: '套',
+    )}';
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 16.h),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            //设计师头像
+            SizedBox(width: 16.w),
+            Container(
+              width: 40.w, // 设置宽度
+              height: 40.w, // 设置高度
+              child: ClipOval(
+                  child: NetworkImageHelper().getCachedNetworkImage(imageUrl: item['avatar']?.toString() ?? "",width: 44.w,height: 44.w,fit: BoxFit.cover),
+              ),
+            ),
+            SizedBox(width: 8.w),
+            //设计师信息
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item['realName'] ?? '',
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    result,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: HexColor('#999999'),
+                    ),
+                  ),
+                  
+                ],
+              ),
+            ),
+            // Spacer(),
+            //预约按钮
+            GestureDetector(
+              onTap: () {
+                print('预约');
+              },
+              child: Container(
+                width: 56.w,
+                height: 28.h,
+                decoration: BoxDecoration(
+                  color: HexColor('#111111'),
+                  borderRadius: BorderRadius.circular(4.w),
+                ),
+                child: Center(
+                  child: Text(
+                    '预约',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12.sp,
+                    ),
+                  ),
+                )
+              ),
+            ),
+            SizedBox(width: 16.w,)
+
+          ],
+        ),
+        if (item['caseMainPic'] != null && (item['caseMainPic'] as List).isNotEmpty) 
+          Container(
+            margin: EdgeInsets.only(top: 12.h),
+            height: 100.h,
+            child: ListView.builder(
+              padding: EdgeInsets.only(left: 16.w,right: 12.w),
+              scrollDirection: Axis.horizontal,
+              itemCount: (item['caseMainPic'] as List).length,
+              itemBuilder: (context, index) {
+                final List<dynamic> images = item['caseMainPic'];
+                return Container(
+                  margin: EdgeInsets.only(left: 8.w),
+                  width: 120.w,
+                  height: 90.h,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
+                    child: NetworkImageHelper().getCachedNetworkImage(
+                      imageUrl: images[index],
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
+              },
+            ), 
+          ),
+        SizedBox(height: 12.h),
+        Padding(
+          padding: EdgeInsets.only(left: 12.w, right: 12.w),
+          child: Divider(
+            height: 1.h,
+            color: Colors.grey[300],
+          ),
+        ),
+      ],
+    );
+  }
 
 
   //换一批按钮

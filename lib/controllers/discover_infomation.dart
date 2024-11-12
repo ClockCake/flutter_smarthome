@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smarthome/controllers/article_detail.dart';
 import 'package:flutter_smarthome/controllers/rank_segement_home.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/empty_state.dart';
@@ -88,41 +89,48 @@ class _DiscoverInformationWidgetState extends State<DiscoverInformationWidget> {
                   ? Column(
                       children: List.generate(_hotInformationList.length, (index) {
                         final item = _hotInformationList[index];
-                        return Padding(
-                          padding: EdgeInsets.only(bottom: 16.h),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 120.w,
-                                height: 90.h,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                clipBehavior: Clip.hardEdge,
-                                child: NetworkImageHelper().getNetworkImage(
-                                  imageUrl: item['mainPic'] ?? '',
+                        return GestureDetector(
+                          onTap: () {
+                              Map<String, dynamic> item = _hotInformationList[index];
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleDetailWidget(title: item['resourceTitle'],articleId: item['id'],)));
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 16.h),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(width: 16.w,),
+                                Container(
                                   width: 120.w,
                                   height: 90.h,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsets.only(left: 12.w),
-                                  child: Text(
-                                    item['resourceTitle'] ?? '暂无标题',
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                    maxLines: 4,
-                                    overflow: TextOverflow.ellipsis,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  clipBehavior: Clip.hardEdge,
+                                  child: NetworkImageHelper().getNetworkImage(
+                                    imageUrl: item['mainPic'] ?? '',
+                                    width: 120.w,
+                                    height: 90.h,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
-                              ),
-                            ],
+                                Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 12.w),
+                                    child: Text(
+                                      item['resourceTitle'] ?? '暂无标题',
+                                      style: TextStyle(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                      maxLines: 4,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       }),

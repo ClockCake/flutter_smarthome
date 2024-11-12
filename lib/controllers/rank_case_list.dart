@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smarthome/controllers/case_detail.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/empty_state.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
@@ -80,7 +81,19 @@ class _RankCaseListWidgetState extends State<RankCaseListWidget> {
     : ListView.builder(
       itemCount: _caseList.length,
       itemBuilder: (BuildContext context, int index) {
-        return _buildListCell(_caseList[index]);
+        return GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => CaseDetailWidget(
+                  title: _caseList[index]['caseTitle'],
+                  caseId: _caseList[index]['id'],
+                ),
+              ),
+            );
+          },
+          child: _buildListCell(_caseList[index]),
+        );
       },
     );
   }

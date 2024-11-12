@@ -216,7 +216,7 @@ class _RankDesigherListWidgetState extends State<RankDesigherListWidget> {
     try{
       final apiManager = ApiManager();
       final response =  await apiManager.get(
-        '/api/designer//list',
+        '/api/designer/list',
         queryParameters: {
           'pageNum': pageNum,
           'pageSize': pageSize,
