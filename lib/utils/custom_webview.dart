@@ -83,6 +83,7 @@ class _CustomWebViewState extends State<CustomWebView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(Icons.close,color: Colors.grey,),

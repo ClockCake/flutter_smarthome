@@ -47,8 +47,9 @@ class _PersonalInfoWidgetState extends State<PersonalInfoWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
        appBar: AppBar(
+         elevation: 0,
          backgroundColor: Colors.white,
-         title: Text('个人信息', style: TextStyle(color: Colors.black)),
+         title: Text('个人信息', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
          leading: IconButton(
            icon: Icon(Icons.arrow_back, color: Colors.black),
            onPressed: () {

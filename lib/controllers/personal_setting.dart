@@ -40,10 +40,11 @@ class _PersonalSettingWidgetState extends State<PersonalSettingWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: Colors.white,
-        title: Text('设置', style: TextStyle(color: Colors.black)),
+        title: Text('设置', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
           onPressed: () {
             Navigator.pop(context);
           },

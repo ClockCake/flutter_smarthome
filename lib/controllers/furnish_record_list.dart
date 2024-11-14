@@ -30,7 +30,8 @@ class _FurnishRecordListWidgetState extends State<FurnishRecordListWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar( // 顶部导航栏白色黑字
-        title: const Text('我要装修'),
+        elevation: 0 ,
+        title: const Text('我要装修',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),

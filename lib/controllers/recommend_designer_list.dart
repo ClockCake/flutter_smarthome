@@ -34,6 +34,7 @@ class _RecommendDesignerListWidgetState extends State<RecommendDesignerListWidge
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar( // 顶部导航栏白色黑字
+        elevation: 0,
         title: const Text('推荐设计师'),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,

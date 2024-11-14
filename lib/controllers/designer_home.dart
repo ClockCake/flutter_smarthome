@@ -69,7 +69,7 @@ class _DesignerHomeWidgteState extends State<DesignerHomeWidget>
               pinned: true,
               expandedHeight: 200.h,
               backgroundColor: Colors.white.withOpacity(_opacity),
-              elevation: _opacity * 4,
+              elevation: 0,
               leading: IconButton(
                 icon: Icon(
                   Icons.arrow_back_ios,
@@ -81,6 +81,7 @@ class _DesignerHomeWidgteState extends State<DesignerHomeWidget>
                 designerInfo['realName'] ?? '',
                 style: TextStyle(
                   color: _opacity > 0.5 ? Colors.black : Colors.transparent,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               flexibleSpace: FlexibleSpaceBar(
