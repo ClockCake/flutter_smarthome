@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/models/product_item.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
+import 'package:flutter_smarthome/utils/network_image_helper.dart';
 
 class ProductGrid extends StatelessWidget {
   final List<ProductItem> products;
@@ -65,12 +66,12 @@ class ProductGrid extends StatelessWidget {
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        if (product.shopIcon != null)
-                          Image.network(
-                            product.shopIcon!,
-                            width: 16,
-                            height: 16,
-                          ),
+                        if (product.shopIcon != null && product.shopIcon!.isNotEmpty) // 检查不仅不为 null 而且不为空字符串
+                        Container(
+                          width: 16,
+                          height: 16,
+                          child: NetworkImageHelper().getNetworkImage(imageUrl: product.shopIcon!),
+                        ),
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(

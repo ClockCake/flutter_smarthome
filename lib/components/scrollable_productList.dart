@@ -120,16 +120,16 @@ class _ProductCard extends StatelessWidget {
                           imageUrl: product.shopIcon!,
                         ),
                       ),
-                    Expanded( // 添加 Expanded 让文字可以自适应宽度
-                      child: Text(
-                        product.shop,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey[600],
+                      Expanded( // 添加 Expanded 让文字可以自适应宽度
+                        child: Text(
+                          product.shop,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
+                          overflow: TextOverflow.ellipsis, // 文字过长时显示省略号
                         ),
-                        overflow: TextOverflow.ellipsis, // 文字过长时显示省略号
                       ),
-                    ),
                   ],
                 ),
                 const SizedBox(height: 4),

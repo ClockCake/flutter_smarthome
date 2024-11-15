@@ -176,6 +176,11 @@ class _ShoppingHomeListWidgetState extends State<ShoppingHomeListWidget> {
       final apiManager = ApiManager();
       final response = await apiManager.get(
         '/api/shopping/home',
+        queryParameters: {
+          'categoryId': widget.categoryId,
+          'pageNum': pageNum,
+          'pageSize': pageSize,
+        },
       );
       if (response != null) {
         final recommendProductsData = response['recommendProducations'];
@@ -188,7 +193,7 @@ class _ShoppingHomeListWidgetState extends State<ShoppingHomeListWidget> {
         for (var item in recommendProductsData) {
           ProductItem productItem = ProductItem(
               id: item['id'],
-              imageUrl: item['imageUrl'].isNotEmpty ? item['imageUrl'][0] : '',  // 添加默认空字符串
+              imageUrl: item['mainPic'].isNotEmpty ? item['mainPic'][0] : '',  // 添加默认空字符串
               title: item['name'],
               shop: item['businessName'],
               price: double.parse(item['minPrice'].toString()),  // 确保转换为 double
@@ -200,7 +205,7 @@ class _ShoppingHomeListWidgetState extends State<ShoppingHomeListWidget> {
         for (var item in productsData) {
           ProductItem productItem = ProductItem(
               id: item['id'],
-              imageUrl: item['imageUrl'].isNotEmpty ? item['imageUrl'][0] : '',  // 添加默认空字符串
+              imageUrl: item['mainPic'] ?? "",  // 添加默认空字符串
               title: item['name'],
               shop: item['businessName'],
               price: double.parse(item['minPrice'].toString()),  // 确保转换为 double
@@ -210,7 +215,7 @@ class _ShoppingHomeListWidgetState extends State<ShoppingHomeListWidget> {
           products.add(productItem);  // 将创建的商品添加到列表中
         }
       });
-      }
+     }
     }catch(e){
       print(e);
     }
