@@ -1,8 +1,11 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smarthome/controllers/bidden_list.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
@@ -29,21 +32,14 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
 
   ];
 
-  final List<String> _items = [
-    '三字经',
-    '水到渠成',
-    '如鱼',
-    '潜移默化',
-    '帅',
-    '人生苦短',
-    '我用Flutter',
-    '黑云压城城欲摧',
-    '悬壶问道，月光转照'
-  ];
+  List <Map<String,dynamic>> currentBiddenList = []; // 当前招标列表
+  List <Map<String,dynamic>> sucessBiddenList = []; // 招标成功列表
+  int monthlyNumber = 0; // 本月招标数量
   @override
   void initState() {
     super.initState();
     getBannerData();
+    getBiddenData();
   }
   @override
   void dispose() {
@@ -261,7 +257,7 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
                   ),
                 ),
                 TextSpan(
-                  text: '98', // 数字部分
+                  text: '$monthlyNumber',
                   style: TextStyle(
                     fontSize: 12.sp,
                     color: HexColor('#FFA555'),
@@ -286,7 +282,7 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
   // 构建自动滚动列表
   Widget _buildAutoScrollList() {
     return AutoScrollHorizontalList(
-      itemCount: 5,
+      itemCount: currentBiddenList.length,
       scrollSpeed: 100.0,
       scrollInterval: 100,
       height: 80.h,
@@ -294,89 +290,112 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 5.h),
       backgroundColor: HexColor('#F8F8F8'),
       itemBuilder: (context, index) {
-        return Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.all(10.h),
-                child: Text('汤臣一品陈女士发起',
-                    style: TextStyle(
-                        color: HexColor('#222222'), fontSize: 11.sp)),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 1.h),
-                child: Text('整装招标',
-                    style: TextStyle(
-                        color: HexColor('#999999'), fontSize: 11.sp)),
-              ),
-            ],
+        final item  = currentBiddenList[index];
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => BiddenListWidget()),
+            ); 
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(10.h),
+                  child: Text( '${item['region']}${item['name']}发起',
+                      style: TextStyle(
+                          color: HexColor('#222222'), fontSize: 11.sp)),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 1.h),
+                  child: Text('${item['decorateType']}招标',
+                      style: TextStyle(
+                          color: HexColor('#999999'), fontSize: 11.sp)),
+                ),
+              ],
+            ),
           ),
         );
       },
     );
   }
 
-  // 构建无限滚动通知
-  Widget _buildInfiniteMarquee() {
-    return Container(
-      margin: EdgeInsets.all(12.h),
-      height: 30.h,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(6),
-        color: Colors.white,
-      ),
-      child: InfiniteMarquee(
-        frequency: const Duration(milliseconds: 40),
-        scrollDirection: Axis.vertical,
-        itemBuilder: (BuildContext context, int index) {
-          String item = '${_items[index % _items.length]}  $index';
-          return GestureDetector(
-            onTap: () {
-              print('点击了$item');
+// 构建无限滚动通知
+Widget _buildInfiniteMarquee() {
+  return Container(
+    margin: EdgeInsets.all(12.h),
+    height: 30.h,
+    width: double.infinity,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(6),
+      color: Colors.white,
+    ),
+    child: sucessBiddenList.isNotEmpty
+        ? InfiniteMarquee(
+            frequency: const Duration(milliseconds: 40),
+            scrollDirection: Axis.vertical,
+            itemBuilder: (BuildContext context, int index) {
+              // 确保 index 在合法范围内
+              final int adjustedIndex = index % sucessBiddenList.length;
+              // 处理负数索引
+              final int finalIndex = adjustedIndex < 0
+                  ? adjustedIndex + sucessBiddenList.length
+                  : adjustedIndex;
+
+              final item = sucessBiddenList[finalIndex];
+              final text =
+                  '${item['city']}${item['region']}${item['name']}招标成功';
+              return GestureDetector(
+                onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => BiddenListWidget()),
+                    );       
+                },
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    height: 30.h,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 6),
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      children: [
+                        Image.asset('assets/images/icon_home_trumpet.png',
+                            width: 12.w, height: 12.h),
+                        SizedBox(width: 8.w),
+                        Text(
+                          text,
+                          style: TextStyle(
+                              fontSize: 12.sp, color: HexColor('#666666')),
+                        ),
+                        Text(
+                          '招标成功',
+                          style: TextStyle(
+                              fontSize: 12.sp, color: HexColor('#FFA555')),
+                        ),
+                        Spacer(),
+                        Icon(Icons.arrow_forward_ios,
+                            size: 12.sp, color: HexColor('#666666')),
+                      ],
+                    ),
+                  ),
+                ),
+              );
             },
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                height: 30.h,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                margin: const EdgeInsets.symmetric(vertical: 8),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  children: [
-                    Image.asset('assets/images/icon_home_trumpet.png',
-                        width: 12.w, height: 12.h),
-                    SizedBox(width: 8.w),
-                    Text(
-                      item,
-                      style: TextStyle(
-                          fontSize: 12.sp, color: HexColor('#666666')),
-                    ),
-                    Text(
-                      '招标成功',
-                      style: TextStyle(
-                          fontSize: 12.sp, color: HexColor('#FFA555')),
-                    ),
-                    Spacer(),
-                    Icon(Icons.arrow_forward_ios,
-                        size: 12.sp, color: HexColor('#666666')),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
+          )
+        : SizedBox.shrink(),
+  );
+}
 
   // 构建在线工地区域
   Widget _buildOnlineSiteSection() {
@@ -514,6 +533,23 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
     }
     catch(e){
       print('获取轮播图数据失败：$e');
+    } 
+  }
+
+  Future<void>getBiddenData() async {
+    // 获取招标数据
+    try{
+      final response = await ApiManager().get('/api/home/tender');
+      if (response != null){
+         setState(() {
+          currentBiddenList = List<Map <String,dynamic>>.from(response['latest']);
+          sucessBiddenList = List<Map <String,dynamic>>.from(response['succData']);
+          monthlyNumber = response['monthlyNumber'];
+         });
+      }
+    }
+    catch(e){
+      print('获取招标数据失败：$e');
     } 
   }
 }
