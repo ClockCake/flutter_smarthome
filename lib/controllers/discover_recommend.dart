@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
 import 'package:gif_view/gif_view.dart';
@@ -17,14 +18,16 @@ class DiscoverRecommendWidget extends StatefulWidget {
 }
 
 class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
-  // 图片数组
-  final List<String> imageList = [
-    'assets/images/icon_home_whole.png',
-    'assets/images/icon_home_renew.png',
-    'assets/images/icon_home_soft.png',
-  ];
+  // Banner数据
+  List <Map<String,dynamic>> imageList = [];
   // 文字数组
   final List<String> titleList = ['整装', '翻新', '软装'];
+  final List<String> localImages = [
+    'assets/images/icon_home_renew.png',
+    'assets/images/icon_home_renew.png', 
+    'assets/images/icon_home_soft.png',
+
+  ];
 
   final List<String> _items = [
     '三字经',
@@ -37,6 +40,15 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
     '黑云压城城欲摧',
     '悬壶问道，月光转照'
   ];
+  @override
+  void initState() {
+    super.initState();
+    getBannerData();
+  }
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,19 +88,20 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
   // 构建轮播图
   Widget _buildBanner() {
     return SizedBox(
-      height: 250,
+      height: 250.h,
       child: Swiper(
         itemBuilder: (BuildContext context, int index) {
+          final item  = imageList[index];
           return ClipRRect(
             borderRadius: BorderRadius.circular(12.0), // 设置圆角
-            child: Image.asset(
-              'assets/images/banner.png',
-              fit: BoxFit.fill,
+            child: NetworkImageHelper().getCachedNetworkImage(
+              imageUrl: item['packagePic'] ?? "",
+              fit: BoxFit.cover,
             ),
           );
         },
         autoplay: true,
-        itemCount: 10,
+        itemCount: imageList.length,
         viewportFraction: 0.8,
         scale: 0.9,
       ),
@@ -148,7 +161,7 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
                 color: Colors.white,
                 height: 88.h,
                 child: Row(
-                  children: List.generate(imageList.length, (i) {
+                  children: List.generate(titleList.length, (i) {
                     return Expanded(
                       child: InkWell(
                         onTap: () {
@@ -158,7 +171,7 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset(
-                              imageList[i],
+                              localImages[i],
                               width: 40.w,
                               height: 40.h,
                             ),
@@ -469,7 +482,7 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
                       borderRadius: BorderRadius.circular(6),
                       child: NetworkImageHelper().getCachedNetworkImage(
                         imageUrl:
-                            'https://image.itimes.me/i/2024/07/26/66a30d068028b.jpg',
+                            'https://image.iweekly.top/i/2024/07/26/66a30d068028b.jpg',
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -487,5 +500,20 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
         );
       }),
     );
+  }
+
+  Future<void>getBannerData() async {
+    // 获取轮播图数据
+    try{
+      final response = await ApiManager().get('/api/home/banner');
+      if (response != null){
+        setState(() {
+          imageList = List<Map <String,dynamic>>.from(response);
+        });
+      }
+    }
+    catch(e){
+      print('获取轮播图数据失败：$e');
+    } 
   }
 }

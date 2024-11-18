@@ -109,7 +109,7 @@ class _DesignerCaseGridWidgetState extends State<DesignerCaseGridWidget> {
     );
   }
   Widget _buildGridCell(Map<String, dynamic> item) {
-    final imageUrls = item['caseMainPic'] as List<dynamic>? ?? ['https://image.itimes.me/i/2024/07/26/66a30d068028b.jpg'];
+    final imageUrls = item['caseMainPic'] as List<dynamic>? ?? ['https://image.iweekly.top/i/2024/07/26/66a30d068028b.jpg'];
     final result = '${item['excelStyle'] == null || (item['excelStyle'] as List).isEmpty ? "" : StringUtils.joinList(item['excelStyle'], separator: ' ')}';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

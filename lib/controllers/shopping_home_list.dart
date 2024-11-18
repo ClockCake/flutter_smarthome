@@ -108,7 +108,7 @@ class _ShoppingHomeListWidgetState extends State<ShoppingHomeListWidget> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
                     child: NetworkImageHelper().getCachedNetworkImage(
-                    imageUrl: 'https://image.itimes.me/i/2024/07/26/66a30d068028b.jpg',
+                    imageUrl: 'https://image.iweekly.top/i/2024/07/26/66a30d068028b.jpg',
                       fit: BoxFit.fill
                     ),
                   )
