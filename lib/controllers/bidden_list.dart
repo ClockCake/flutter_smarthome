@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
+import 'package:flutter_smarthome/utils/empty_state.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 
 class BiddenListWidget extends StatefulWidget {
@@ -49,7 +50,8 @@ class _BiddenListWidgetState extends State<BiddenListWidget> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(6.w), 
       ),
-      child: Column(
+      child: items.isEmpty ? EmptyStateWidget(onRefresh: getBiddenData,emptyText: '暂无数据', buttonText: '点击刷新',) :
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(

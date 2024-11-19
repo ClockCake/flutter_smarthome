@@ -10,6 +10,7 @@ import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
 import 'package:gif_view/gif_view.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../view/auto_scroll_horizontal_list.dart';
 import 'package:flutter_infinite_marquee/flutter_infinite_marquee.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -20,7 +21,10 @@ class DiscoverRecommendWidget extends StatefulWidget {
       _DiscoverRecommendWidgetState();
 }
 
-class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
+class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> with AutomaticKeepAliveClientMixin {
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
+  int pageNum = 1;
+  final int pageSize = 10;
   // Banner数据
   List <Map<String,dynamic>> imageList = [];
   // 文字数组
@@ -35,6 +39,10 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
   List <Map<String,dynamic>> currentBiddenList = []; // 当前招标列表
   List <Map<String,dynamic>> sucessBiddenList = []; // 招标成功列表
   int monthlyNumber = 0; // 本月招标数量
+  bool get wantKeepAlive => true;  // 保持页面状态
+
+  List <Map<String,dynamic>> recommendList = [];
+
   @override
   void initState() {
     super.initState();
@@ -43,37 +51,58 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
   }
   @override
   void dispose() {
+    _refreshController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
+      body: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        header: WaterDropHeader(),
+        footer: CustomFooter(
+          builder: (BuildContext context, LoadStatus? mode) {
+            Widget body;
+            if (mode == LoadStatus.idle) {
+              body = Text("上拉加载");
+            } else if (mode == LoadStatus.loading) {
+              body = CircularProgressIndicator();
+            } else if (mode == LoadStatus.failed) {
+              body = Text("加载失败！点击重试！");
+            } else if (mode == LoadStatus.canLoading) {
+              body = Text("松手加载更多");
+            } else {
+              body = Text("");
+            }
+            return Container(
+              height: 55.0,
+              child: Center(child: body),
+            );
+          },
+        ),
+        controller: _refreshController,
+        onRefresh: _onRefresh,
+        onLoading: _onLoading,
+        child: ListView( // 将 Column 改为 ListView
           children: [
             SizedBox(height: 20.h),
-            // 轮播图
             _buildBanner(),
             SizedBox(height: 24.h),
-            // 推荐区域
             _buildRecommendationSection(),
-            // 招标区域
             _buildTenderSection(),
-            // 在线工地
             _buildOnlineSiteSection(),
-            // 推荐案例标题
             Container(
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.only(left: 16.w, top: 16.h),
               child: Text(
                 '推荐案例',
-                style:
-                    TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
               ),
             ),
             SizedBox(height: 16.h),
-            // 推荐案例列表
             _buildCaseList(),
           ],
         ),
@@ -100,6 +129,9 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> {
         itemCount: imageList.length,
         viewportFraction: 0.8,
         scale: 0.9,
+        onIndexChanged: (index) {
+        
+        },
       ),
     );
   }
@@ -444,13 +476,15 @@ Widget _buildInfiniteMarquee() {
     );
   }
 
-  // 构建案例列表
+  // 修改案例列表构建方法
   Widget _buildCaseList() {
-    return Column(
-      children: List.generate(10, (index) {
+    return ListView.builder( // 使用 ListView.builder 而不是 Column
+      shrinkWrap: true, // 允许在 ListView 中嵌套 ListView
+      physics: NeverScrollableScrollPhysics(), // 禁用内部滚动
+      itemCount: 10,
+      itemBuilder: (context, index) {
         return Column(
           children: [
-            // 案例标题
             Padding(
               padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0),
               child: Row(
@@ -463,31 +497,31 @@ Widget _buildInfiniteMarquee() {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Center(
-                      child: Text('案例',
-                          style: TextStyle(
-                              fontSize: 11.sp, color: Colors.white)),
+                      child: Text(
+                        '案例',
+                        style: TextStyle(fontSize: 11.sp, color: Colors.white),
+                      ),
                     ),
                   ),
                   SizedBox(width: 8.w),
-                  Text('另类美式风，打造独一无二的家',
-                      style: TextStyle(
-                          fontSize: 15.sp, color: HexColor('#222222'))),
+                  Expanded( // 添加 Expanded 防止文本溢出
+                    child: Text(
+                      '另类美式风，打造独一无二的家',
+                      style: TextStyle(fontSize: 15.sp, color: HexColor('#222222')),
+                    ),
+                  ),
                 ],
               ),
             ),
-            // 案例描述
             Padding(
               padding: EdgeInsets.fromLTRB(16.w, 6.h, 16.w, 0),
-              child: Center(
-                child: Text(
-                  '采用浅色为主、深色为辅的装修理念，灰色的墙壁、蓝色的墙柜和橡木色的地板，拒绝美式的沉闷就这么简单',
-                  style: TextStyle(fontSize: 13.sp, color: HexColor('#666666')),
-                ),
+              child: Text(
+                '采用浅色为主、深色为辅的装修理念，灰色的墙壁、蓝色的墙柜和橡木色的地板，拒绝美式的沉闷就这么简单',
+                style: TextStyle(fontSize: 13.sp, color: HexColor('#666666')),
               ),
             ),
             SizedBox(height: 8.h),
-            // 案例图片列表
-            Container(
+            SizedBox( // 使用 SizedBox 替代 Container
               height: 100.h,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -510,14 +544,13 @@ Widget _buildInfiniteMarquee() {
               ),
             ),
             SizedBox(height: 16.h),
-            // 分割线
             Container(
               height: 1.h,
               color: HexColor('#F8F8F8'),
             ),
           ],
         );
-      }),
+      },
     );
   }
 
@@ -528,6 +561,7 @@ Widget _buildInfiniteMarquee() {
       if (response != null){
         setState(() {
           imageList = List<Map <String,dynamic>>.from(response);
+
         });
       }
     }
@@ -551,5 +585,39 @@ Widget _buildInfiniteMarquee() {
     catch(e){
       print('获取招标数据失败：$e');
     } 
+  }
+
+  Future<void>getRecommendData() async {
+    // 获取推荐数据
+    try{
+      final response = await ApiManager().get('/api/home/recommend/case');
+      if (response != null){
+         setState(() {
+          recommendList = List<Map <String,dynamic>>.from(response);
+         });
+      }
+    }
+    catch(e){
+      print('获取推荐数据失败：$e');
+    } 
+  }
+
+  void _onRefresh() async {
+    pageNum = 1;
+    recommendList.clear();
+    await getRecommendData();
+    _refreshController.refreshCompleted();
+
+  }
+
+  void _onLoading() async {
+    pageNum++;
+    await getRecommendData();
+    if (recommendList.isNotEmpty) {
+      _refreshController.loadFailed();
+    }
+    else {
+      _refreshController.loadComplete();
+    }
   }
 }
