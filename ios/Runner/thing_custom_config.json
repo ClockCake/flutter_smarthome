@@ -1,0 +1,27 @@
+{
+    "config": {
+        "appId": 33350,
+        "thingAppKey": "ktuupjsdgaheh7gtxhfn",
+        "appScheme": "jiyoujiajujijiahui",
+        "hotspotPrefixs": ["SmartLife"],
+        "needBle": true,
+        "is_support_home_manager": true,
+        "needQRCode": true,
+        "hotspotPrefixs": ["SmartLife"],
+        "activator_auto_serach_capacity": {
+                "searchTypeBle": true,
+                "searchTypeEZ": false,
+                "searchTypePegasus": true,
+                "searchTypeWired": true,
+                "searchTypeZigbee": true,
+                "searchTypeMatter": true
+        },
+
+
+
+    },
+   "colors":{
+        "themeColor": "#FF5A28",
+    }
+}
+

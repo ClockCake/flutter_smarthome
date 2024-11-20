@@ -1,6 +1,7 @@
 // base_tabbar_controller.dart
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_smarthome/controllers/native_page.dart';
 import 'package:flutter_smarthome/controllers/shopping_home.dart';
 import 'controllers/discover_home.dart';
 import 'controllers/login_page.dart';
@@ -16,7 +17,8 @@ class _BaseTabBarControllerState extends State<BaseTabBarController> {
   Widget build(BuildContext context) {
     final List<Widget> _tabItems = [
       DiscoverHomeWidget(),
-      Center(child: Text("Home Page222")),
+      // Center(child: Text("Home Page222")),
+      NativePageWidget(),
       ShoppingHomeWidget(),
       PersonalHomeWidget(),
 
@@ -45,7 +47,6 @@ class _BaseTabBarControllerState extends State<BaseTabBarController> {
           FlashyTabBarItem(
             icon: Image.asset('assets/images/icon_tabbar_third.png'),
             title: Text('惊喜',style: TextStyle(color: Colors.black),),
-
           ),
           FlashyTabBarItem(
             icon: Image.asset('assets/images/icon_tabbar_four.png'),

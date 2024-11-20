@@ -1,5 +1,8 @@
-# Uncomment this line to define a global platform for your project
-# platform :ios, '12.0'
+# 添加源
+source 'https://github.com/CocoaPods/Specs.git'
+source 'https://github.com/tuya/TuyaPublicSpecs.git'
+source 'https://github.com/tuya/tuya-pod-specs.git'
+platform :ios, '13.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -31,14 +34,56 @@ target 'Runner' do
   use_frameworks!
   use_modular_headers!
 
-   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
- #  target 'RunnerTests' do
- #  inherit! :search_paths
- #  end
+  # Flutter pods
+  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+
+  # 原有项目的 pods
+  pod 'Moya/RxSwift'   # 网络请求
+  pod 'SnapKit'  #布局
+  pod 'IQKeyboardManager' #键盘管理
+  pod 'RxSwift'  #响应式编程
+  pod 'RxGesture' #Rx扩展
+  pod 'BRPickerView' #时间/地区弹窗
+  pod 'Kingfisher', '~> 7.0' #网络图片
+  pod 'MBProgressHUD' #HUD
+  pod 'MJRefresh' #刷新
+  pod 'JXBanner' #Banner轮播
+  pod 'PPNumberButton' #加减按钮
+  pod 'WechatOpenSDK-XCFramework' #微信SDK
+  pod 'lottie-ios' # 动效
+  pod 'JXSegmentedView' #分栏控制器
+  pod 'JXPagingView/Paging' #分页扩展
+  pod 'JCore', '4.6.2-noidfa'    #极光
+  pod 'JVerification', '3.2.2'  #极光安全认证
+  pod 'SKPhotoBrowser' #图片浏览
+  pod 'WCScrollLabelView' #滚动播放
+  pod 'SwiftDate' #时间处理
+  pod 'IJKMediaFramework' #直播
+  pod 'Bugly' #Bug收集
+
+  # 涂鸦SDK 相关
+  pod "ThingSmartCryption", :path =>'./'
+  pod "ThingSmartHomeKit",'~> 5.8.0'
+  pod 'ThingSmartFamilyBizBundle','~> 5.8.0'
+  pod 'ThingSmartActivatorBizBundle','~> 5.8.0'
+  pod 'ThingBLEInterfaceImpl'
+  pod 'ThingBLEMeshInterfaceImpl'
+  pod 'ThingSmartSceneBizBundle','~> 5.8.0'
+  pod 'ThingSmartPanelBizBundle','~> 5.8.0'
+  pod 'ThingSmartCameraPanelBizBundle','~> 5.8.0'
+  pod 'ThingSmartCameraRNPanelBizBundle','~> 5.8.0'
+  pod 'ThingSmartCloudServiceBizBundle','~> 5.8.0'
+  pod 'ThingSmartDeviceDetailBizBundle'
+  pod 'ThingSmartCameraSettingBizBundle'
 end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
+    
+    # 设置 iOS 部署目标版本
+    target.build_configurations.each do |config|
+      config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = "13.0"
+    end
   end
 end

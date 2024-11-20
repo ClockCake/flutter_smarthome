@@ -335,6 +335,7 @@ class _LoginPageState extends State<LoginPage> {
         // 处理登录成功
         UserModel user = UserModel.fromJson(response);
         await UserManager.instance.saveUser(user);
+
         // 在登录页面登录成功后
         // Navigator.of(context).pushReplacement(
         //   MaterialPageRoute(builder: (context) => BaseTabBarController()),

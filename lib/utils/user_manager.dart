@@ -1,16 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user_model.dart';
 
-// 创建一个通知器类来管理用户状态变化的监听
 class UserChangeNotifier extends ChangeNotifier {
   static final UserChangeNotifier _instance = UserChangeNotifier._internal();
-  
-  factory UserChangeNotifier() {
-    return _instance;
-  }
-  
+  factory UserChangeNotifier() => _instance;
   UserChangeNotifier._internal();
   
   void notifyUserChanged() {
@@ -18,51 +14,91 @@ class UserChangeNotifier extends ChangeNotifier {
   }
 }
 
-class UserManager {
-  // 私有构造函数
-  UserManager._privateConstructor() {
-    // 初始化通知器
-    _notifier = UserChangeNotifier();
+class UserManagerException implements Exception {
+  final String message;
+  final dynamic cause;
+
+  UserManagerException(this.message, [this.cause]);
+
+  @override
+  String toString() {
+    if (cause != null) {
+      return 'UserManagerException: $message\nCause: $cause';
+    }
+    return 'UserManagerException: $message';
   }
+}
 
-  // 单例实例
+class UserManager {
+  // 单例实现
+  UserManager._privateConstructor() {
+    _notifier = UserChangeNotifier();
+    _setupMethodChannel();
+  }
   static final UserManager _instance = UserManager._privateConstructor();
-
-  // 获取单例实例
   static UserManager get instance => _instance;
 
-  // SharedPreferences 实例
+  // 成员变量
   SharedPreferences? _prefs;
-
-  // 存储用户信息的键
-  static const String _userKey = 'user_key';
-
-  // 当前用户信息
   UserModel? _user;
-
-  // 状态通知器
   late final UserChangeNotifier _notifier;
-
-  // 获取通知器实例，供外部监听使用
+  static const String _userKey = 'user_key';
+  bool _isSyncing = false;
+  
+  // Method Channel 设置
+  static const _channel = MethodChannel('com.example.app/user');
+  
+  // Getters
   UserChangeNotifier get notifier => _notifier;
-
-  // 获取当前用户
   UserModel? get user => _user;
+  bool get isLoggedIn => _user?.accessToken?.isNotEmpty ?? false;
 
-  // 获取登录状态
-  bool get isLoggedIn => _user != null;
-
-  // 初始化 SharedPreferences
-  Future<void> init() async {
-    _prefs = await SharedPreferences.getInstance();
-    await loadUser();
+  // 设置 Method Channel 监听
+  void _setupMethodChannel() {
+    _channel.setMethodCallHandler((call) async {
+      try {
+        switch (call.method) {
+          case 'userUpdated':
+            if (call.arguments != null) {
+              _isSyncing = true;
+              final userMap = Map<String, dynamic>.from(call.arguments);
+              await saveUser(UserModel.fromJson(userMap));
+              _isSyncing = false;
+            }
+            break;
+          case 'userCleared':
+            _isSyncing = true;
+            await clearUser();
+            _isSyncing = false;
+            break;
+        }
+      } catch (e) {
+        print('Error handling method call ${call.method}: $e');
+        _isSyncing = false;
+        rethrow;
+      }
+    });
   }
 
-  // 加载用户信息
+  // 初始化
+  Future<void> init() async {
+    try {
+      _prefs = await SharedPreferences.getInstance();
+      await loadUser();
+      if (_user?.accessToken?.isNotEmpty ?? false) {
+        await _syncToNative();
+      }
+    } catch (e) {
+      throw UserManagerException('Failed to initialize UserManager', e);
+    }
+  }
+
+  // 加载用户
   Future<void> loadUser() async {
     if (_prefs == null) {
       _prefs = await SharedPreferences.getInstance();
     }
+    
     String? userJson = _prefs?.getString(_userKey);
     if (userJson != null) {
       try {
@@ -80,53 +116,75 @@ class UserManager {
     }
   }
 
+  // 保存用户
   Future<void> saveUser(UserModel user) async {
     if (_prefs == null) {
       _prefs = await SharedPreferences.getInstance();
     }
     
-    // 先清除旧数据
-    await _prefs!.remove(_userKey);
-    
-    // 保存新数据
-    String userJson = jsonEncode(user.toJson());
-    bool success = await _prefs!.setString(_userKey, userJson);
-    
-    if (success) {
+    try {
+      String userJson = jsonEncode(user.toJson());
+      await _prefs!.setString(_userKey, userJson);
       _user = user;
       _notifier.notifyUserChanged();
-      print('保存用户信息成功: $userJson'); // 添加日志
-    } else {
-      print('保存用户信息失败');
-      // 保存失败时清除内存中的用户信息
+      
+      if (!_isSyncing) {
+        await _syncToNative();
+      }
+      
+      print('保存用户信息成功: $userJson');
+    } catch (e) {
+      print('保存用户信息失败: $e');
       _user = null;
       _notifier.notifyUserChanged();
+      throw UserManagerException('Failed to save user', e);
     }
   }
 
+  // 清除用户
   Future<void> clearUser() async {
     if (_prefs == null) {
       _prefs = await SharedPreferences.getInstance();
     }
     
-    // 清除所有相关数据
-    await Future.wait([
-      _prefs!.remove(_userKey),
-      // 可以添加其他需要清除的数据
-    ]);
-    
-    _user = null;
-    _notifier.notifyUserChanged();
-    print('用户信息已清除'); // 添加日志
-  }
-    // 更新用户信息
-  Future<void> updateUser(Function(UserModel) updateFn) async {
-    if (_user == null) {
-      print('当前没有用户信息，无法更新');
-      return;
+    try {
+      if (!_isSyncing) {
+        await _channel.invokeMethod('clearUser');
+      }
+      await _prefs!.remove(_userKey);
+      
+      _user = null;
+      _notifier.notifyUserChanged();
+      print('用户信息已清除');
+    } catch (e) {
+      print('清除用户信息失败: $e');
+      throw UserManagerException('Failed to clear user', e);
     }
-    updateFn(_user!);
-    await saveUser(_user!);
-    _notifier.notifyUserChanged();
+  }
+
+  // 更新用户
+  Future<void> updateUser(void Function(UserModel) updateFn) async {
+    if (_user == null) {
+      throw UserManagerException('No user to update');
+    }
+    
+    final updatedUser = UserModel.fromJson(_user!.toJson());
+    updateFn(updatedUser);
+    await saveUser(updatedUser);
+  }
+
+  // 同步到原生端
+  Future<void> _syncToNative() async {
+    try {
+      _isSyncing = true;
+      print('Syncing user to native: ${jsonEncode(_user?.toJson())}');
+      final result = await _channel.invokeMethod('syncUser', _user?.toJson());
+      print('Sync result: $result');
+    } catch (e) {
+      print('Error syncing to native: $e');
+      throw UserManagerException('Failed to sync with native', e);
+    } finally {
+      _isSyncing = false;
+    }
   }
 }
