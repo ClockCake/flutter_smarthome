@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smarthome/controllers/article_detail.dart';
 import 'package:flutter_smarthome/controllers/bidden_list.dart';
+import 'package:flutter_smarthome/controllers/case_detail.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
+import 'package:flutter_smarthome/utils/navigation_controller.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
 import 'package:gif_view/gif_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -46,8 +49,10 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> with 
   @override
   void initState() {
     super.initState();
+    NavigationController.hideNavigationBar();
     getBannerData();
     getBiddenData();
+    getRecommendData();
   }
   @override
   void dispose() {
@@ -103,7 +108,7 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> with 
               ),
             ),
             SizedBox(height: 16.h),
-            _buildCaseList(),
+            _buildCaseList(recommendList),
           ],
         ),
       ),
@@ -112,6 +117,10 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> with 
 
   // 构建轮播图
   Widget _buildBanner() {
+    if (imageList.isEmpty) {
+      //显示正在加载中
+      return Container();
+    }
     return SizedBox(
       height: 250.h,
       child: Swiper(
@@ -476,56 +485,119 @@ Widget _buildInfiniteMarquee() {
     );
   }
 
-  // 修改案例列表构建方法
-  Widget _buildCaseList() {
+  // 首页推荐列表
+  Widget _buildCaseList(List<Map<String,dynamic>> recommendList) {
     return ListView.builder( // 使用 ListView.builder 而不是 Column
       shrinkWrap: true, // 允许在 ListView 中嵌套 ListView
       physics: NeverScrollableScrollPhysics(), // 禁用内部滚动
-      itemCount: 10,
-      itemBuilder: (context, index) {
-        return Column(
+      itemCount: recommendList.length,
+      itemBuilder: (context, index) { 
+
+       final item = recommendList[index];
+       final resourceType = int.tryParse(item['resourceType'].toString()) ?? 0;  // 如果转换失败返回 0
+       switch (resourceType) {
+          case 4: // 资讯
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleDetailWidget(title: item['resourceTitle'], articleId: item['id'])));
+              },
+              child: _buildArticleCell(item['gazoHuiArticle']),
+            );
+          case 2: // 案例
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => CaseDetailWidget(title: item['caseTitle'], caseId: item['id'])));
+              },
+              child: _buildCaseCell(item['gazoHuiDesignerCase']),
+            );
+          default:
+            return const SizedBox.shrink();  // 其他情况返回空组件
+        }
+      },
+    );
+  }
+
+  //资讯 Cell
+  Widget _buildArticleCell(Map<String,dynamic> item) {
+     return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 0),
+            child: Text(
+              '${item['resourceTitle']}',
+              style: TextStyle(fontSize: 15.sp, color: HexColor('#222222'),fontWeight: FontWeight.bold),
+            ),
+          ),
+         Container(
+           margin: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 0),
+           width: double.infinity,
+           height: 120.h,
+           child: ClipRRect(
+             borderRadius: BorderRadius.circular(6),
+             child: NetworkImageHelper().getCachedNetworkImage(imageUrl: item['mainPic'],fit: BoxFit.cover)
+             ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 0),
+            child: Text('${item['resourceIntro']}',style: TextStyle(fontSize: 12.sp,color: HexColor('#999999')),),
+          ),
+          SizedBox(height: 8.h),
+          //分割线
+          Divider(height: 1.h,color: Colors.grey[200],),
+        ],
+     );
+  }
+
+ //案例 Cell
+  Widget _buildCaseCell(Map<String,dynamic> item) {
+    final pics = item['caseMainPic'] ?? [];
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0),
+          child: Row(
+            children: [
+              Container(
+                width: 40.w,
+                height: 20.h,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: Text(
+                    '案例',
+                    style: TextStyle(fontSize: 11.sp, color: Colors.white),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.w),
+              Expanded( // 添加 Expanded 防止文本溢出
+                child: Text(
+                  '${item['caseTitle']}',
+                  style: TextStyle(fontSize: 15.sp, color: HexColor('#222222')),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(16.w, 6.h, 16.w, 0),
+          child: Text(
+            '${item['caseIntro']}',
+            style: TextStyle(fontSize: 13.sp, color: HexColor('#666666')),
+          ),
+        ),
+        SizedBox(height: 8.h),
+        pics.isNotEmpty ?
+        Column(
           children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0),
-              child: Row(
-                children: [
-                  Container(
-                    width: 40.w,
-                    height: 20.h,
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Center(
-                      child: Text(
-                        '案例',
-                        style: TextStyle(fontSize: 11.sp, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 8.w),
-                  Expanded( // 添加 Expanded 防止文本溢出
-                    child: Text(
-                      '另类美式风，打造独一无二的家',
-                      style: TextStyle(fontSize: 15.sp, color: HexColor('#222222')),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(16.w, 6.h, 16.w, 0),
-              child: Text(
-                '采用浅色为主、深色为辅的装修理念，灰色的墙壁、蓝色的墙柜和橡木色的地板，拒绝美式的沉闷就这么简单',
-                style: TextStyle(fontSize: 13.sp, color: HexColor('#666666')),
-              ),
-            ),
-            SizedBox(height: 8.h),
-            SizedBox( // 使用 SizedBox 替代 Container
+            SizedBox(
               height: 100.h,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: 6,
+                itemCount: pics.length,
                 itemBuilder: (context, index) {
                   return Container(
                     margin: EdgeInsets.only(left: 16.w),
@@ -534,8 +606,7 @@ Widget _buildInfiniteMarquee() {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(6),
                       child: NetworkImageHelper().getCachedNetworkImage(
-                        imageUrl:
-                            'https://image.iweekly.top/i/2024/07/26/66a30d068028b.jpg',
+                        imageUrl: pics[index],
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -543,14 +614,13 @@ Widget _buildInfiniteMarquee() {
                 },
               ),
             ),
-            SizedBox(height: 16.h),
-            Container(
-              height: 1.h,
-              color: HexColor('#F8F8F8'),
-            ),
+            SizedBox(height: 16.h),  // 底部间距
           ],
-        );
-      },
+        ) :
+        SizedBox(height: 16.h),
+        Divider(height: 1.h,color: HexColor('#F8F8F8'),),
+
+      ],
     );
   }
 
@@ -591,10 +661,17 @@ Widget _buildInfiniteMarquee() {
     // 获取推荐数据
     try{
       final response = await ApiManager().get('/api/home/recommend/case');
-      if (response != null){
-         setState(() {
-          recommendList = List<Map <String,dynamic>>.from(response);
-         });
+      if (response['pageTotal'] == pageNum || response['pageTotal'] == 0) {
+        _refreshController.loadNoData();
+      }
+      if (response['rows'].isNotEmpty) {
+        final arr = List<Map<String, dynamic>>.from(response['rows']);
+        if(mounted) {
+          setState(() {
+             recommendList.addAll(arr);
+          });
+        }
+
       }
     }
     catch(e){

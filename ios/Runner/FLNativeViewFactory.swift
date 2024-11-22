@@ -30,7 +30,8 @@ class FLNativeViewFactory: NSObject, FlutterPlatformViewFactory {
 class FLNativeView: NSObject, FlutterPlatformView {
     private var _nativeView: UIView
     private var _viewController: SmartDeviceHomeController?
-    
+    private var _navigationController: UINavigationController?
+
     init(
         frame: CGRect,
         viewIdentifier viewId: Int64,
@@ -64,6 +65,7 @@ class FLNativeView: NSObject, FlutterPlatformView {
 
     private func createNativeView(_ frame: CGRect, _ arguments: Any?, _ tabBarHeight: CGFloat) {
         // 初始化视图控制器
+//        let vc = SmartDeviceHomeController()
         _viewController = SmartDeviceHomeController()
         
         if let viewController = _viewController {
@@ -83,4 +85,8 @@ class FLNativeView: NSObject, FlutterPlatformView {
             viewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         }
     }
+
+
 }
+
+

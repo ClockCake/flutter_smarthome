@@ -24,27 +24,49 @@ class AppDelegate: FlutterAppDelegate {
         
         DispatchQueue.global().async {
             ThingSmartSDK.sharedInstance().start(withAppKey: self.tuyaAppkey, secretKey: self.tuyaSecretKey)
-            #if DEBUG
+#if DEBUG
             ThingSmartSDK.sharedInstance().debugMode = true
-            #endif
+#endif
         }
-
+        
         ThingSmartUser.sharedInstance().login(byPhone: "86",
-            phoneNumber: UserManager.shared.currentUser?.mobile ?? "",
-            password: UserManager.shared.currentUser?.tuyaPwd ?? "",
-            success: {
-                print("tuya--login success")
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loginStatus"), object: nil)
-            }, failure: { (error) in
-                if let e = error {
-                    print("tuya--login failure: \(e)")
-                }
-            })
+                                              phoneNumber: UserManager.shared.currentUser?.mobile ?? "",
+                                              password: UserManager.shared.currentUser?.tuyaPwd ?? "",
+                                              success: {
+            print("tuya--login success")
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loginStatus"), object: nil)
+        }, failure: { (error) in
+            if let e = error {
+                print("tuya--login failure: \(e)")
+            }
+        })
         
         let flutterViewController = FlutterViewController(engine: engine, nibName: nil, bundle: nil)
+        
+        // 创建导航控制器并隐藏导航栏
+        let navigationController = UINavigationController(rootViewController: flutterViewController)
+        navigationController.navigationBar.isHidden = true  // 默认隐藏导航栏
+        
+        // 创建一个消息通道来控制导航栏的显示/隐藏
+        let channel = FlutterMethodChannel(name: "com.yourapp.navigation",
+                                           binaryMessenger: flutterViewController.binaryMessenger)
+        
+        channel.setMethodCallHandler { [weak navigationController] (call, result) in
+            switch call.method {
+            case "showNavigationBar":
+                navigationController?.navigationBar.isHidden = false
+                result(nil)
+            case "hideNavigationBar":
+                navigationController?.navigationBar.isHidden = true
+                result(nil)
+            default:
+                result(FlutterMethodNotImplemented)
+            }
+        }
+        
         window = UIWindow(frame: UIScreen.main.bounds)
         window.backgroundColor = UIColor.white
-        window?.rootViewController = flutterViewController
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
         
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
