@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smarthome/controllers/address_list.dart';
 import 'package:flutter_smarthome/models/user_model.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/cache_util.dart';
 import 'package:flutter_smarthome/utils/custom_webview.dart';
 import 'package:flutter_smarthome/utils/user_manager.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart'; // Add this import
+import 'package:flutter_cache_manager/flutter_cache_manager.dart'; 
 import 'package:package_info_plus/package_info_plus.dart';
 import './personal_info.dart';
+import 'package:flutter/services.dart'; 
+
 class PersonalSettingWidget extends StatefulWidget {
   const PersonalSettingWidget({super.key});
 
@@ -21,6 +24,7 @@ class _PersonalSettingWidgetState extends State<PersonalSettingWidget> {
   List<String> _titleList = ['个人信息', '收货地址管理', '隐私政策', '清除缓存', '版本'];
 
   String? _cacheSize; // 新增状态变量来存储缓存大小
+  static const platform = MethodChannel('com.your.app/login');
 
   @override
   void initState() {
@@ -39,6 +43,7 @@ class _PersonalSettingWidgetState extends State<PersonalSettingWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
@@ -89,7 +94,7 @@ class _PersonalSettingWidgetState extends State<PersonalSettingWidget> {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => PersonalInfoWidget()));
                         break;
                       case 1:
-                       
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => AddressListWidget()));
                         break;
                       case 2:
                         //隐私政策
@@ -123,7 +128,7 @@ class _PersonalSettingWidgetState extends State<PersonalSettingWidget> {
               },
             ),
             Spacer(),
-            InkWell(
+            GestureDetector(
               onTap: () {
                 //退出登录
                _logout();
@@ -179,8 +184,17 @@ class _PersonalSettingWidgetState extends State<PersonalSettingWidget> {
         data: null,
       );
 
-      if (response != null) {
+       if (response != null) {
         await UserManager.instance.clearUser();
+        
+        // 调用原生涂鸦退出登录
+        try {
+          await platform.invokeMethod('tuyaLogout');
+          print('涂鸦退出登录成功');
+        } catch (e) {
+          print('涂鸦退出登录失败: $e');
+        }
+
         showToast('退出登录成功');
         
         if (context.mounted) {

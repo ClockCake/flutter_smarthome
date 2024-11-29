@@ -24,7 +24,10 @@ class _BaseTabBarControllerState extends State<BaseTabBarController> {
 
     ];
     return Scaffold(
-      body: _tabItems[_selectedIndex],
+      body:IndexedStack(
+          index: _selectedIndex,
+          children: _tabItems,
+        ),
       bottomNavigationBar: FlashyTabBar(
         animationCurve: Curves.linear,
         selectedIndex: _selectedIndex,

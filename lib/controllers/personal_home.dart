@@ -65,6 +65,7 @@ class _PersonalHomeWidgetState extends State<PersonalHomeWidget> {
               _buildHeader(topPadding + 250.h),
               SizedBox(height: 16.h),
               _buildOrder(),
+              _buildServiceCell(),
            ],
          ),
       ),
@@ -405,6 +406,74 @@ class _PersonalHomeWidgetState extends State<PersonalHomeWidget> {
             ),
           ],
         ),
+      );
+    }
+
+    Widget _buildServiceCell() {
+      return Column(
+         crossAxisAlignment: CrossAxisAlignment.start,
+         children: [
+           Padding(
+            padding: EdgeInsets.fromLTRB(16.w,16.h, 0, 0),
+            child: Text(
+              '我的服务',
+              style: TextStyle(color: HexColor('#222222'),fontSize: 15.sp,fontWeight: FontWeight.bold),
+            ),
+           ),
+           SizedBox(height: 16.h),
+           Row(
+            children: [
+              //加载本地图片
+              Container(
+                width: 24.w,
+                height: 24.h,
+                margin: EdgeInsets.only(left: 16.w,top: 12.h,bottom: 12.h),
+                child: Image.asset('assets/images/icon_my_contract.png'),
+              ),
+              SizedBox(width: 8.w),
+              Text('我的合同',style: TextStyle(color: HexColor('#222222'),fontSize: 14.sp)),
+              Spacer(),
+              Icon(Icons.arrow_forward_ios,color: HexColor('#999999'),size: 16.sp),
+              SizedBox(width: 16.w),
+
+            ],
+           ),
+            Divider(height: 1.h,color: HexColor('#E5E5E5')),
+           Row(
+            children: [
+              //加载本地图片
+              Container(
+                width: 24.w,
+                height: 24.h,
+                margin: EdgeInsets.only(left: 16.w,top: 12.h,bottom: 12.h),
+                child: Image.asset('assets/images/icon_my_reserve.png'),
+              ),
+              SizedBox(width: 8.w),
+              Text('我的预约',style: TextStyle(color: HexColor('#222222'),fontSize: 14.sp)),
+              Spacer(),
+              Icon(Icons.arrow_forward_ios,color: HexColor('#999999'),size: 16.sp),
+              SizedBox(width: 16.w),
+
+            ],
+           ),
+            Divider(height: 1.h,color: HexColor('#E5E5E5')),
+            Row(
+              children: [
+                //加载本地图片
+                Container(
+                  width: 24.w,
+                  height: 24.h,
+                  margin: EdgeInsets.only(left: 16.w,top: 12.h,bottom: 12.h),
+                  child: Image.asset('assets/images/icon_my_comment.png'),
+                ),
+                SizedBox(width: 8.w),
+                Text('我的评论',style: TextStyle(color: HexColor('#222222'),fontSize: 14.sp)),
+                Spacer(),
+                Icon(Icons.arrow_forward_ios,color: HexColor('#999999'),size: 16.sp),
+                SizedBox(width: 16.w),
+              ],
+            )
+         ],
       );
     }
   

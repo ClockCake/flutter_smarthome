@@ -16,12 +16,21 @@ class AppDelegate: FlutterAppDelegate {
         
         FlutterUserPlugin.register(with: engine.registrar(forPlugin: "FlutterUserPlugin")!)
         GeneratedPluginRegistrant.register(with: engine)
+        let flutterViewController = FlutterViewController(engine: engine, nibName: nil, bundle: nil)
+
+        // 爱家
+         if let registrar = engine.registrar(forPlugin: "native_ios_view") {
+             let factory = FLNativeViewFactory(messenger: registrar.messenger(), flutterViewController: flutterViewController)
+             registrar.register(factory, withId: "native_ios_view")
+         }
+         
+         // 快速报价
+         if let registrar = engine.registrar(forPlugin: "native_quote_view") {
+             let factory = FLQuoteViewFactory(messenger: registrar.messenger(), flutterViewController: flutterViewController)
+             registrar.register(factory, withId: "native_quote_view")
+         }
         
-        if let registrar = engine.registrar(forPlugin: "native_ios_view") {
-            let factory = FLNativeViewFactory(messenger: registrar.messenger())
-            registrar.register(factory, withId: "native_ios_view")
-        }
-        
+
         DispatchQueue.global().async {
             ThingSmartSDK.sharedInstance().start(withAppKey: self.tuyaAppkey, secretKey: self.tuyaSecretKey)
 #if DEBUG
@@ -29,20 +38,7 @@ class AppDelegate: FlutterAppDelegate {
 #endif
         }
         
-        ThingSmartUser.sharedInstance().login(byPhone: "86",
-                                              phoneNumber: UserManager.shared.currentUser?.mobile ?? "",
-                                              password: UserManager.shared.currentUser?.tuyaPwd ?? "",
-                                              success: {
-            print("tuya--login success")
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loginStatus"), object: nil)
-        }, failure: { (error) in
-            if let e = error {
-                print("tuya--login failure: \(e)")
-            }
-        })
-        
-        let flutterViewController = FlutterViewController(engine: engine, nibName: nil, bundle: nil)
-        
+
         // 创建导航控制器并隐藏导航栏
         let navigationController = UINavigationController(rootViewController: flutterViewController)
         navigationController.navigationBar.isHidden = true  // 默认隐藏导航栏
@@ -64,6 +60,62 @@ class AppDelegate: FlutterAppDelegate {
             }
         }
         
+        
+        //登录消息通道
+        let loginChannel = FlutterMethodChannel(name: "com.your.app/login",
+                                              binaryMessenger: flutterViewController.binaryMessenger)
+
+        loginChannel.setMethodCallHandler { (call: FlutterMethodCall, result: @escaping FlutterResult) in
+            switch call.method {
+            case "tuyaLogin":
+                guard let args = call.arguments as? [String: String],
+                      let mobile = args["mobile"],
+                      let password = args["password"] else {
+                    result(FlutterError(code: "INVALID_ARGUMENTS",
+                                      message: "Invalid arguments",
+                                      details: nil))
+                    return
+                }
+                
+                // 执行涂鸦登录
+                ThingSmartUser.sharedInstance().login(byPhone: "86",
+                                                    phoneNumber: mobile,
+                                                    password: password,
+                                                    success: {
+                    print("tuya--login success")
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "loginStatus"),
+                                                  object: nil)
+                    result(true)
+                }, failure: { (error) in
+                    if let e = error {
+                        print("tuya--login failure: \(e)")
+                        result(FlutterError(code: "LOGIN_FAILED",
+                                          message: e.localizedDescription,
+                                          details: nil))
+                    }
+                })
+                
+            case "tuyaLogout":
+                // 执行涂鸦退出登录
+                ThingSmartUser.sharedInstance().loginOut({
+                    print("涂鸦登出成功")
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "logoutStatus"),
+                                                  object: nil)
+                    result(true)
+                }, failure: { (error) in
+                    if let e = error {
+                        print("涂鸦登出失败: \(e)")
+                        result(FlutterError(code: "LOGOUT_FAILED",
+                                          message: e.localizedDescription,
+                                          details: nil))
+                    }
+                })
+                
+            default:
+                result(FlutterMethodNotImplemented)
+            }
+        }
+        
         window = UIWindow(frame: UIScreen.main.bounds)
         window.backgroundColor = UIColor.white
         window?.rootViewController = navigationController
@@ -71,4 +123,7 @@ class AppDelegate: FlutterAppDelegate {
         
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
+    
+  
 }
+

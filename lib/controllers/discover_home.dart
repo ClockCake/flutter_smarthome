@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter_smarthome/controllers/discover_infomation.dart';
 import 'package:flutter_smarthome/controllers/furnish_form.dart';
+import 'package:flutter_smarthome/controllers/home_search.dart';
 import 'discover_recommend.dart';
 class DiscoverHomeWidget extends StatefulWidget {
   const DiscoverHomeWidget({super.key});
@@ -20,8 +21,16 @@ class _DiscoverHomeWidget extends State<DiscoverHomeWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            // 顶部搜索框
-            Container(
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomeSearchPage(),
+                  ),
+                );
+              },
+              child: Container(
               padding:  EdgeInsets.fromLTRB(20.w, 10.h, 20.w, 10.h),
               child: Row(
                 children: [
@@ -44,6 +53,7 @@ class _DiscoverHomeWidget extends State<DiscoverHomeWidget> {
                   ),
                 ],
               ),
+             ),
             ),
             //segmentedControl
             Expanded(

@@ -4,15 +4,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smarthome/controllers/activity_detail.dart';
 import 'package:flutter_smarthome/controllers/article_detail.dart';
 import 'package:flutter_smarthome/controllers/bidden_list.dart';
 import 'package:flutter_smarthome/controllers/case_detail.dart';
+import 'package:flutter_smarthome/controllers/designer_home.dart';
+import 'package:flutter_smarthome/controllers/quick_quote.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter_smarthome/utils/navigation_controller.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
+import 'package:flutter_smarthome/utils/network_state_helper.dart';
 import 'package:gif_view/gif_view.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../view/auto_scroll_horizontal_list.dart';
 import 'package:flutter_infinite_marquee/flutter_infinite_marquee.dart';
@@ -30,34 +36,74 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> with 
   final int pageSize = 10;
   // Banner数据
   List <Map<String,dynamic>> imageList = [];
-  // 文字数组
-  final List<String> titleList = ['整装', '翻新', '软装'];
+  final List<String> titleList = ['整装', '翻新', '软装',"局改","翻新"];
   final List<String> localImages = [
     'assets/images/icon_home_renew.png',
     'assets/images/icon_home_renew.png', 
     'assets/images/icon_home_soft.png',
-
+    'assets/images/icon_quote_local.png',
+    'assets/images/icon_quote_fix.png'
   ];
 
   List <Map<String,dynamic>> currentBiddenList = []; // 当前招标列表
   List <Map<String,dynamic>> sucessBiddenList = []; // 招标成功列表
   int monthlyNumber = 0; // 本月招标数量
   bool get wantKeepAlive => true;  // 保持页面状态
-
+  String constructionCount = "0"; //在建工地数量
   List <Map<String,dynamic>> recommendList = [];
 
   @override
   void initState() {
     super.initState();
     NavigationController.hideNavigationBar();
-    getBannerData();
-    getBiddenData();
-    getRecommendData();
+    _initNetworkListener();
+    _loadInitialData();
   }
+
+  void _initNetworkListener() {
+    NetworkStateHelper.initNetworkListener(() {
+      // 当网络恢复时，刷新数据
+      if (mounted) {
+        setState(() {
+          _refreshData();
+        });
+      }
+    });
+  }
+
   @override
   void dispose() {
     _refreshController.dispose();
+    NetworkStateHelper.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadInitialData() async {
+    try {
+      await Future.wait([
+        getBannerData(),
+        getBiddenData(),
+        getOnlineSiteData(),
+        getRecommendData(),
+      ]);
+    } catch (e) {
+      // 处理错误情况
+    }
+  }
+
+  Future<void> _refreshData() async {
+    try {
+      await Future.wait<void>([
+        getBannerData(),
+        getBiddenData(),
+        getOnlineSiteData(),
+        getRecommendData(),
+      ]);
+      _refreshController.refreshCompleted();
+    } catch (e) {
+      _refreshController.refreshFailed();
+      print('Refresh failed: $e');
+    }
   }
 
   @override
@@ -129,7 +175,7 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> with 
           return ClipRRect(
             borderRadius: BorderRadius.circular(12.0), // 设置圆角
             child: NetworkImageHelper().getCachedNetworkImage(
-              imageUrl: item['packagePic'] ?? "",
+              imageUrl: item['image'] ?? "",
               fit: BoxFit.cover,
             ),
           );
@@ -141,11 +187,36 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> with 
         onIndexChanged: (index) {
         
         },
+        onTap: (index){
+          final item = imageList[index];
+          switch (item['resourceType'].toString()) {
+            case '0': //设计师
+              Navigator.push(context, MaterialPageRoute(builder: (context) => DesignerHomeWidget(userId: item['resourceId'] ?? "")));
+              break;
+            case '1': //案例
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CaseDetailWidget(title: "", caseId: item['resourceId'] ?? "")));
+              break;
+            case '2': //动态
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CaseDetailWidget(title: "", caseId: item['resourceId'] ?? "")));
+              break;
+            case '3': //视频
+              showToast('该功能暂未开放');
+              break;
+            case '4': //资讯
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleDetailWidget(title: "", articleId: item['resourceId'] ?? "")));
+              break;
+            case '5': //活动
+               Navigator.push(context, MaterialPageRoute(builder: (context) => ActivityDetailWiget(title: "", activityId: item['resourceId'] ?? "")));
+              break;
+            default:
+          }
+        },
+
       ),
     );
   }
 
-  // 构建推荐区域
+  // 装修计算器
   Widget _buildRecommendationSection() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -157,9 +228,9 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> with 
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // 装修计算器
-              InkWell(
+              GestureDetector(
                 onTap: () {
-                  print('点击了装修计算器');
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => QuickQuoteWidget(index: 0,)));
                 },
                 child: Container(
                   color: HexColor('#F8F8F8'),
@@ -200,9 +271,14 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> with 
                 child: Row(
                   children: List.generate(titleList.length, (i) {
                     return Expanded(
-                      child: InkWell(
+                      child: GestureDetector(
                         onTap: () {
-                          print('点击了${titleList[i]}按钮');
+                          if (i < 3) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => QuickQuoteWidget(index: i)));
+                          }else{
+                            showToast('该功能暂未开放');
+                          }
+
                         },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -465,7 +541,7 @@ Widget _buildInfiniteMarquee() {
                         style: TextStyle(
                             fontSize: 15.sp, fontWeight: FontWeight.bold)),
                     SizedBox(height: 4.h),
-                    Text('已有34586个工地正在施工',
+                    Text('已有${constructionCount}个工地正在施工',
                         style: TextStyle(
                             fontSize: 12.sp, color: HexColor('#999999'))),
                   ],
@@ -627,7 +703,7 @@ Widget _buildInfiniteMarquee() {
   Future<void>getBannerData() async {
     // 获取轮播图数据
     try{
-      final response = await ApiManager().get('/api/home/banner');
+      final response = await ApiManager().get('/api/home/banner',queryParameters: {"position":"1"});
       if (response != null){
         setState(() {
           imageList = List<Map <String,dynamic>>.from(response);
@@ -656,7 +732,7 @@ Widget _buildInfiniteMarquee() {
       print('获取招标数据失败：$e');
     } 
   }
-
+  // 推荐列表的数据
   Future<void>getRecommendData() async {
     // 获取推荐数据
     try{
@@ -679,12 +755,26 @@ Widget _buildInfiniteMarquee() {
     } 
   }
 
+  // 在建工地的数量
+  Future<void>getOnlineSiteData() async {
+    // 获取在线工地数据
+    try{
+      final response = await ApiManager().get('/api/construction/count');
+      if (response != null && mounted){
+         setState(() {
+            constructionCount = response['count'];
+         });
+      }
+    }
+    catch(e){
+      print('获取在线工地数据失败：$e');
+    } 
+  }
+
   void _onRefresh() async {
     pageNum = 1;
     recommendList.clear();
-    await getRecommendData();
-    _refreshController.refreshCompleted();
-
+    await _refreshData();
   }
 
   void _onLoading() async {

@@ -3,9 +3,11 @@ import UIKit
 
 class FLNativeViewFactory: NSObject, FlutterPlatformViewFactory {
     private var messenger: FlutterBinaryMessenger
+    private var flutterViewController: FlutterViewController
 
-    init(messenger: FlutterBinaryMessenger) {
+    init(messenger: FlutterBinaryMessenger, flutterViewController: FlutterViewController) {
         self.messenger = messenger
+        self.flutterViewController = flutterViewController
         super.init()
     }
 
@@ -18,7 +20,8 @@ class FLNativeViewFactory: NSObject, FlutterPlatformViewFactory {
             frame: frame,
             viewIdentifier: viewId,
             arguments: args,
-            messenger: messenger
+            messenger: messenger,
+            flutterViewController: flutterViewController
         )
     }
 
@@ -31,15 +34,19 @@ class FLNativeView: NSObject, FlutterPlatformView {
     private var _nativeView: UIView
     private var _viewController: SmartDeviceHomeController?
     private var _navigationController: UINavigationController?
+    private var flutterViewController: FlutterViewController
 
     init(
         frame: CGRect,
         viewIdentifier viewId: Int64,
         arguments args: Any?,
-        messenger: FlutterBinaryMessenger
+        messenger: FlutterBinaryMessenger,
+        flutterViewController: FlutterViewController
+
     ) {
+        self.flutterViewController = flutterViewController
+
         _nativeView = UIView.init(frame: CGRect(x: 0, y: 0, width: kScreenWidth, height: kScreenHeight - kSafeHeight - kTabBarHeight))
-//        UIView(frame: frame)
         super.init()
         
         if let params = args as? [String: Any] {
@@ -65,13 +72,13 @@ class FLNativeView: NSObject, FlutterPlatformView {
 
     private func createNativeView(_ frame: CGRect, _ arguments: Any?, _ tabBarHeight: CGFloat) {
         // 初始化视图控制器
-//        let vc = SmartDeviceHomeController()
         _viewController = SmartDeviceHomeController()
         
         if let viewController = _viewController {
             // 设置视图大小
 //            viewController.view.frame = frame
-            
+            flutterViewController.addChild(viewController)
+
             // 修改 collectionView 的 frame 和约束
             viewController.view.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height - tabBarHeight)
             viewController.collectionView.snp.remakeConstraints { make in

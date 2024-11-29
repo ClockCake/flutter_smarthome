@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:oktoast/oktoast.dart';
@@ -20,6 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   bool _isChecked = true;
   bool _isGettingCode = false;
   int _countdown = 60;
+  static final platform = MethodChannel('com.your.app/login');
 
   @override
   void dispose() {
@@ -336,10 +338,15 @@ class _LoginPageState extends State<LoginPage> {
         UserModel user = UserModel.fromJson(response);
         await UserManager.instance.saveUser(user);
 
-        // 在登录页面登录成功后
-        // Navigator.of(context).pushReplacement(
-        //   MaterialPageRoute(builder: (context) => BaseTabBarController()),
-        // );
+        try {
+          await platform.invokeMethod('tuyaLogin', {
+            'mobile': user.mobile,
+            'password': user.tuyaPwd,
+          });
+        } catch (e) {
+          print('调用原生方法失败: $e');
+        }
+
         Navigator.pop(context, true);
 
 
@@ -352,19 +359,27 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).padding.bottom;
-
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildHeader(),
-          _buildPhoneInput(),
-          _buildCodeInput(),
-          _buildLoginButton(),
-          const Spacer(),
-          _buildAgreement(),
-          SizedBox(height: 30.h + bottomPadding),
-        ],
+      body: SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height,
+          ),
+          child: IntrinsicHeight(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeader(),
+                _buildPhoneInput(),
+                _buildCodeInput(),
+                _buildLoginButton(),
+                const Expanded(child: SizedBox()),
+                _buildAgreement(),
+                SizedBox(height: 30.h + bottomPadding),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

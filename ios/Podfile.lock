@@ -32,6 +32,9 @@ PODS:
   - BRPickerView/TextPicker (2.9.1):
     - BRPickerView/Core
   - Bugly (2.6.1)
+  - connectivity_plus (0.0.1):
+    - Flutter
+    - ReachabilitySwift
   - DACircularProgress (2.3.1)
   - DoubleConversion (1.1.6)
   - dsBridge (3.0.203)
@@ -325,6 +328,7 @@ PODS:
   - Protobuf (3.27.3)
   - QuickJSObjC (1.0.21):
     - GZLQuickJS
+  - ReachabilitySwift (5.2.3)
   - React (0.59.13):
     - boost-for-react-native (= 1.63.0)
     - DoubleConversion
@@ -5996,6 +6000,7 @@ PODS:
 DEPENDENCIES:
   - BRPickerView
   - Bugly
+  - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - Flutter (from `Flutter`)
   - IJKMediaFramework
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
@@ -6068,6 +6073,7 @@ SPEC REPOS:
     - OpenCV
     - PPNumberButton
     - Protobuf
+    - ReachabilitySwift
     - RxCocoa
     - RxGesture
     - RxRelay
@@ -6629,6 +6635,8 @@ SPEC REPOS:
     - RNScreens
 
 EXTERNAL SOURCES:
+  connectivity_plus:
+    :path: ".symlinks/plugins/connectivity_plus/ios"
   Flutter:
     :path: Flutter
   image_picker_ios:
@@ -6652,6 +6660,7 @@ SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BRPickerView: 6dd69ea2c48e0a0abf1d197a705050e13143ee63
   Bugly: 217ac2ce5f0f2626d43dbaa4f70764c953a26a31
+  connectivity_plus: bf0076dd84a130856aa636df1c71ccaff908fa1d
   DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
   dsBridge: aed01cd4c4c97bbf69c487e64134862bbf3c1ed0
@@ -6711,6 +6720,7 @@ SPEC CHECKSUMS:
   PPNumberButton: 4442ff64c21d91733057ca1b3dc05fb4df55f2c0
   Protobuf: c1cbc880ea7c4e9b157e113515c720a22ee7cf50
   QuickJSObjC: 9a84762f3e058a5ed4551718947562b20ac1ecc2
+  ReachabilitySwift: 7f151ff156cea1481a8411701195ac6a984f4979
   React: a6a8062327c207f9bfdbe2dd1eb279bcda2baece
   react-native-blur: 43168b02f390cc4a7d6044a1f7f62165815485a4
   react-native-image-picker: 8afb5e50a6d48586f033f013cd1b23c0ab773dff

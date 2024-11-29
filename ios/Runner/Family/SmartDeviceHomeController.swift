@@ -87,7 +87,7 @@ class SmartDeviceHomeController: BaseViewController {
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.setNavigationBarHidden(true, animated: true) //防止 flutter 工程中出现导航栏
     }
     
     //子类重写刷新的方法

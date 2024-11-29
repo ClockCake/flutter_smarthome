@@ -218,7 +218,7 @@ void _handleResponse(Response response, ResponseInterceptorHandler handler) {
         path,
         data: data,
       );
-      return response.data['data'];
+      return response.data['data']; 
 
     } catch (e) {
       rethrow;  
@@ -240,8 +240,18 @@ void _handleResponse(Response response, ResponseInterceptorHandler handler) {
 
     }
   }
-
-
+  /// DELETE 请求 传参数组
+  Future<dynamic> deleteWithList(String path, {List<dynamic>? data}) async {
+      try {
+        Response response = await _dio.delete(
+          path,
+          data: data,
+        );
+        return response.data['data'];
+      } catch (e) {
+        rethrow;
+      }
+  }
 
   Future<dynamic> uploadImage(
     String path,

@@ -99,6 +99,7 @@
 		08057E812CEDA9EE007C6977 /* ContractLogsListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DD42CEDA9EE007C6977 /* ContractLogsListCell.swift */; };
 		08057E822CEDA9EE007C6977 /* ProjectSegmentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DF22CEDA9EE007C6977 /* ProjectSegmentController.swift */; };
 		08057E832CEDA9EE007C6977 /* thing_custom_config.json in Resources */ = {isa = PBXBuildFile; fileRef = 08057E1E2CEDA9EE007C6977 /* thing_custom_config.json */; };
+		08871B492CF4717600DDD71C /* FLQuoteViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08871B482CF4717600DDD71C /* FLQuoteViewFactory.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
@@ -215,6 +216,7 @@
 		08057E282CEDA9EE007C6977 /* PlaceholderTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTextView.swift; sourceTree = "<group>"; };
 		08057E292CEDA9EE007C6977 /* ProgressHUDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressHUDManager.swift; sourceTree = "<group>"; };
 		08057E2A2CEDA9EE007C6977 /* ZGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZGestureRecognizer.swift; sourceTree = "<group>"; };
+		08871B482CF4717600DDD71C /* FLQuoteViewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FLQuoteViewFactory.swift; sourceTree = "<group>"; };
 		1BB395904DCB9FF247A20EB5 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
 		3D5F4F2E83DA5EAA129943F3 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
@@ -472,6 +474,7 @@
 				08057E1E2CEDA9EE007C6977 /* thing_custom_config.json */,
 				08057E2B2CEDA9EE007C6977 /* UIComponents */,
 				08057DC52CED8AF6007C6977 /* FLNativeViewFactory.swift */,
+				08871B482CF4717600DDD71C /* FLQuoteViewFactory.swift */,
 				08057DC22CED8896007C6977 /* GeneratedPluginRegistrant.h */,
 				08057DC32CED8896007C6977 /* GeneratedPluginRegistrant.m */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
@@ -705,6 +708,7 @@
 				08057E572CEDA9EE007C6977 /* SmartDeviceListCell.swift in Sources */,
 				08057E582CEDA9EE007C6977 /* MeasureRoomListCell.swift in Sources */,
 				08057E592CEDA9EE007C6977 /* QuickQuoteAreaController.swift in Sources */,
+				08871B492CF4717600DDD71C /* FLQuoteViewFactory.swift in Sources */,
 				08057E5A2CEDA9EE007C6977 /* QuoteSegmentSchemeController.swift in Sources */,
 				08057E5B2CEDA9EE007C6977 /* QuoteMicroDetailListCell.swift in Sources */,
 				08057E5C2CEDA9EE007C6977 /* QuoteSegmentListCell.swift in Sources */,

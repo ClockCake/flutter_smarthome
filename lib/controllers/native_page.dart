@@ -13,11 +13,18 @@ class NativePageWidget extends StatefulWidget {
 
 class _NativePageWidgetState extends State<NativePageWidget> {
   static const String viewType = 'native_ios_view';
+
   @override
   void initState() {
     super.initState();
 
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // 获取屏幕尺寸
