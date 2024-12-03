@@ -4,10 +4,12 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/controllers/designer_home.dart';
 import 'package:flutter_smarthome/controllers/furnish_record_list.dart';
+import 'package:flutter_smarthome/dialog/appointment-dialog.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
 import 'package:flutter_smarthome/utils/string_utils.dart';
+import 'package:oktoast/oktoast.dart';
 
 class RecommendDesignerListWidget extends StatefulWidget {
   const RecommendDesignerListWidget({super.key});
@@ -134,7 +136,7 @@ class _RecommendDesignerListWidgetState extends State<RecommendDesignerListWidge
             //预约按钮
             GestureDetector(
               onTap: () {
-                print('预约');
+                 _showDialog();
               },
               child: Container(
                 width: 56.w,
@@ -260,6 +262,37 @@ class _RecommendDesignerListWidgetState extends State<RecommendDesignerListWidge
       }
     }
     catch(e) {
+      print(e);
+    }
+  }
+
+    //展示弹框
+  void _showDialog() {
+     AppointmentBottomSheet.show(
+      context,
+      onSubmit: (name, contact) {
+        print('姓名: $name');
+        print('联系方式: $contact');
+        _handleSubmit(name, contact);
+      },
+    );
+  }
+
+    //全局预约提交
+  void _handleSubmit(String name, String contact) async{
+    try {
+      final apiManager = ApiManager();
+      final response = await apiManager.post(
+        '/api/home/overall/quick/appointment',
+        data: {
+          'userName': name,
+          'userPhone': contact,
+        },
+      );
+      if (response != null) {
+         showToast('预约成功');
+      }
+    }catch(e){
       print(e);
     }
   }

@@ -170,6 +170,7 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
               Expanded(
                 child: TextField(
                   controller: phoneController,
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     hintText: '请输入手机号',
                     hintStyle: TextStyle(color: HexColor('#999999'), fontSize: 14.sp),
@@ -269,6 +270,7 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
                     Expanded(
                       child: TextField(
                         controller: roomController,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           hintStyle: TextStyle(color: HexColor('#999999'), fontSize: 14.sp),
                           border: InputBorder.none,
@@ -279,7 +281,8 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
                     SizedBox(width: 16.w,),
                     Expanded(
                       child: TextField(
-                        controller: hallController,
+                        controller: hallController,                  
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           hintStyle: TextStyle(color: HexColor('#999999'), fontSize: 14.sp),
                           border: InputBorder.none,
@@ -290,7 +293,8 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
                     SizedBox(width: 16.w,),
                     Expanded(
                       child: TextField(
-                        controller: kitchenController,
+                        controller: kitchenController,                  
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           hintStyle: TextStyle(color: HexColor('#999999'), fontSize: 14.sp),
                           border: InputBorder.none,
@@ -301,7 +305,8 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
                     SizedBox(width: 16.w,),
                     Expanded(
                       child: TextField(
-                        controller: toiletController,
+                        controller: toiletController,                  
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           hintStyle: TextStyle(color: HexColor('#999999'), fontSize: 14.sp),
                           border: InputBorder.none,
@@ -322,7 +327,8 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
               SizedBox(width: 16.w,),
               Expanded(
                 child: TextField(
-                  controller: areaController,
+                  controller: areaController,                 
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     hintText: '请输入房屋面积',
                     hintStyle: TextStyle(color: HexColor('#999999'), fontSize: 14.sp),
@@ -624,17 +630,19 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
 
   //清空表单数据
   void _clearForm() {
-    nameController.clear();
-    phoneController.clear();
-    roomController.clear();
-    hallController.clear();
-    kitchenController.clear();
-    toiletController.clear();
-    areaController.clear();
-    remarkController.clear();
-    areaselectedIndex = null;
-    houseTypeSelectedIndex = null;
-    decorationTypeSelectedIndex = null;
+    setState(() {
+      nameController.clear();
+      phoneController.clear();
+      roomController.clear();
+      hallController.clear();
+      kitchenController.clear();
+      toiletController.clear();
+      areaController.clear();
+      remarkController.clear();
+      areaselectedIndex = null;
+      houseTypeSelectedIndex = null;
+      decorationTypeSelectedIndex = null;
+    });
   }
 }
   

@@ -83,7 +83,6 @@ class _HomeResultPageWidgetState extends State<HomeResultPageWidget> {
           Text('商品'),
           Text('设计师'),
           Text('案例'),
-          Text('工地')
         ],
         tabBarProperties: TabBarProperties(
           indicatorColor: HexColor('#FFB26D'),
@@ -102,8 +101,6 @@ class _HomeResultPageWidgetState extends State<HomeResultPageWidget> {
           Placeholder(),
           Placeholder(),
           Placeholder(),
-
-
         ],
 
         onChange: (index) => print(index),
