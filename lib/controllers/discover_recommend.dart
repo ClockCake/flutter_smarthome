@@ -17,6 +17,7 @@ import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter_smarthome/utils/navigation_controller.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
 import 'package:flutter_smarthome/utils/network_state_helper.dart';
+import 'package:flutter_smarthome/utils/video_page.dart';
 import 'package:gif_view/gif_view.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -34,6 +35,8 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> with 
   RefreshController _refreshController = RefreshController(initialRefresh: false);
   int pageNum = 1;
   final int pageSize = 10;
+    // 添加标志位
+  bool _isInitialLoad = true;
   // Banner数据
   List <Map<String,dynamic>> imageList = [];
   final List<String> titleList = ['整装', '翻新', '软装',"局改","翻新"];
@@ -62,20 +65,12 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> with 
 
   void _initNetworkListener() {
     NetworkStateHelper.initNetworkListener(() {
-      // 当网络恢复时，刷新数据
-      if (mounted) {
+      if (mounted && !_isInitialLoad) { // 检查是否为初始加载
         setState(() {
           _refreshData();
         });
       }
     });
-  }
-
-  @override
-  void dispose() {
-    _refreshController.dispose();
-    NetworkStateHelper.dispose();
-    super.dispose();
   }
 
   Future<void> _loadInitialData() async {
@@ -88,7 +83,19 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> with 
       ]);
     } catch (e) {
       // 处理错误情况
+    } finally {
+      // 初始加载完成后，设置标志位为false
+      setState(() {
+        _isInitialLoad = false;
+      });
     }
+  }
+
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    NetworkStateHelper.dispose();
+    super.dispose();
   }
 
   Future<void> _refreshData() async {
@@ -175,7 +182,7 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> with 
           return ClipRRect(
             borderRadius: BorderRadius.circular(12.0), // 设置圆角
             child: NetworkImageHelper().getCachedNetworkImage(
-              imageUrl: item['image'] ?? "",
+              imageUrl: item['imgUrl'] ?? "",
               fit: BoxFit.cover,
             ),
           );
@@ -190,22 +197,13 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> with 
         onTap: (index){
           final item = imageList[index];
           switch (item['resourceType'].toString()) {
-            case '0': //设计师
-              Navigator.push(context, MaterialPageRoute(builder: (context) => DesignerHomeWidget(userId: item['resourceId'] ?? "")));
+            case '0': //视频
+              Navigator.push(context, MaterialPageRoute(builder: (context) => VideoPage(videoId: item['resourceId'] ?? "")));
               break;
-            case '1': //案例
-              Navigator.push(context, MaterialPageRoute(builder: (context) => CaseDetailWidget(title: "", caseId: item['resourceId'] ?? "")));
-              break;
-            case '2': //动态
-              Navigator.push(context, MaterialPageRoute(builder: (context) => CaseDetailWidget(title: "", caseId: item['resourceId'] ?? "")));
-              break;
-            case '3': //视频
-              showToast('该功能暂未开放');
-              break;
-            case '4': //资讯
+            case '1': //资讯
               Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleDetailWidget(title: "", articleId: item['resourceId'] ?? "")));
               break;
-            case '5': //活动
+            case '2': //活动
                Navigator.push(context, MaterialPageRoute(builder: (context) => ActivityDetailWiget(title: "", activityId: item['resourceId'] ?? "")));
               break;
             default:
@@ -569,27 +567,29 @@ Widget _buildInfiniteMarquee() {
       itemCount: recommendList.length,
       itemBuilder: (context, index) { 
 
-       final item = recommendList[index];
-       final resourceType = int.tryParse(item['resourceType'].toString()) ?? 0;  // 如果转换失败返回 0
-       switch (resourceType) {
-          case 4: // 资讯
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleDetailWidget(title: item['resourceTitle'], articleId: item['id'])));
-              },
-              child: _buildArticleCell(item['gazoHuiArticle']),
-            );
-          case 2: // 案例
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => CaseDetailWidget(title: item['caseTitle'], caseId: item['id'])));
-              },
-              child: _buildCaseCell(item['gazoHuiDesignerCase']),
-            );
-          default:
-            return const SizedBox.shrink();  // 其他情况返回空组件
-        }
-      },
+      final item = recommendList[index];
+      final resourceType = int.tryParse(item['resourceType'].toString()) ?? 0;  // 如果转换失败返回 0
+      switch (resourceType) {
+        case 4: // 资讯
+          final article = item['gazoHuiArticle'];
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleDetailWidget(title: article['resourceTitle'], articleId: article['id'])));
+            },
+            child: _buildArticleCell(item['gazoHuiArticle']),
+          );
+        case 2: // 案例
+          final caseItem = item['gazoHuiDesignerCase'];
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CaseDetailWidget(title: caseItem['caseTitle'], caseId: caseItem['id'])));
+            },
+            child: _buildCaseCell(item['gazoHuiDesignerCase']),
+          );
+        default:
+          return const SizedBox.shrink();  // 其他情况返回空组件
+      }
+     },
     );
   }
 
@@ -703,7 +703,7 @@ Widget _buildInfiniteMarquee() {
   Future<void>getBannerData() async {
     // 获取轮播图数据
     try{
-      final response = await ApiManager().get('/api/home/banner',queryParameters: {"position":"1"});
+      final response = await ApiManager().get('/api/home/banner',queryParameters: {"status":"1"}); // 0：不启用，1：启用
       if (response != null){
         setState(() {
           imageList = List<Map <String,dynamic>>.from(response);

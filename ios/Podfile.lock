@@ -5990,6 +5990,8 @@ PODS:
     - TUNIAPIManagerKit
     - YYModel
   - UICKeyChainStore (2.2.1)
+  - video_player_avfoundation (0.0.1):
+    - Flutter
   - WCScrollLabelView (0.2.3)
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
@@ -6038,6 +6040,7 @@ DEPENDENCIES:
   - ThingSmartHomeKit (~> 5.8.0)
   - ThingSmartPanelBizBundle (~> 5.8.0)
   - ThingSmartSceneBizBundle (~> 5.8.0)
+  - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/ios`)
   - WCScrollLabelView
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
   - WechatOpenSDK-XCFramework
@@ -6651,6 +6654,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite/ios"
   ThingSmartCryption:
     :path: "./"
+  video_player_avfoundation:
+    :path: ".symlinks/plugins/video_player_avfoundation/ios"
   webview_flutter_wkwebview:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
@@ -7246,6 +7251,7 @@ SPEC CHECKSUMS:
   TUNIWebSocketManager: 81dd7e7d9cedb6c6c8322f4ae22bfedc15a8c517
   TUNIWidgetManager: bc248e691547a5e4de212620670d68473de5f5e0
   UICKeyChainStore: ba3bff2c762b12db1e516f395c837dd25298b05e
+  video_player_avfoundation: 81e49bb3d9fb63dccf9fa0f6d877dc3ddbeac126
   WCScrollLabelView: 14172c898cc206511f920566fe75cd5b978f955b
   webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
   WechatOpenSDK-XCFramework: 36fb2bea0754266c17184adf4963d7e6ff98b69f

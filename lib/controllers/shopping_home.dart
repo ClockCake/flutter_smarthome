@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smarthome/controllers/home_search.dart';
 import 'package:flutter_smarthome/controllers/shopping_category_list.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/custom_navbar.dart';
@@ -15,6 +16,7 @@ class ShoppingHomeWidget extends StatefulWidget {
 
 class _ShoppingHomeWidgetState extends State<ShoppingHomeWidget>
     with SingleTickerProviderStateMixin {
+
   List<String> _categoryNameList = []; // 品类名
   List<String> _categoryIds = []; // 品类id
   late TabController _tabController;
@@ -50,6 +52,7 @@ class _ShoppingHomeWidgetState extends State<ShoppingHomeWidget>
         title: "极家Life",
         onSearchTap: () {
           // 处理搜索按钮点击
+          Navigator.push(context, MaterialPageRoute(builder: (context) => HomeSearchPage()));
         },
         onCartTap: () {
           // 处理购物车按钮点击
@@ -182,4 +185,5 @@ class _ShoppingHomeWidgetState extends State<ShoppingHomeWidget>
       }
     }
   }
+ 
 }

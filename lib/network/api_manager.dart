@@ -14,7 +14,7 @@ class ApiManager {
   static final ApiManager _instance = ApiManager._internal();
   factory ApiManager() => _instance;
   late Dio _dio;
-  final String _baseUrl = 'http://erf.gazo.net.cn:6380';
+  final String _baseUrl = 'http://192.168.200.80:6380';
   //'http://erf.gazo.net.cn:6380';
 
   ApiManager._internal() {
@@ -31,14 +31,14 @@ class ApiManager {
       ),
     );
 
-    // 添加代理配置
+   // 添加代理配置
     // (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) {
     //   client.findProxy = (uri) {
-    //     return 'PROXY 127.0.0.1:8888';
+    //     return 'PROXY 192.168.201.21:7999';
     //   };
     //   client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
     //   return client;
-    // };
+    // };    
 
     // 已有的拦截器配置
     _dio.interceptors.add(InterceptorsWrapper(
@@ -48,6 +48,43 @@ class ApiManager {
     ));
   }
 
+
+  //设置代理，并初始化 Dio 和重新设置拦截器
+  void setProxy(String proxyAddress, String proxyPort) {
+    print('Setting proxy to $proxyAddress:$proxyPort'); // 调试输出
+    try {
+      // 重新初始化 Dio
+      _dio = Dio(
+        BaseOptions(
+          baseUrl: _baseUrl,
+          connectTimeout: const Duration(milliseconds: 5000),
+          receiveTimeout: const Duration(milliseconds: 3000),
+          validateStatus: (status) => true,
+        ),
+      );
+
+      // 设置代理
+      (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) {
+        client.findProxy = (uri) {
+          return 'PROXY $proxyAddress:$proxyPort';
+        };
+        client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+        print('Proxy configured in HttpClient'); // 调试输出
+        return client;
+      };
+
+      // 重新添加拦截器
+      _dio.interceptors.add(InterceptorsWrapper(
+        onRequest: _handleRequest,
+        onResponse: _handleResponse,
+        onError: _handleError,
+      ));
+
+      print('Proxy has been set successfully'); // 调试输出
+    } catch (e) {
+      print('Error setting proxy: $e'); // 调试输出
+    }
+  }
 
   void _handleRequest(RequestOptions options, RequestInterceptorHandler handler) {
     final UserModel? user = UserManager.instance.user;
@@ -232,6 +269,20 @@ void _handleResponse(Response response, ResponseInterceptorHandler handler) {
       Response response = await _dio.delete(
         path,
         data: data,
+      );
+      return response.data['data'];
+
+    } catch (e) {
+      rethrow;  
+
+    }
+  }
+
+  Future<dynamic> deleteWithParameters(String path, {Map<String, dynamic>? data}) async {
+    try {
+      Response response = await _dio.delete(
+        path,
+        queryParameters: data,
       );
       return response.data['data'];
 

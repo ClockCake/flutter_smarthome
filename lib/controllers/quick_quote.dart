@@ -18,14 +18,27 @@ class QuickQuoteWidget extends StatefulWidget {
 class _QuickQuoteWidgetState extends State<QuickQuoteWidget> {
   // 为这个页面定义一个新的 viewType，避免与其他原生视图冲突
   static const String viewType = 'native_quote_view';
+  
+  static const platform = MethodChannel('com.yourapp.navigation');
 
   @override
   void initState() {
     super.initState();
+    platform.setMethodCallHandler(_handleMethod);
+  }
+
+  Future<void> _handleMethod(MethodCall call) async {
+    if (call.method == 'popToFlutter') {
+      if (Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
+    }
+    // 处理其他方法
   }
 
   @override
   void dispose() {
+    platform.setMethodCallHandler(null);
     super.dispose();
   }
 

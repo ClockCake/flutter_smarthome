@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smarthome/controllers/shopping_detail.dart';
 import 'package:flutter_smarthome/models/product_item.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
@@ -32,11 +33,17 @@ class ScrollableProductList extends StatelessWidget {
             padding: EdgeInsets.only(
               right: index == products.length - 1 ? 0 : spacing,
             ),
-            child: _ProductCard(
-              product: products[index],
-              width: itemWidth,
-              height: itemHeight,
-            ),
+            child: GestureDetector(
+              onTap: () {
+                // 处理商品点击事件
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingDetailPageWidget(commodityId: products[index].id)));
+              },
+              child: _ProductCard(
+                product: products[index],
+                width: itemWidth.w,
+                height: itemHeight.w,
+              ),
+            )
           ),
         ),
       ),
@@ -85,17 +92,15 @@ class _ProductCard extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12), // 裁剪图片为圆角
-              child: Image.network(
-                product.imageUrl,
-                width: width,
-                height: width,
+              child: NetworkImageHelper().getCachedNetworkImage(
+                imageUrl: product.imageUrl,
                 fit: BoxFit.cover,
               ),
             ),
           ),
           // 商品信息
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(3.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -111,13 +116,12 @@ class _ProductCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    if (product.shopIcon?.isNotEmpty == true) // 检查不仅不为 null 而且不为空字符串
                       Container(
                         width: 14.w,
                         height: 14.w,
                         margin: EdgeInsets.only(right: 4),
                         child: NetworkImageHelper().getCachedNetworkImage(
-                          imageUrl: product.shopIcon!,
+                          imageUrl: (product.shopIcon?.isEmpty ?? true) ? 'https://image.iweekly.top/i/2024/12/05/675120e7c5411.png' : product.shopIcon!,
                         ),
                       ),
                       Expanded( // 添加 Expanded 让文字可以自适应宽度

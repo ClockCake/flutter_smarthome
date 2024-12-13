@@ -20,7 +20,7 @@ class ActivityDetailWiget extends StatefulWidget {
 }
 
 class _ActivityDetailWigetState extends State<ActivityDetailWiget> {
-  Map<String, dynamic> _activityDetail = {};
+  Map<String, dynamic>? _activityDetail;
   final ScrollController _scrollController = ScrollController();
   double _opacity = 0.0;
 
@@ -48,6 +48,26 @@ class _ActivityDetailWigetState extends State<ActivityDetailWiget> {
 
   @override
   Widget build(BuildContext context) {
+    if (_activityDetail == null) {
+      return Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.white.withOpacity(_opacity),
+          iconTheme: IconThemeData(
+            color: _opacity >= 0.5 ? Colors.black : Colors.white,
+          ),
+          title: Text(
+            widget.title,
+            style: TextStyle(
+              color: Colors.black.withOpacity(_opacity),
+            ),
+          ),
+        ),
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
@@ -83,7 +103,7 @@ class _ActivityDetailWigetState extends State<ActivityDetailWiget> {
                   Padding(
                     padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 20.h, bottom: 20.w),
                     child: Text(
-                      _activityDetail['resourceTitle'] ?? '',
+                      _activityDetail?['resourceTitle'] ?? '',
                       style: TextStyle(
                         fontSize: 18.sp,
                         color: HexColor('#333333'),
@@ -106,7 +126,7 @@ class _ActivityDetailWigetState extends State<ActivityDetailWiget> {
                         ),
                         SizedBox(width: 4.w),
                         Text(
-                          '${_activityDetail['effectiveTimeBegin'] - _activityDetail['effectiveTimeEnd']}',
+                          '${_activityDetail?['effectiveTimeBegin'] ?? ""} - ${_activityDetail?['effectiveTimeEnd'] ?? ""}',                     
                           style: TextStyle(
                             fontSize: 12.sp,
                             color: HexColor('#999999'),
@@ -119,7 +139,7 @@ class _ActivityDetailWigetState extends State<ActivityDetailWiget> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
                     child: Html(
-                      data: _activityDetail['resourceInfo'] ?? '',
+                      data: _activityDetail?['resourceInfo'] ?? '',
                     )
                   ),
                 ],
@@ -135,7 +155,7 @@ class _ActivityDetailWigetState extends State<ActivityDetailWiget> {
       width: double.infinity,
       height: 150.h + MediaQuery.of(context).padding.top,
       child: NetworkImageHelper().getCachedNetworkImage(
-        imageUrl: _activityDetail['mainPic'],
+        imageUrl: _activityDetail?['mainPic'] ?? "",
         fit: BoxFit.cover,
       ),
     );

@@ -57,7 +57,7 @@ dependencies:
   package_info_plus: ^4.2.0 #获取app信息库
   flutter_html: ^3.0.0-beta.2 #html解析库
   connectivity_plus: ^5.0.1 
-
+  video_player: ^2.7.2 #播放器库
 
 
 

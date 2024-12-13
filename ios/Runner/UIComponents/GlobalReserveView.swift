@@ -21,6 +21,9 @@ class GlobalReserveView: UIView {
     
     init(frame: CGRect,businessType:String,businessId:Int = 0) {
         super.init(frame: frame)
+        // 监听键盘事件
+       NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+       NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         self.businessType = businessType
         self.businessId = businessId
         self.backgroundColor = UIColor.black.withAlphaComponent(0.2)
@@ -175,7 +178,29 @@ class GlobalReserveView: UIView {
                     
     }
     
-    
+    @objc private func keyboardWillShow(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+
+        let keyboardHeight = keyboardFrame.height
+        // 动画更新约束，使 contentView 上移
+        UIView.animate(withDuration: 0.3) {
+            self.contentView.snp.updateConstraints { make in
+                make.top.equalTo(self.snp.bottom).offset(-200 - self.safeAreaInsets.bottom - keyboardHeight)
+            }
+            self.layoutIfNeeded()
+        }
+    }
+
+    @objc private func keyboardWillHide(_ notification: Notification) {
+        // 键盘收起时恢复原状
+        UIView.animate(withDuration: 0.3) {
+            self.contentView.snp.updateConstraints { make in
+                make.top.equalTo(self.snp.bottom).offset(-200 - self.safeAreaInsets.bottom)
+            }
+            self.layoutIfNeeded()
+        }
+    }
     func showViewWithAnimation() {
         // 更新约束，将 tableView 移动到正确的位置
         let maxHeight = 300 + kSafeHeight

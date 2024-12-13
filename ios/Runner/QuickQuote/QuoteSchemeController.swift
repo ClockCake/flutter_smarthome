@@ -56,9 +56,9 @@ class QuoteSchemeController: BaseViewController {
     init(title: String, isShowBack: Bool = true,decorations:[DecorationTypeModel],type:QuickQuoteType,areaNum:String) {
         switch type {
         case .wholeHouse:
-            param = "/whole"
+            param = "whole"
         case .softDecoration:
-            param = "/soft-loading"
+            param = "soft-loading"
         default:
             break
         }

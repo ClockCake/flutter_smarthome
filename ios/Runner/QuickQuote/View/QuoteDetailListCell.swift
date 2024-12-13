@@ -38,6 +38,7 @@ class QuoteDetailListCell: UITableViewCell {
             make.top.bottom.equalToSuperview()
         }
         let image = UIImageView.init()
+        image.backgroundColor = UIColor.colorWithHexString("#F8F8F8")
         containerView.addSubview(image)
         image.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)

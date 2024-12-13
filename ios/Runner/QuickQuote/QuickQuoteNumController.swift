@@ -38,6 +38,13 @@ class QuickQuoteNumController: BaseViewController {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = false
         setUI()
+        
+        backArrowButton.rx.tap.subscribe(onNext: { [weak self]  _ in
+            guard let self = self else { return  }
+            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+                appDelegate.popToFlutter()
+            }
+        }).disposed(by: disposeBag)
     }
     init(title:String,isShowBack:Bool = true,type:QuickQuoteType) {
         self.type = type

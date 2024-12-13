@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smarthome/controllers/search_grid.dart';
+import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 
 class HomeResultPageWidget extends StatefulWidget {
@@ -18,13 +20,19 @@ class HomeResultPageWidget extends StatefulWidget {
 }
 
 class _HomeResultPageWidgetState extends State<HomeResultPageWidget> {
+  final TextEditingController _controller = TextEditingController(); 
+  List<Map<String,dynamic>> dataSource = [];
   @override
   void initState() {
     super.initState();
+    _controller.text = widget.searchStr;
+     _onRefresh();
+
   }
 
   @override
   void dispose() {
+    _controller.dispose();
     super.dispose();
   }
 
@@ -49,6 +57,7 @@ class _HomeResultPageWidgetState extends State<HomeResultPageWidget> {
                     child: Container(
                       height: 36.h, // 搜索框高度
                       child: TextField(
+                        controller: _controller,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.symmetric(vertical: 8.0),
                           prefixIcon: Icon(Icons.search, color: Colors.grey),
@@ -60,6 +69,11 @@ class _HomeResultPageWidgetState extends State<HomeResultPageWidget> {
                           filled: true,
                           fillColor: Colors.grey[200],
                         ),
+                        onSubmitted: (value) { // 添加 onSubmitted 回调
+                          if (value.length > 1) {
+                             _onRefresh();
+                          }
+                        },
                       ),
                     ),
                   ),
@@ -95,12 +109,11 @@ class _HomeResultPageWidgetState extends State<HomeResultPageWidget> {
         ),
 
         views: [
-          Placeholder(),
-          Placeholder(),
-          Placeholder(),
-          Placeholder(),
-          Placeholder(),
-          Placeholder(),
+          SearchGridPageWidget(dataList: dataSource), //全部
+          SearchGridPageWidget(dataList: dataSource.where((item) => item['resourceType'] == '4').toList()), //产品
+          SearchGridPageWidget(dataList: dataSource.where((item) => item['resourceType'] == '3').toList()), //商品
+          SearchGridPageWidget(dataList: dataSource.where((item) => item['resourceType'] == '1').toList()), //设计师
+          SearchGridPageWidget(dataList: dataSource.where((item) => item['resourceType'] == '2').toList()), //案例
         ],
 
         onChange: (index) => print(index),
@@ -108,4 +121,23 @@ class _HomeResultPageWidgetState extends State<HomeResultPageWidget> {
       )
     );    
   }
+  
+  Future<void> _onRefresh() async {
+    try {
+      final apiManager = ApiManager();
+      final response = await apiManager.get(
+        '/api/home/search',
+         queryParameters: {
+          'searchValue': _controller.text,}
+      );
+      if (mounted && response!= null) {
+        setState(() {
+           dataSource = List<Map<String,dynamic>>.from(response);
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+ 
 }

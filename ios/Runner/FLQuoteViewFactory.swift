@@ -64,7 +64,7 @@ class FLQuoteView: NSObject, FlutterPlatformView {
             height -= tabBarHeight
             
             let newFrame = CGRect(x: 0, y: 0, width: width, height: height)
-            createNativeView(newFrame, params, tabBarHeight)
+            createNativeView(newFrame, params, kSafeHeight)
         } else {
             createNativeView(frame, nil, 49)
         }

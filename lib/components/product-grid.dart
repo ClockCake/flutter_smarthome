@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smarthome/controllers/shopping_detail.dart';
 import 'package:flutter_smarthome/models/product_item.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
@@ -35,17 +36,21 @@ class ProductGrid extends StatelessWidget {
       itemCount: products.length,
       itemBuilder: (context, index) {
         final product = products[index];
-        return Container(
+        return GestureDetector(
+          onTap: () {
+            // 处理商品点击事件
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingDetailPageWidget(commodityId: product.id)));
+          },
+          child: Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: Image.network(
-                    product.imageUrl,
+                  child: NetworkImageHelper().getCachedNetworkImage(
+                    imageUrl: product.imageUrl,
                     fit: BoxFit.cover,
-                    // width: double.infinity,
                   ),
                 ),
               ),
@@ -66,11 +71,10 @@ class ProductGrid extends StatelessWidget {
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        if (product.shopIcon != null && product.shopIcon!.isNotEmpty) // 检查不仅不为 null 而且不为空字符串
                         Container(
                           width: 16,
                           height: 16,
-                          child: NetworkImageHelper().getNetworkImage(imageUrl: product.shopIcon!),
+                          child: NetworkImageHelper().getNetworkImage(imageUrl: (product.shopIcon?.isEmpty ?? true) ? 'https://image.iweekly.top/i/2024/12/05/675120e7c5411.png' : product.shopIcon!),
                         ),
                         const SizedBox(width: 4),
                         Expanded(
@@ -110,6 +114,7 @@ class ProductGrid extends StatelessWidget {
               ),
             ],
           ),
+        ),
         );
       },
     );

@@ -13,7 +13,8 @@ import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:oktoast/oktoast.dart';
 
 class AddressListWidget extends StatefulWidget {
-  const AddressListWidget({super.key});
+  final Function(Map<String,dynamic>)? onAddressSelected; // 新增回调
+  const AddressListWidget({super.key,  this.onAddressSelected});
 
   @override
   State<AddressListWidget> createState() => _AddressListWidgetState();
@@ -76,17 +77,13 @@ Widget build(BuildContext context) {
               final item = _addressList[index];
               return GestureDetector(
                 onTap: () {
-                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AddressFormWidget(type: 1, address: item),
-                    ),
-                  ).then((result) {
-                    _getListData();
-                  });
+                 if(widget.onAddressSelected != null) {
+                    widget.onAddressSelected!(item);
+                    Navigator.pop(context);
+                  }
                 },
-                child: _buildListCell(_addressList[index]),
-              ); 
+                child: _buildListCell(item),
+              );
             },
           ),
     ),
@@ -175,17 +172,30 @@ Widget build(BuildContext context) {
                 Positioned(
                   bottom: 25.h,
                   right: 16.w,
-                  child: Container(
-                    width: 16.w,
-                    height: 16.w,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/icon_address_edit.png'),
-                        fit: BoxFit.cover,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddressFormWidget(type: 1, address: item),
+                        ),
+                      ).then((result) {
+                        _getListData();
+                      });
+                    },
+                    child: Container(
+                      width: 16.w,
+                      height: 16.w,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/icon_address_edit.png'),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
                 ),
+                
               ]
             ),
           ),
