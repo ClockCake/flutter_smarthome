@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/controllers/login_page.dart';
+import 'package:flutter_smarthome/controllers/personal_order_segment.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
 import '../models/user_model.dart';
@@ -238,7 +239,7 @@ class _PersonalHomeWidgetState extends State<PersonalHomeWidget> {
                     ),
                     SizedBox(height: 4.h),  // 两行文本之间的间距
                     Text(
-                      '收藏',  // 第二行文本
+                      '点赞',  // 第二行文本
                       style: TextStyle(
                         fontSize: 12.sp,  // 较小字号
                         color: Colors.grey,  // 灰色
@@ -347,10 +348,10 @@ class _PersonalHomeWidgetState extends State<PersonalHomeWidget> {
                   ),
                 ),
                 Spacer(),
-                InkWell(
+                GestureDetector(
                   onTap: () {
                     print('Tapped 查看全部');
-                    // 处理查看全部点击事件
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => PersonalOrderSegmentWidget(index: 0)));
                   },
                   child: Row(
                     children: [
@@ -376,10 +377,11 @@ class _PersonalHomeWidgetState extends State<PersonalHomeWidget> {
               child: Row(
                 children: _orderTitles.asMap().keys.map((index) {
                   return Expanded(
-                    child: InkWell(
+                    child: GestureDetector(
                       onTap: () {
                         print('Tapped ${_orderTitles[index]}');
                         // 处理订单点击事件
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => PersonalOrderSegmentWidget(index: index + 1)));
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

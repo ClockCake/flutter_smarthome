@@ -1,20 +1,26 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smarthome/controllers/shopping_car_list.dart';
 import 'package:flutter_smarthome/controllers/shopping_order.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
 import 'package:flutter_smarthome/utils/shopping_cart_count.dart';
+import 'package:oktoast/oktoast.dart';
 
 class ShoppingCartSkuPopupWidget extends StatefulWidget {
   final int type; // 1: 加入购物车, 2: 立即购买
   final String commodityId; // 商品ID
   final String name; // 商品名称
+  final Function()? onCartSuccess; // 添加回调参数
 
   const ShoppingCartSkuPopupWidget({
     required this.type,
     required this.commodityId,
     required this.name,
+    this.onCartSuccess, // 新增参数
     super.key,
   });
 
@@ -30,12 +36,14 @@ class _ShoppingCartSkuPopupWidgetState extends State<ShoppingCartSkuPopupWidget>
   Map<String, dynamic> selectedSkuInfo = {}; // 选中的 Sku
   List<String> selectedPropertyIds = []; // 选中的属性 ID
   List<String> selectedPropertyNames = []; // 选中的属性名称
+  int maxQuantity = 99; // 最大购买数量
 
   @override
   void initState() {
     super.initState();
     _getSkuInfo();
     _getSkuStock();
+    
   }
 
   @override
@@ -94,6 +102,15 @@ class _ShoppingCartSkuPopupWidgetState extends State<ShoppingCartSkuPopupWidget>
       if (mounted && response != null) {
         setState(() {
           selectedSkuInfo = Map<String, dynamic>.from(response);
+          if (selectedSkuInfo['isShelves'] == false) {
+            maxQuantity = 0;
+            showToast('商品已下架');
+          }else{
+            maxQuantity = selectedSkuInfo['inventory'] ?? 0;
+            if (maxQuantity == 0) {
+              showToast('商品库存不足');
+            }
+          }
         });
       }
     } catch (e) {
@@ -253,6 +270,7 @@ class _ShoppingCartSkuPopupWidgetState extends State<ShoppingCartSkuPopupWidget>
                             fontSize: 16.sp, fontWeight: FontWeight.bold)),
                     SizedBox(height: 8.h),
                     ShoppingCartItem(
+                      maxQuantity: maxQuantity,
                       onQuantityChanged: (value) {
                         setState(() {
                           quantity = value;
@@ -281,19 +299,28 @@ class _ShoppingCartSkuPopupWidgetState extends State<ShoppingCartSkuPopupWidget>
                             );
                             return;
                           }
-                          Navigator.push(context, MaterialPageRoute(builder: (context) {
-                            Map<String, dynamic> business = {
-                              'commodityId': widget.commodityId,
-                              'commodityPropertyId': selectedPropertyIds.join(','),
-                              'mainPic':selectedSkuInfo['mainPic'],
-                              'salesPrice':selectedSkuInfo['salesPrice'],
-                              'pointPrice':selectedSkuInfo['pointPrice'],
-                              'name':widget.name,
-                              'quantity': quantity,
-                              'skuName':selectedOptions.values,
-                            };
-                            return ShoppingOrderWidget(businessList: [business],);
-                          }));
+                          if (maxQuantity == 0) {
+                            showToast('商品已下架 或库存不足');
+                            return;
+                          }
+                          if (widget.type == 1) { // 加入购物车
+                            _joinShoppingCart();
+                          }else{ // 立即购买
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                              Map<String, dynamic> business = {
+                                'commodityId': widget.commodityId,
+                                'commodityPropertyId': selectedPropertyIds.join(','),
+                                'mainPic':selectedSkuInfo['mainPic'],
+                                'salesPrice':selectedSkuInfo['salesPrice'],
+                                'pointPrice':selectedSkuInfo['pointPrice'],
+                                'name':widget.name,
+                                'quantity': quantity,
+                                'skuName':selectedOptions.values,
+                              };
+                              return ShoppingOrderWidget(businessList: [business]);
+                            }));
+                          }
+
                         },
                         child: Text(widget.type == 1 ? '加入购物车' : '立即购买',
                             style:
@@ -309,5 +336,29 @@ class _ShoppingCartSkuPopupWidgetState extends State<ShoppingCartSkuPopupWidget>
         ),
       ),
     );
+  }
+
+ // 加入购物车
+  Future<void>_joinShoppingCart() async {
+    try {
+      final apiManager = ApiManager();
+      final response = await apiManager.post(
+        '/api/shopping/commodity/join/cart',
+        data: {
+          'commodityId': widget.commodityId,
+          'commodityPropertyId': selectedPropertyIds.join(','),
+          'count': quantity,
+        },
+      );
+      if (response != null) {
+         showToast('加入购物车成功');
+        if (widget.onCartSuccess != null) {
+          widget.onCartSuccess!();
+          Navigator.of(context).pop();
+        }
+      }
+    } catch (e) {
+      print('Error joining shopping cart: $e');
+    }
   }
 }

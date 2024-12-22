@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/controllers/address_list.dart';
+import 'package:flutter_smarthome/controllers/shopping_pay.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
@@ -21,10 +22,14 @@ class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget> {
   PaymentMethod? _selectedMethod;
 
   Map<String, dynamic> address = {};
+  Map<String, dynamic> points = {};
+  bool isUseCash = true;
+
   @override
   void initState() {
     super.initState();
     _getAddressListData();
+    _getPoints();
   }
   @override 
   void dispose() {
@@ -105,19 +110,24 @@ class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget> {
               children: [
                 Text('合计:', style: TextStyle(fontSize: 12.sp, color: HexColor('#999999'))),
                 SizedBox(width: 2.w,),
-                Text('￥${item['salesPrice'] * item['quantity']}', style: TextStyle(fontSize: 14.sp, color: Colors.black, fontWeight: FontWeight.bold)),
+                Text('￥${_calculateTotalPrice()}', style: TextStyle(fontSize: 14.sp, color: Colors.black, fontWeight: FontWeight.bold)),
                 Spacer(),
-                Container(
-                  width: 120.w,
-                  height: 42.h,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(8.w),
+                GestureDetector(
+                  onTap: () {
+                    _submitOrder();
+                  },
+                  child: Container(
+                    width: 120.w,
+                    height: 42.h,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(8.w),
+                    ),
+                    child: Center(
+                      child: Text('立即下单', style: TextStyle(fontSize: 14.sp, color: Colors.white)),
+                    ),
                   ),
-                  child: Center(
-                    child: Text('立即下单', style: TextStyle(fontSize: 14.sp, color: Colors.white)),
-                  ),
-                ),
+                )
               ],
             ),
           ),
@@ -143,7 +153,7 @@ class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 8.h,),
+              SizedBox(height: 3.h,),
               Text('${address['firstName']} ${address['phoneNumber']}', style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold)),
               SizedBox(height: 8.h,),
               Text('${address['detailedAddress']}', style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
@@ -156,10 +166,21 @@ class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget> {
       ),
     );
   }
+
+  //计算总价
+  double _calculateTotalPrice(){
+    double totalPrice = 0;
+    for (var item in widget.businessList) {
+      var price = item['salesPrice'];
+      if (price != null) {
+        totalPrice += price * item['quantity'];
+      }
+    }
+    return totalPrice;
+  }
  
   //构建商品信息
   Widget _buildBusinessList(){
-    final item = widget.businessList[0];
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(12.w),
@@ -171,13 +192,14 @@ class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ListView.builder(
+          ListView.separated(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             itemCount: widget.businessList.length,
             itemBuilder: (context, index){
               return _buildBusinessCell(widget.businessList[index]);
             },
+            separatorBuilder: (context, index) => SizedBox(height: 10.h), // 设置间距
           ),
           //分割线
           Container(
@@ -190,7 +212,7 @@ class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget> {
             children: [
               Text('商品总价', style: TextStyle(fontSize: 14.sp, color: HexColor('#999999'))),
               Spacer(),
-              Text('￥${item['salesPrice'] * item['quantity']}', style: TextStyle(fontSize: 14.sp, color: Colors.black,fontWeight: FontWeight.bold)),
+              Text('￥${_calculateTotalPrice()}', style: TextStyle(fontSize: 14.sp, color: Colors.black,fontWeight: FontWeight.bold)),
             ],
           ),
           SizedBox(height: 4.h,),
@@ -284,50 +306,63 @@ class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget> {
               // SizedBox(width: 16.w,),
               Text('支付方式', style: TextStyle(fontSize: 15.sp, color: Colors.black,fontWeight: FontWeight.bold)),
               Spacer(),
-              Text('我的积分: 999', style: TextStyle(fontSize: 12.sp, color: HexColor('#CA9C72'))),
+              Text('我的积分: ${points['point'] ?? 0}', style: TextStyle(fontSize: 12.sp, color: HexColor('#CA9C72'))),
             ],
           ),
           SizedBox(height: 8.h,),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  '¥ 1289.00',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12.sp,
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isUseCash = true;
+                  });
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  decoration: BoxDecoration(
+                    color: isUseCash == true ? Colors.black : Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.grey),
+                  ),
+                  child: Text(
+                    '¥ ${_calculateTotalPrice()}',
+                    style: TextStyle(
+                      color: isUseCash == true ? Colors.white : HexColor('#999999'),
+                      fontSize: 12.sp,
+                    ),
                   ),
                 ),
               ),
-              SizedBox(width: 10), // 间距
-              // 白色按钮
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.grey),
-                ),
-                child: Text(
-                  '积分495+¥1285.00',
-                  style: TextStyle(
-                    height: 1.0, // 统一行高
 
-                    color: HexColor('#999999'),
-                    fontSize: 12.sp,
+              SizedBox(width: 10.w), // 间距
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isUseCash = false;
+                  });
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  decoration: BoxDecoration(
+                    color: isUseCash == true ? Colors.white : Colors.black,  
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.grey),
+                  ),
+                  child: Text(
+                    '积分${points['usedPoint']}+¥${points['payAmount']}',
+                    style: TextStyle(
+                      height: 1.0, // 统一行高
+                      color: isUseCash == true ? HexColor('#999999') : Colors.white,
+                      fontSize: 12.sp,
+                    ),
                   ),
                 ),
-              ),
+              )
             ],
           ),
           SizedBox(height: 16.h,),
-        // Alipay Option
           GestureDetector(
             onTap: () {
               setState(() {
@@ -338,26 +373,27 @@ class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget> {
               children: [
                 Image.asset(
                   'assets/images/icon_alipay.png',
-                  width: 16,
-                  height: 16,
+                  width: 20.w,
+                  height: 20.w,
                 ),
                 SizedBox(width: 4), // Adjust spacing as needed
                 Text(
                   '支付宝',
-                  style: TextStyle(fontSize: 14, color: Colors.black),
+                  style: TextStyle(fontSize: 14.sp, color: Colors.black),
                 ),
                 Spacer(),
                 Icon(
                   _selectedMethod == PaymentMethod.alipay
-                      ? Icons.radio_button_checked
-                      : Icons.radio_button_unchecked,
+                    ? Icons.check_box
+                    : Icons.check_box_outline_blank,
                   color: Colors.black,
-                  size: 14,
+                  size: 18.sp,
                 ),
+
               ],
             ),
           ),
-          SizedBox(height: 8),
+          SizedBox(height: 16.h),
         // WeChat Pay Option
           GestureDetector(
             onTap: () {
@@ -369,10 +405,10 @@ class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget> {
               children: [
                 Image.asset(
                   'assets/images/icon_wechat_pay.png',
-                  width: 16,
-                  height: 16,
+                  width: 20.w,
+                  height: 20.w,
                 ),
-                SizedBox(width: 4), // Adjust spacing as needed
+                SizedBox(width: 4.w), // Adjust spacing as needed
                 Text(
                   '微信支付',
                   style: TextStyle(fontSize: 14, color: Colors.black),
@@ -380,10 +416,10 @@ class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget> {
                 Spacer(),
                 Icon(
                   _selectedMethod == PaymentMethod.wechat
-                      ? Icons.radio_button_checked
-                      : Icons.radio_button_unchecked,
+                    ? Icons.check_box
+                    : Icons.check_box_outline_blank,
                   color: Colors.black,
-                  size: 14,
+                  size: 18.sp,
                 ),
               ],
             ),
@@ -420,16 +456,50 @@ class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget> {
   Future<void>_getPoints() async {
     try{
       final apiManager = ApiManager();
-      final response = await apiManager.get(
-        '/api/user/points',
-        queryParameters: null,
+      List<Map<String, dynamic>> params = [];
+      for (var item in widget.businessList) {
+        params.add({'commodityPropertyId': item['commodityPropertyId'], "commodityNum":item['quantity'],"commodityId":item['commodityId']});
+      }
+      final response = await apiManager.postWithList(
+        '/api/shopping/commodity/points',
+        data: params,
       );
       if (mounted && response != null) {
         setState(() {
-          final points = response['points'];
-          print(points);
+          points = Map<String,dynamic>.from(response);
         });
       }
+    }catch(e){
+      print(e);
+    }
+  }
+
+  Future<void> _submitOrder() async {
+    try{
+      final apiManager = ApiManager();
+      List<Map<String, dynamic>> arr = [];
+      for (var item in widget.businessList) {
+        Map<String, dynamic> map = {
+          "commodityPropertyId": item['commodityPropertyId'],
+          "commodityNum": item['quantity'],
+          "commodityId": item['commodityId'],
+          
+        };
+        arr.add(map);
+      }
+      //是否使用积分（0：不使用，1：使用）
+      Map<String, dynamic> param = {"commodityShopAddressId":address['id'],
+                                    "isUsePoints":isUseCash == true ? "0" : "1",
+                                    "customerCommodityShopOrderToBuyReqVos":arr,
+                                    "payType":_selectedMethod == PaymentMethod.alipay ? 2 : 1,
+                                    "cartId": widget.businessList[0]['cartId'],
+                                    };
+      final response = await apiManager.post(
+        '/api/shopping/commodity/commit/order',
+        data: param,
+      );
+      Navigator.push(context, MaterialPageRoute(builder: (context) =>ShopingPayPageWidget(orderNumber: response['orderNumber'],)));
+
     }catch(e){
       print(e);
     }

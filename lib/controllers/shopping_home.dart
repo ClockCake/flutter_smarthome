@@ -55,7 +55,7 @@ class _ShoppingHomeWidgetState extends State<ShoppingHomeWidget>
           Navigator.push(context, MaterialPageRoute(builder: (context) => HomeSearchPage()));
         },
         onCartTap: () {
-          // 处理购物车按钮点击
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingCategoryListWidget()));
         },
       ),
       body: SafeArea(
@@ -85,7 +85,6 @@ class _ShoppingHomeWidgetState extends State<ShoppingHomeWidget>
                               double totalWidth = constraints.maxWidth;
                               double tabWidth = totalWidth /
                                   (isScrollable ? 4 : tabCount);
-
                               return TabBar(
                                 controller: _tabController,
                                 isScrollable: isScrollable,
@@ -95,7 +94,6 @@ class _ShoppingHomeWidgetState extends State<ShoppingHomeWidget>
                                   String title = _categoryNameList[index];
                                   bool isSelected =
                                       _tabController.index == index;
-
                                   return SizedBox(
                                     width: tabWidth,
                                     child: Tab(

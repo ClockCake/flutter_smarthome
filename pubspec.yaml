@@ -58,7 +58,7 @@ dependencies:
   flutter_html: ^3.0.0-beta.2 #html解析库
   connectivity_plus: ^5.0.1 
   video_player: ^2.7.2 #播放器库
-
+  fluwx: ^3.13.1 #微信支付库
 
 
 dev_dependencies:

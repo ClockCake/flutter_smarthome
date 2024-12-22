@@ -46,6 +46,9 @@ PODS:
     - TPCircularBuffer (= 1.1)
   - FLAnimatedImage (1.0.17)
   - Flutter (1.0.0)
+  - fluwx (0.0.1):
+    - Flutter
+    - WechatOpenSDK-XCFramework (~> 2.0.2)
   - FMDB (2.7.12):
     - FMDB/standard (= 2.7.12)
   - FMDB/Core (2.7.12)
@@ -6004,6 +6007,7 @@ DEPENDENCIES:
   - Bugly
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - Flutter (from `Flutter`)
+  - fluwx (from `.symlinks/plugins/fluwx/ios`)
   - IJKMediaFramework
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - IQKeyboardManager
@@ -6642,6 +6646,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/connectivity_plus/ios"
   Flutter:
     :path: Flutter
+  fluwx:
+    :path: ".symlinks/plugins/fluwx/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   package_info_plus:
@@ -6672,6 +6678,7 @@ SPEC CHECKSUMS:
   EZAudio: 3b1cb4b6d7ebca68f0c2478576d75940aad4aa99
   FLAnimatedImage: bbf914596368867157cc71b38a8ec834b3eeb32b
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  fluwx: e9e728cfdb80e82dac5f4ff974b1901a7939dcd0
   FMDB: 728731dd336af3936ce00f91d9d8495f5718a0e6
   Folly: 8680d5765ad4a4b2a41c652d660464e87311bae0
   glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d

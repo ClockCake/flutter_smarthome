@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/controllers/login_page.dart';
+import 'package:flutter_smarthome/controllers/shopping_car_list.dart';
 import 'package:flutter_smarthome/controllers/shopping_cart_sku.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
@@ -206,7 +207,9 @@ class _ShoppingDetailPageWidgetState extends State<ShoppingDetailPageWidget> {
         if (!isLogin) {
           return LoginPage();
         } else {
-          return ShoppingCartSkuPopupWidget(commodityId: widget.commodityId, type: index,name: _shoppingDetail['name'],);
+          return ShoppingCartSkuPopupWidget(commodityId: widget.commodityId, type: index,name: _shoppingDetail['name'],  onCartSuccess: () {
+            _getShoppingDetail();
+          },);
         }
       },
     );
@@ -244,7 +247,9 @@ class _ShoppingDetailPageWidgetState extends State<ShoppingDetailPageWidget> {
           ),
           SizedBox(width: 16.w),
           GestureDetector( // 购物车
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingCarListWidget()));
+            },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

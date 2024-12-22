@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:fluwx/fluwx.dart';
 import 'dart:io';
 import 'base_tabbar_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,8 +19,19 @@ void main() async{
       child: MyApp(),
     ),
   );
+  _registerWxApi(); // 注册微信 API
 }
 
+//注册微信 API
+void _registerWxApi() {
+  // 注册微信
+  registerWxApi(
+    appId: "wx8531759f373d8a56",
+    doOnAndroid: true,
+    doOnIOS: true,
+    universalLink: "https://crs.gazolife.cn/ios/",
+  );
+}
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {

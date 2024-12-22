@@ -58,36 +58,54 @@ class _ShoppingCartItemState extends State<ShoppingCartItem> {
     bool canDecrement = _quantity > widget.minQuantity;
     bool canIncrement = _quantity < widget.maxQuantity;
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // 减号按钮
-        IconButton(
-          icon: Icon(Icons.remove),
-          onPressed: canDecrement ? _decrement : () {
-            showToast("已达到最小数量 ${widget.minQuantity}");
-          },
-        ),
-        // 显示当前数量
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 3.h),
+return Row(
+  mainAxisSize: MainAxisSize.min,
+  children: [
+      // 减号按钮
+      GestureDetector(
+        onTap: canDecrement ? _decrement : () {
+          showToast("已达到最小数量 ${widget.minQuantity}");
+        },
+        child: Container(
+          width: 24.w,
+          height: 24.h,
           decoration: BoxDecoration(
             border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(4.r),
           ),
-          child: Text(
-            '$_quantity',
-            style: TextStyle(fontSize: 18.sp),
+          child: Icon(Icons.remove, size: 16.sp),
+        ),
+      ),
+      SizedBox(width: 8.w),
+      // 显示当前数量
+      Container(
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(4.r),
+        ),
+        child: Text(
+          '$_quantity',
+          style: TextStyle(fontSize: 14.sp),
+        ),
+      ),
+      SizedBox(width: 8.w),
+      // 加号按钮
+      GestureDetector(
+        onTap: canIncrement ? _increment : () {
+          showToast("已达到最大数量 ${widget.maxQuantity}");
+        },
+        child: Container(
+          width: 24.w,
+          height: 24.h,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(4.r),
           ),
+          child: Icon(Icons.add, size: 16.sp),
         ),
-        // 加号按钮
-        IconButton(
-          icon: Icon(Icons.add),
-          onPressed: canIncrement ? _increment : () {
-            showToast("已达到最大数量 ${widget.maxQuantity}");
-          },
-        ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+ }
 }

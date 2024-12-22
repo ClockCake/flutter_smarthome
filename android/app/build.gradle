@@ -26,7 +26,8 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 33
+    //flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -42,22 +43,37 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
+    // defaultConfig {
+    //     // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+    //     applicationId "com.jiyoujiaju.jijiahui"
+    //     // You can update the following values to match your application needs.
+    //     // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
+    //     minSdkVersion flutter.minSdkVersion
+    //     targetSdkVersion flutter.targetSdkVersion
+    //     versionCode flutterVersionCode.toInteger()
+    //     versionName flutterVersionName
+    // }
+
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.flutter_smarthome"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
-        targetSdkVersion flutter.targetSdkVersion
+        applicationId "com.jiyoujiaju.jijiahui"
+        minSdkVersion 19 // 修改为至少 19
+        targetSdkVersion 33 // 或者使用最新的 SDK 版本
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-    }
+        multiDexEnabled true // 启用 MultiDex
 
+    }
     buildTypes {
+        debug {
+            minifyEnabled false
+            shrinkResources false
+        }
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            minifyEnabled true
+            shrinkResources true
             signingConfig signingConfigs.debug
+            // 可选：启用代码混淆以减少方法数
+            // proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
@@ -68,4 +84,8 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android:6.8.24' // 使用最新版本
+    // 添加 MultiDex 依赖
+    implementation 'androidx.multidex:multidex:2.0.1'
+
 }

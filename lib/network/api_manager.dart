@@ -14,7 +14,7 @@ class ApiManager {
   static final ApiManager _instance = ApiManager._internal();
   factory ApiManager() => _instance;
   late Dio _dio;
-  final String _baseUrl = 'http://192.168.200.80:6380';
+  final String _baseUrl = 'http://192.168.10.128:6380';
   //'http://erf.gazo.net.cn:6380';
 
   ApiManager._internal() {
@@ -236,6 +236,19 @@ void _handleResponse(Response response, ResponseInterceptorHandler handler) {
   /// [path] 请求路径
   /// [data] 请求体
   Future<dynamic> post(String path, {Map<String, dynamic>? data}) async {
+    try {
+      Response response = await _dio.post(
+        path,
+        data: data,
+      );
+      return response.data['data'];
+
+    } catch (e) {
+       rethrow;  
+    }
+  }
+
+  Future<dynamic> postWithList(String path, {List<Map<String, dynamic>>? data}) async {
     try {
       Response response = await _dio.post(
         path,

@@ -78,8 +78,9 @@ Widget build(BuildContext context) {
               return GestureDetector(
                 onTap: () {
                  if(widget.onAddressSelected != null) {
-                    widget.onAddressSelected!(item);
                     Navigator.pop(context);
+
+                    widget.onAddressSelected!(item);
                   }
                 },
                 child: _buildListCell(item),
