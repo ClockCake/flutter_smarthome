@@ -478,13 +478,14 @@ class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget> {
     try{
       final apiManager = ApiManager();
       List<Map<String, dynamic>> arr = [];
+      List<String>cartIdArr = [];
       for (var item in widget.businessList) {
         Map<String, dynamic> map = {
           "commodityPropertyId": item['commodityPropertyId'],
           "commodityNum": item['quantity'],
           "commodityId": item['commodityId'],
-          
         };
+        cartIdArr.add(item['cartId'] ?? "");
         arr.add(map);
       }
       //是否使用积分（0：不使用，1：使用）
@@ -492,7 +493,7 @@ class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget> {
                                     "isUsePoints":isUseCash == true ? "0" : "1",
                                     "customerCommodityShopOrderToBuyReqVos":arr,
                                     "payType":_selectedMethod == PaymentMethod.alipay ? 2 : 1,
-                                    "cartId": widget.businessList[0]['cartId'],
+                                    "cartId": cartIdArr.join(","),
                                     };
       final response = await apiManager.post(
         '/api/shopping/commodity/commit/order',

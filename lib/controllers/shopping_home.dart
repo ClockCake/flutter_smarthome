@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/controllers/home_search.dart';
+import 'package:flutter_smarthome/controllers/shopping_car_list.dart';
 import 'package:flutter_smarthome/controllers/shopping_category_list.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/custom_navbar.dart';
@@ -55,7 +56,7 @@ class _ShoppingHomeWidgetState extends State<ShoppingHomeWidget>
           Navigator.push(context, MaterialPageRoute(builder: (context) => HomeSearchPage()));
         },
         onCartTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingCategoryListWidget()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingCarListWidget()));
         },
       ),
       body: SafeArea(

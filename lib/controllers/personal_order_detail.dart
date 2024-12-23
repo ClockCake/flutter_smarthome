@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_smarthome/controllers/address_list.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
@@ -391,7 +392,7 @@ Widget _buildBusinessInfo(Map<String,dynamic> business){
                 SizedBox(width: 12.w),
                 GestureDetector(
                   onTap: () {
-                    // Handle cancellation
+                    _modifyAddress(widget.id);
                   },
                   child: Container(
                     width: 74.w,
@@ -610,6 +611,21 @@ Widget _buildBusinessInfo(Map<String,dynamic> business){
     }
  }
 
+  void _modifyAddress(String orderId) {
+    // 创建一个闭包来捕获 orderId
+    void handleAddressSelected(Map<String, dynamic> address) {
+      _handleAddressSelected(address, orderId);
+    }
+    
+    Navigator.push(
+      context, 
+      MaterialPageRoute(
+        builder: (context) => AddressListWidget(
+          onAddressSelected: handleAddressSelected,
+        )
+      )
+    );
+  }
   Future<void> _handleAddressSelected(Map<String, dynamic> address, String orderId) async {
     try {
       bool? confirm = await _showConfirmDialog(address);
