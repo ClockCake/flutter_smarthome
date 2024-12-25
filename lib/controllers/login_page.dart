@@ -8,7 +8,9 @@ import '../utils/user_manager.dart';
 import '../models/user_model.dart';
 import '../base_tabbar_controller.dart';
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+    final VoidCallback? onLoginSuccess;
+
+  const LoginPage({Key? key, this.onLoginSuccess}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -337,7 +339,9 @@ class _LoginPageState extends State<LoginPage> {
         // 处理登录成功
         UserModel user = UserModel.fromJson(response);
         await UserManager.instance.saveUser(user);
-
+        if (widget.onLoginSuccess != null) {
+          widget.onLoginSuccess!();
+        }
         try {
           await platform.invokeMethod('tuyaLogin', {
             'mobile': user.mobile,
@@ -375,7 +379,7 @@ class _LoginPageState extends State<LoginPage> {
                 _buildLoginButton(),
                 const Expanded(child: SizedBox()),
                 _buildAgreement(),
-                SizedBox(height: 30.h + bottomPadding),
+                SizedBox(height: 60.h + bottomPadding),
               ],
             ),
           ),

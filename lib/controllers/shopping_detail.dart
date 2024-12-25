@@ -196,7 +196,7 @@ class _ShoppingDetailPageWidgetState extends State<ShoppingDetailPageWidget> {
   }
   
   //跳转方法
-  void _jumpToPage(int index) {
+  void _jumpToPage(int index,BuildContext contexts) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true, 
@@ -205,7 +205,17 @@ class _ShoppingDetailPageWidgetState extends State<ShoppingDetailPageWidget> {
       ),
       builder: (context) {
         if (!isLogin) {
-          return LoginPage();
+          return Padding(
+            padding: EdgeInsets.only(
+              top: MediaQuery.of(contexts).padding.top, 
+              bottom: MediaQuery.of(contexts).viewInsets.bottom,
+            ),
+            child: LoginPage(onLoginSuccess: () {
+              setState(() {
+                isLogin = true;
+              });
+            },),
+          );
         } else {
           return ShoppingCartSkuPopupWidget(commodityId: widget.commodityId, type: index,name: _shoppingDetail['name'],  onCartSuccess: () {
             _getShoppingDetail();
@@ -228,6 +238,10 @@ class _ShoppingDetailPageWidgetState extends State<ShoppingDetailPageWidget> {
         children: [
           GestureDetector( // 收藏
             onTap: () {
+               if(isLogin == false){
+                  showToast('请先登录');
+                  return;
+               }
                 (_shoppingDetail['isCollection'] ?? "").isNotEmpty ? _cancelCollection() : _addCollection();
             },
             child: Column(
@@ -248,6 +262,10 @@ class _ShoppingDetailPageWidgetState extends State<ShoppingDetailPageWidget> {
           SizedBox(width: 16.w),
           GestureDetector( // 购物车
             onTap: () {
+              if(isLogin == false){
+                  showToast('请先登录');
+                  return;
+              }
               Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingCarListWidget()));
             },
             child: Column(
@@ -262,7 +280,7 @@ class _ShoppingDetailPageWidgetState extends State<ShoppingDetailPageWidget> {
           Spacer(),
           GestureDetector( // 加入购物车
             onTap: () {
-              _jumpToPage(1);
+              _jumpToPage(1,context);
             },
             child: Container(
               height: 42.h,
@@ -280,7 +298,7 @@ class _ShoppingDetailPageWidgetState extends State<ShoppingDetailPageWidget> {
           SizedBox(width: 16.w),
           GestureDetector( // 立即购买
             onTap: () {
-              _jumpToPage(2);
+              _jumpToPage(2,context);
             },
             child: Container(
               height: 42.h,
