@@ -4,11 +4,14 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/controllers/address_list.dart';
+import 'package:flutter_smarthome/controllers/shopping_pay.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
 import 'package:flutter_smarthome/view/cancel_order_dialog.dart';
+import 'package:flutter_smarthome/view/webview_page.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class PersonalOrderDetailWidget extends StatefulWidget {
   final String id;
@@ -19,8 +22,13 @@ class PersonalOrderDetailWidget extends StatefulWidget {
 }
 
 class _PersonalOrderDetailWidgetState extends State<PersonalOrderDetailWidget> {
-  Map<String,dynamic> orderDetail = {};
-  @override
+Map<String,dynamic> orderDetail = {
+  'orderStatus': '',
+  'customerCommodityShopOrderInfoItemRespVos': [],
+  'commodityShopAddressRespVo': {},
+  // ...其他必要的初始值
+};  
+@override
   void initState() {
     super.initState();
     _getOrderDetail();
@@ -97,9 +105,9 @@ class _PersonalOrderDetailWidgetState extends State<PersonalOrderDetailWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 3.h,),
-              Text('${address['firstName']} ${address['phoneNumber']}', style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold)),
+              Text('${address['firstName'] ?? ''} ${address['phoneNumber'] ?? ''}', style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold)),
               SizedBox(height: 8.h,),
-              Text('${address['detailedAddress']}', style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
+              Text('${address['detailedAddress'] ?? ''}', style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
               SizedBox(height: 4.h,),
             ]
           ),
@@ -140,7 +148,7 @@ Widget _buildOrderInfo(){
           },
           separatorBuilder: (context, index) => SizedBox(height: 8.0), // 设置间距
 
-          itemCount: orderDetail['customerCommodityShopOrderInfoItemRespVos'].length,
+          itemCount: (orderDetail['customerCommodityShopOrderInfoItemRespVos'] as List?)?.length ?? 0,
         ),
         SizedBox(height: 16.h),
         Row(
@@ -187,11 +195,11 @@ Widget _buildOrderInfo(){
             SizedBox(width: 16.w),
             Text('订单编号', style: TextStyle(fontSize: 14.sp, color: HexColor('#999999'))),
             Spacer(),
-            Text('${orderDetail['orderNumber']} |', style: TextStyle(fontSize: 14.sp, color: HexColor('#333333'))),
+            Text('${orderDetail['orderNumber'] ?? ""} | ', style: TextStyle(fontSize: 14.sp, color: HexColor('#333333'))),
             GestureDetector(
               onTap: () {
                 //复制订单编号
-                Clipboard.setData(ClipboardData(text: orderDetail['orderNumber'])).then((_) {
+                Clipboard.setData(ClipboardData(text: orderDetail['orderNumber'] ?? "")).then((_) {
                   // 复制成功后，可以显示一个提示（比如使用 Snackbar）
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('订单编号已复制')));
                 });
@@ -417,7 +425,9 @@ Widget _buildBusinessInfo(Map<String,dynamic> business){
                 SizedBox(width: 12.w),
                 GestureDetector(
                   onTap: () {
-                    // Handle payment
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingPayPageWidget(paymentAmount: '${orderDetail['payAmount'] ?? 0}',orderId: widget.id,orderNumber: orderDetail['orderNumber'],onPaymentComplete: () {
+                      _getOrderDetail();
+                    },)));
                   },
                   child: Container(
                     width: 74.w,
@@ -472,7 +482,7 @@ Widget _buildBusinessInfo(Map<String,dynamic> business){
                 ),
               ],
             ),
-          if (orderDetail['orderStatus'] == "3") //待收货
+          if (orderDetail['orderStatus'] == "4") //待收货
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -532,7 +542,7 @@ Widget _buildBusinessInfo(Map<String,dynamic> business){
                 ),
               ],
             ),
-          if (orderDetail['orderStatus'] == "6") //已完成
+          if (orderDetail['orderStatus'] == "6") //已取消
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -592,24 +602,24 @@ Widget _buildBusinessInfo(Map<String,dynamic> business){
   }
 
 
-//获取订单详情
- Future<void> _getOrderDetail() async {
-    try{
-      final apiManager = ApiManager();
-      final response = await apiManager.get(
-        '/api/personal/order/detail',
-        queryParameters: {"id":widget.id}
-      );
-      if(response != null){
-        setState(() {
-          orderDetail = Map<String,dynamic>.from(response);
-        });
+  //获取订单详情
+  Future<void> _getOrderDetail() async {
+      try{
+        final apiManager = ApiManager();
+        final response = await apiManager.get(
+          '/api/personal/order/detail',
+          queryParameters: {"id":widget.id}
+        );
+        if(response != null){
+          setState(() {
+            orderDetail = Map<String,dynamic>.from(response);
+          });
+        }
       }
-    }
-    catch(e){
-      print(e);
-    }
- }
+      catch(e){
+        print(e);
+      }
+  }
 
   void _modifyAddress(String orderId) {
     // 创建一个闭包来捕获 orderId

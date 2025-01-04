@@ -4,10 +4,12 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/controllers/address_list.dart';
+import 'package:flutter_smarthome/controllers/personal_order_detail.dart';
 import 'package:flutter_smarthome/controllers/shopping_pay.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
+import 'package:fluwx/fluwx.dart' as fluwx;
 
 class ShoppingOrderWidget extends StatefulWidget {
   final List<Map<String, dynamic>> businessList;
@@ -18,22 +20,30 @@ class ShoppingOrderWidget extends StatefulWidget {
 }
 enum PaymentMethod { alipay, wechat }
 
-class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget> {
+class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget>with WidgetsBindingObserver {
   PaymentMethod? _selectedMethod;
 
   Map<String, dynamic> address = {};
   Map<String, dynamic> points = {};
   bool isUseCash = true;
-
-  @override
+  String orderId = ""; // 订单 ID
+  @override 
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this); // 添加观察者
     _getAddressListData();
     _getPoints();
   }
   @override 
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this); // 移除观察者
     super.dispose();
+  }
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) { //后台切换回前台
+    if (state == AppLifecycleState.resumed  && orderId.length > 0)  {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => PersonalOrderDetailWidget(id: orderId)));
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -499,10 +509,50 @@ class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget> {
         '/api/shopping/commodity/commit/order',
         data: param,
       );
-      Navigator.push(context, MaterialPageRoute(builder: (context) =>ShopingPayPageWidget(orderNumber: response['orderNumber'],)));
-
+      if (response != null) {
+        orderId = response['orderId'];
+        payAmountData(response);
+      }
     }catch(e){
       print(e);
     }
+  }
+
+
+  Future<void> payAmountData(Map<String,dynamic>item) async {
+    final apiManager = ApiManager();
+    final response = await apiManager.post(
+      '/api/shopping/pay/unionpay',
+      data: {"paymentAmount":item['payAmount'],"orderNumber":item['orderNumber']}
+    );
+    if(response != null){
+      if (_selectedMethod == PaymentMethod.alipay) {
+        // Handle Alipay payment
+      } else if (_selectedMethod == PaymentMethod.wechat) {
+        // Handle WeChat payment
+        _shareToWeChat(response['qrcode']);
+      }
+    }
+  }
+
+  void _shareToWeChat(String payUrl) {
+
+    final fluwx.WeChatScene scene = fluwx.WeChatScene.SESSION; // 可以选择 SESSION（会话）或 TIMELINE（朋友圈）
+
+    final fluwx.WeChatShareWebPageModel shareModel = fluwx.WeChatShareWebPageModel(
+      payUrl,
+      title: "支付",
+      description: "打开支付链接",
+      thumbnail: fluwx.WeChatImage.network(''), // 缩略图 URL
+      scene: scene,
+    );
+ 
+    fluwx.shareToWeChat(shareModel).then((success) {
+      if (success) {
+        print("分享成功");
+      } else {
+        print("分享失败");
+      }
+    });
   }
 }

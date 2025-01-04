@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/controllers/address_list.dart';
 import 'package:flutter_smarthome/controllers/personal_order_detail.dart';
+import 'package:flutter_smarthome/controllers/shopping_pay.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/empty_state.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
@@ -289,7 +290,9 @@ class _PersonalOrderListWidgetState extends State<PersonalOrderListWidget> {
                 SizedBox(width: 12.w),
                 GestureDetector(
                   onTap: () {
-                    // Handle payment
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingPayPageWidget(paymentAmount: '${item['payAmount'] ?? 0}',orderId: item['id'],orderNumber: item['orderNumber'],onPaymentComplete: () {
+                      _onRefresh();
+                    },)));
                   },
                   child: Container(
                     width: 74.w,
@@ -344,7 +347,7 @@ class _PersonalOrderListWidgetState extends State<PersonalOrderListWidget> {
                 ),
               ],
             ),
-          if (item['orderStatus'] == "3") //待收货
+          if (item['orderStatus'] == "4") //待收货
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -404,7 +407,7 @@ class _PersonalOrderListWidgetState extends State<PersonalOrderListWidget> {
                 ),
               ],
             ),
-          if (item['orderStatus'] == "6") //已完成
+          if (item['orderStatus'] == "6") //已取消
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

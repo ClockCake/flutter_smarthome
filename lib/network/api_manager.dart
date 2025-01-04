@@ -14,7 +14,7 @@ class ApiManager {
   static final ApiManager _instance = ApiManager._internal();
   factory ApiManager() => _instance;
   late Dio _dio;
-  final String _baseUrl = 'http://192.168.10.128:6380';
+  final String _baseUrl = 'http://192.168.10.95:6380';
   //'http://erf.gazo.net.cn:6380';
 
   ApiManager._internal() {
