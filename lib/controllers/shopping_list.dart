@@ -8,14 +8,18 @@ import 'package:flutter_smarthome/utils/empty_state.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class ShoppingListWidget extends StatefulWidget {
-  final String firstCategoryId;
-  final String secondCategoryId;
-  final String categoryName;
+  final String? firstCategoryId;
+  final String? secondCategoryId;
+  final String? categoryName;
+  final String? businessId;
+  final String? type; // 商品检索类型：1 - 精选、0 - 商品、2 - 活动、 3 - 新品
   const ShoppingListWidget({
     super.key,
-    required this.firstCategoryId,
-    required this.secondCategoryId,
-    required this.categoryName
+    this.firstCategoryId,
+    this.secondCategoryId,
+    this.categoryName,
+    this.businessId,
+    this.type,
   });
 
   @override
@@ -43,18 +47,19 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      backgroundColor: Colors.white,
+      appBar: widget.businessId == null ? AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         title: Text(
-          widget.categoryName, 
+          widget.categoryName ?? '', 
           style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-      ),
+      ) : null,
       body: SmartRefresher(
         enablePullDown: true,
         enablePullUp: true,
@@ -117,7 +122,7 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
       _refreshController.loadComplete();
     }
   }
-
+  //普通商品列表查询
   Future<void>getBusinessList() async{
     try{
       final apiManager = ApiManager();
@@ -126,6 +131,8 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
         queryParameters: {
           'searchFirstCategoryId': widget.firstCategoryId,
           'searchSecondCategoryId': widget.secondCategoryId,
+          'businessId': widget.businessId,
+          'type': widget.type,
           'pageNum': pageNum,
           'pageSize': pageSize,
         },
@@ -156,4 +163,5 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
       print(e);
     }
   }
+
 }

@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_smarthome/controllers/login_page.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; 
 import 'package:dio/io.dart';
 import '../utils/user_manager.dart';
 import '../models/user_model.dart';
@@ -14,33 +14,28 @@ class ApiManager {
   static final ApiManager _instance = ApiManager._internal();
   factory ApiManager() => _instance;
   late Dio _dio;
-  final String _baseUrl = 'http://192.168.10.95:6380';
+  final String _baseUrl = 'http://192.168.201.87:6380';
   //'http://erf.gazo.net.cn:6380';
+
+  // 用来标记是否正在刷新
+  bool _isRefreshing = false;
+  // 存放需要重试的请求队列
+  final List<RequestOptions> _penddingRequests = [];
+
 
   ApiManager._internal() {
     _initDio();
   }
 
+  // 拦截器
   void _initDio() {
-    _dio = Dio(
-      BaseOptions(
-        baseUrl: _baseUrl,
-        connectTimeout: const Duration(milliseconds: 5000),
-        receiveTimeout: const Duration(milliseconds: 3000),
-        validateStatus: (status) => true,
-      ),
-    );
-
-   // 添加代理配置
-    // (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) {
-    //   client.findProxy = (uri) {
-    //     return 'PROXY 192.168.201.21:7999';
-    //   };
-    //   client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
-    //   return client;
-    // };    
-
-    // 已有的拦截器配置
+    _dio = Dio(BaseOptions(
+      baseUrl: _baseUrl,
+      connectTimeout: const Duration(milliseconds: 5000),
+      receiveTimeout: const Duration(milliseconds: 3000),
+      validateStatus: (status) => true,
+    ));
+    
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: _handleRequest,
       onResponse: _handleResponse,
@@ -99,57 +94,125 @@ class ApiManager {
     handler.next(options);
   }
 
-void _handleResponse(Response response, ResponseInterceptorHandler handler) {
-    _logResponse(response);
-    EasyLoading.dismiss();
+  void _handleResponse(Response response, ResponseInterceptorHandler handler) { 
+      _logResponse(response);
+      EasyLoading.dismiss();
 
-    // 处理所有响应
-    if (response.data is Map<String, dynamic>) {
-      final code = response.data['code'];
-      final msg = response.data['msg'];
-      if (code == 200) {
-        return handler.next(response);
+      // 处理所有响应
+      if (response.data is Map<String, dynamic>) {
+        final code = response.data['code'];
+        final msg = response.data['msg'];
+        if (code == 200) {
+          return handler.next(response);
+        }
+        // 处理401认证错误
+        if (code == 401) {
+          _handleAuthError(msg);
+          return handler.reject(
+            DioException(
+              requestOptions: response.requestOptions,
+              response: response,
+              error: msg ?? '认证失败',
+            ),
+          );
+        }
+    
+      // 处理500错误
+        if (code == 500) {
+          showToast(
+            msg ?? '服务器错误',
+            position: ToastPosition.bottom,
+          );
+          // return handler.resolve(
+          //   Response(
+          //     requestOptions: response.requestOptions,
+          //     data: null,  // 返回空数据
+          //   )
+          // );
+        }
 
       }
-      // 处理401认证错误
-      if (code == 401) {
-        _handleAuthError(msg);
-        return handler.reject(
-          DioException(
-            requestOptions: response.requestOptions,
-            response: response,
-            error: msg ?? '认证失败',
-          ),
-        );
-      }
-   
-     // 处理500错误
-      if (code == 500) {
-        showToast(
-          msg ?? '服务器错误',
-          position: ToastPosition.bottom,
-        );
-        // return handler.resolve(
-        //   Response(
-        //     requestOptions: response.requestOptions,
-        //     data: null,  // 返回空数据
-        //   )
-        // );
-      }
 
+  
     }
 
- 
-  }
-
-  void _handleError(DioException err, ErrorInterceptorHandler handler) {
+  /// ===== 核心：在 onError 时处理 401 =====
+  void _handleError(DioException err, ErrorInterceptorHandler handler) async {
     _logError(err);
     EasyLoading.dismiss();
 
-    String errorMsg = _getErrorMessage(err);
-    showToast(errorMsg, position: ToastPosition.bottom);
+    // 如果是 401 并且不是在刷新接口本身，就执行刷新流程
+    if (err.response?.statusCode == 401 && !err.requestOptions.path.contains('refresh')) {
+      // 判断是否正在刷新
+      if (!_isRefreshing) {
+        _isRefreshing = true;
+        // 把当前的请求加入队列
+        _penddingRequests.add(err.requestOptions);
+
+        try {
+          // 调用刷新token的方法
+          await _refreshToken();
+
+          // 刷新成功以后，依次重试队列中的请求
+          for (var request in _penddingRequests) {
+            // 重新设置新的 accessToken
+            request.headers["Authorization"] = UserManager.instance.user?.accessToken ?? "";
+            // 注意：这里要使用 dio 再次发起请求，不要直接 handler.resolve
+            final response = await _dio.fetch(request);
+            // 这里就相当于把之前的请求成功结果返回给之前的调用处
+            handler.resolve(response);
+          }
+        } catch (e) {
+          // 刷新失败：跳转登录
+          _handleAuthError("登录已过期，请重新登录");
+          handler.next(err); 
+        } finally {
+          // 清空队列、关闭刷新状态
+          _penddingRequests.clear();
+          _isRefreshing = false;
+        }
+      } else {
+        // 已经在刷新，先把请求加入队列，不要立刻抛错
+        _penddingRequests.add(err.requestOptions);
+      }
+    } else {
+      // 其他错误，正常处理
+      String errorMsg = _getErrorMessage(err);
+      showToast(errorMsg, position: ToastPosition.bottom);
+      handler.next(err);
+    }
+  }
+
+    /// ===== 刷新 token 的方法 =====
+  Future<void> _refreshToken() async {
+    // 这里从你项目的 UserManager 里拿到 refreshToken
+    final oldRefreshToken = UserManager.instance.user?.refreshToken;
+    if (oldRefreshToken == null) {
+      throw Exception("无 refreshToken, 无法刷新");
+    }
     
-    handler.next(err);
+    try {
+      // 发起刷新接口
+      final response = await _dio.post(
+        "/api/login/refresh-token",
+        options: Options(headers: {
+          'Authorization': oldRefreshToken,
+        }),
+      );
+
+      // 判断是否成功
+      if (response.data["code"] == 200) {
+        final newAccessToken = response.data["data"]["accessToken"];
+        final newRefreshToken = response.data["data"]["refreshToken"];
+        // 重新保存到 UserManager
+        UserManager.instance.user?.accessToken = newAccessToken;
+        UserManager.instance.user?.refreshToken = newRefreshToken;
+      } else {
+        throw Exception("刷新失败");
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 
   String _getErrorMessage(DioException error) {

@@ -9,9 +9,11 @@ import 'package:flutter_smarthome/utils/hex_color.dart';
 
 class HomeResultPageWidget extends StatefulWidget {
   final String searchStr;
+  final int type; // 1 是App 首页搜索， 2 是商城首页搜索
   const HomeResultPageWidget({
     super.key,
     required this.searchStr,
+    required this.type,
     
   });
 
@@ -26,7 +28,6 @@ class _HomeResultPageWidgetState extends State<HomeResultPageWidget> {
   void initState() {
     super.initState();
     _controller.text = widget.searchStr;
-     _onRefresh();
 
   }
 
@@ -69,11 +70,6 @@ class _HomeResultPageWidgetState extends State<HomeResultPageWidget> {
                           filled: true,
                           fillColor: Colors.grey[200],
                         ),
-                        onSubmitted: (value) { // 添加 onSubmitted 回调
-                          if (value.length > 1) {
-                             _onRefresh();
-                          }
-                        },
                       ),
                     ),
                   ),
@@ -91,12 +87,18 @@ class _HomeResultPageWidgetState extends State<HomeResultPageWidget> {
   Widget _buildSegmentedControl() {
     return Expanded(
       child: ContainedTabBarView(
-        tabs: const [
-          Text('全部'),
-          Text('产品'),
-          Text('商品'),
-          Text('设计师'),
-          Text('案例'),
+        tabs: [
+          if (widget.type == 1) ...[
+            Text('全部'),
+            Text('产品'),
+            Text('商品'),
+            Text('设计师'),
+            Text('案例'),
+          ] else if (widget.type == 2) ...[
+            Text('全部'),
+            Text('商品'),
+            Text('店铺'),
+          ]
         ],
         tabBarProperties: TabBarProperties(
           indicatorColor: HexColor('#FFB26D'),
@@ -109,11 +111,18 @@ class _HomeResultPageWidgetState extends State<HomeResultPageWidget> {
         ),
 
         views: [
-          SearchGridPageWidget(dataList: dataSource), //全部
-          SearchGridPageWidget(dataList: dataSource.where((item) => item['resourceType'] == '4').toList()), //产品
-          SearchGridPageWidget(dataList: dataSource.where((item) => item['resourceType'] == '3').toList()), //商品
-          SearchGridPageWidget(dataList: dataSource.where((item) => item['resourceType'] == '1').toList()), //设计师
-          SearchGridPageWidget(dataList: dataSource.where((item) => item['resourceType'] == '2').toList()), //案例
+          if (widget.type == 1) ...[
+            SearchGridPageWidget(searchTypes: [0],searchValue: _controller.text,), //全部
+            SearchGridPageWidget(searchTypes: [4],searchValue: _controller.text,), //产品
+            SearchGridPageWidget(searchTypes: [3],searchValue: _controller.text,), //商品
+            SearchGridPageWidget(searchTypes: [6], searchValue: _controller.text), //店铺
+            SearchGridPageWidget(searchTypes: [1],searchValue: _controller.text,), //设计师
+            SearchGridPageWidget(searchTypes: [2],searchValue: _controller.text,), //案例
+          ] else if (widget.type == 2) ...[
+            SearchGridPageWidget(searchTypes: [3,6],searchValue: _controller.text,), //全部
+            SearchGridPageWidget(searchTypes: [3],searchValue: _controller.text,), //商品
+            SearchGridPageWidget(searchTypes: [6], searchValue: _controller.text), //店铺
+          ],
         ],
 
         onChange: (index) => print(index),
@@ -122,22 +131,6 @@ class _HomeResultPageWidgetState extends State<HomeResultPageWidget> {
     );    
   }
   
-  Future<void> _onRefresh() async {
-    try {
-      final apiManager = ApiManager();
-      final response = await apiManager.get(
-        '/api/home/search',
-         queryParameters: {
-          'searchValue': _controller.text,}
-      );
-      if (mounted && response!= null) {
-        setState(() {
-           dataSource = List<Map<String,dynamic>>.from(response);
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
+
  
 }

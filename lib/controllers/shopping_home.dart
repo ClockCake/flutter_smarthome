@@ -53,7 +53,7 @@ class _ShoppingHomeWidgetState extends State<ShoppingHomeWidget>
         title: "极家Life",
         onSearchTap: () {
           // 处理搜索按钮点击
-          Navigator.push(context, MaterialPageRoute(builder: (context) => HomeSearchPage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => HomeSearchPage(type: 2)));
         },
         onCartTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingCarListWidget()));

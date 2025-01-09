@@ -4,6 +4,11 @@ import 'package:flutter_smarthome/controllers/search_result.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // 导入 shared_preferences
 
 class HomeSearchPage extends StatefulWidget {
+  final int type; // 1 是App 首页搜索， 2 是商城首页搜索
+  const HomeSearchPage({
+    Key? key,
+    required this.type,
+  }) : super(key: key);
   @override
   _HomeSearchPageState createState() => _HomeSearchPageState();
 }
@@ -91,7 +96,7 @@ class _HomeSearchPageState extends State<HomeSearchPage> {
                             _addHistoryTag(value); // 记录搜索关键字
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => HomeResultPageWidget(searchStr: value)), // 跳转到下一个页面
+                              MaterialPageRoute(builder: (context) => HomeResultPageWidget(searchStr: value,type: widget.type,)), // 跳转到下一个页面
                             );
                           }
                         },

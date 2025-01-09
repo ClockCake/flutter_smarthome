@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/controllers/login_page.dart';
+import 'package:flutter_smarthome/controllers/shopping_business.dart';
 import 'package:flutter_smarthome/controllers/shopping_car_list.dart';
 import 'package:flutter_smarthome/controllers/shopping_cart_sku.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
@@ -103,14 +104,20 @@ class _ShoppingDetailPageWidgetState extends State<ShoppingDetailPageWidget> {
                   ),
                   
                   SizedBox(height: 12.h,),
-                  Row(
-                    children: [
-                      SizedBox(width: 16.w,),
-                      NetworkImageHelper().getCachedNetworkImage(imageUrl: _shoppingDetail['businessLogo'] ?? "",width: 18.w,height: 18.h),
-                      SizedBox(width: 4.w,),
-                      Text(_shoppingDetail['businessName'] ?? "",style: TextStyle(color: HexColor('#222222'),fontSize: 12.sp),),
-                    ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingBusinessWidget(businessId: _shoppingDetail['businessId'],businessName: _shoppingDetail['businessName'],businessLogo: _shoppingDetail['businessLogo'])));
+                    },
+                    child:Row(
+                      children: [
+                        SizedBox(width: 16.w,),
+                        NetworkImageHelper().getCachedNetworkImage(imageUrl: _shoppingDetail['businessLogo'] ?? "",width: 18.w,height: 18.h),
+                        SizedBox(width: 4.w,),
+                        Text(_shoppingDetail['businessName'] ?? "",style: TextStyle(color: HexColor('#222222'),fontSize: 12.sp),),
+                      ],
+                    ),
                   ),
+
                   SizedBox(height: 12.h,),
                   Container(
                     width: double.infinity,

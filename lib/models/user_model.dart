@@ -10,6 +10,7 @@ class UserModel {
   String? tuyaPwd;      // 涂鸦密码
   String? terminalId;   // 终端 ID
   String? accessToken;  // 鉴权
+  String? refreshToken; // 刷新 Token
   String? city;         // 城市
   String? profile;      // 简介
 
@@ -24,9 +25,12 @@ class UserModel {
     this.tuyaPwd,
     this.terminalId,
     this.accessToken,
+    this.refreshToken,
     this.city,
     this.profile,
   });
+
+
 
   // 从 JSON 创建一个 UserModel 实例
   factory UserModel.fromJson(Map<String, dynamic> json) {

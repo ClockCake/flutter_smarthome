@@ -131,7 +131,7 @@ class _CaseDetailWidgetState extends State<CaseDetailWidget> {
   }
 
   Widget _buildTopBackgroundImage(BuildContext context) {
-    String defaultImage = 'https://image.iweekly.top/i/2024/07/26/66a30d068028b.jpg';
+    String defaultImage = 'https://image.iweekly.top/i/2025/01/08/677e186e73d4a.png';
     
     List<String> pics;
     try {

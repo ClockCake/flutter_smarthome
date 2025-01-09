@@ -121,7 +121,7 @@ class _ProductCard extends StatelessWidget {
                         height: 14.w,
                         margin: EdgeInsets.only(right: 4),
                         child: NetworkImageHelper().getCachedNetworkImage(
-                          imageUrl: (product.shopIcon?.isEmpty ?? true) ? 'https://image.iweekly.top/i/2024/12/05/675120e7c5411.png' : product.shopIcon!,
+                          imageUrl: (product.shopIcon?.isEmpty ?? true) ? 'https://image.iweekly.top/i/2025/01/08/677e186e73d4a.png' : product.shopIcon!,
                         ),
                       ),
                       Expanded( // 添加 Expanded 让文字可以自适应宽度

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -5,17 +7,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/controllers/case_detail.dart';
 import 'package:flutter_smarthome/controllers/designer_home.dart';
 import 'package:flutter_smarthome/controllers/quick_quote.dart';
+import 'package:flutter_smarthome/controllers/shopping_business.dart';
 import 'package:flutter_smarthome/controllers/shopping_detail.dart';
+import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/empty_state.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class SearchGridPageWidget extends StatefulWidget {
-  final List<Map<String, dynamic>> dataList; //数据源
+  final List<dynamic> searchTypes; // 搜索类型
+  final String searchValue; // 搜索关键字
   const SearchGridPageWidget({
     super.key,
-    required this.dataList,
-
+    required this.searchTypes,
+    required this.searchValue,
   });
 
   @override
@@ -23,66 +29,163 @@ class SearchGridPageWidget extends StatefulWidget {
 }
 
 class _SearchGridPageWidgetState extends State<SearchGridPageWidget> {
+  int pageNum = 1;
+  final int pageSize = 10;
+  late List<Map<String, dynamic>> dataList; //数据源
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
+
   @override
   void initState() {
     super.initState();
+    dataList = [];
+    _onRefresh();
   }
   @override
   void dispose() {
     super.dispose();
+    _refreshController.dispose();
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: widget.dataList.isEmpty ? EmptyStateWidget(onRefresh: (){},)
-      :Padding(
-        padding: EdgeInsets.all(10.w),
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 1.0,
-            crossAxisSpacing: 10.0,
-            mainAxisSpacing: 10.0,
+            body: SafeArea(
+        child: SmartRefresher(
+          enablePullDown: true,
+          enablePullUp: true,
+          header: WaterDropHeader(),
+          footer: CustomFooter(
+            builder: (BuildContext context, LoadStatus? mode) {
+              Widget body;
+              if (mode == LoadStatus.idle) {
+                body = Text("上拉加载");
+              } else if (mode == LoadStatus.loading) {
+                body = CircularProgressIndicator();
+              } else if (mode == LoadStatus.failed) {
+                body = Text("加载失败！点击重试！");
+              } else if (mode == LoadStatus.canLoading) {
+                body = Text("松手加载更多");
+              } else {
+                body = Text("");
+              }
+              return Container(
+                height: 55.0,
+                child: Center(child: body),
+              );
+            },
           ),
-          itemBuilder: (BuildContext context, int index) {
-            final item = widget.dataList[index];
-            switch (item['resourceType']) {
-              case '1': //设计师
-                return GestureDetector(
-                  onTap: () {
-                     Navigator.push(context, MaterialPageRoute(builder: (context) => DesignerHomeWidget(userId: item['data']['userId'],)));
-                  },
-                  child: _buildDesigner(item['data']),
-                );
-              case '2': //案例
-                return GestureDetector(
-                  onTap: () {
-                     Navigator.push(context, MaterialPageRoute(builder: (context) => CaseDetailWidget(title: item['data']['caseTitle'], caseId: item['data']['id'],)));
-                  },
-                  child: _buildCaseCell(item['data']),
-                );
-              case '3': //商品
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingDetailPageWidget(commodityId: item['data']['id"'])));
-                  },
-                  child: _buildBusinessItem(item['data']),
-                );
-              case '4': //产品
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => QuickQuoteWidget(index: 0,)));
-                  },
-                  child: _buildPackages(item['data']),
-                );
-              default:
-                return Placeholder();
-            }
-          },
-          itemCount: widget.dataList.length,
-        ),
+          controller: _refreshController,
+          onRefresh: _onRefresh,
+          onLoading: _onLoading,
+          child: dataList.isEmpty
+            ? EmptyStateWidget(onRefresh: _onRefresh)
+            : _buildAllTypes(),
+       ),
       )
+      
+    );
+  }
+
+  //构建整体结构
+  Widget _buildAllTypes() {
+    return Padding(
+      padding: EdgeInsets.all(10.w),
+      child: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 1.0,
+          crossAxisSpacing: 10.0,
+          mainAxisSpacing: 10.0,
+        ),
+        itemBuilder: (BuildContext context, int index) {
+          final item = dataList[index];
+          switch (item['resourceType']) {
+            case '1': //设计师
+              return GestureDetector(
+                onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => DesignerHomeWidget(userId: item['data']['userId'],)));
+                },
+                child: _buildDesigner(item['data']),
+              );
+            case '2': //案例
+              return GestureDetector(
+                onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CaseDetailWidget(title: item['data']['caseTitle'], caseId: item['data']['id'],)));
+                },
+                child: _buildCaseCell(item['data']),
+              );
+            case '3': //商品
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingDetailPageWidget(commodityId: item['data']['id"'])));
+                },
+                child: _buildBusinessItem(item['data']),
+              );
+            case '4': //产品
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => QuickQuoteWidget(index: 0,)));
+                },
+                child: _buildPackages(item['data']),
+              );
+            case '6': //店铺
+             return GestureDetector(
+               onTap: () {
+                 Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingBusinessWidget(businessId: item['data']['businessId'],businessLogo: item['data']['businessLogo'],businessName: item['data']['businessName'],)));
+               },
+               child: _buildBusinessInfo(item['data']),
+             );
+            default:
+              return Placeholder();
+          }
+        },
+        itemCount: dataList.length,
+      ),
+    );
+  }
+ 
+  //构建店铺
+  Widget _buildBusinessInfo(Map<String, dynamic> item) {
+    return Padding(
+      padding: EdgeInsets.all(16.w),
+      child: Container(
+        color: HexColor('#FFF7F0'),
+        height: 160.h,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.w),
+        ),
+        child: Column(
+          children: [
+            SizedBox(height: 16.h),
+            Row(
+              children: [
+                SizedBox(width: 16.w),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10.w),
+                  child: NetworkImageHelper().getCachedNetworkImage(imageUrl: item['businessLogo'] ?? "",width: 20.w,height: 20.w),
+                ),
+                SizedBox(width: 10.w),
+                Text(item['businessName'],style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.bold, color: HexColor('#2A2A2A')),),
+                Spacer(),
+                Container(
+                  padding: EdgeInsets.fromLTRB(10.w, 5.h, 10.w, 5.h),
+                  decoration: BoxDecoration(
+                    color: Colors.transparent, // 设置透明背景色
+                    borderRadius: BorderRadius.circular(4.w),
+                    border: Border.all(color: HexColor('#999999'), width: 0.5),
+                  ),
+                  child: Text('进店',style: TextStyle(fontSize: 13.sp,color: HexColor('#2A2A2A')),),
+                ),
+                SizedBox(width: 16.w),
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.all(16.w),
+              child: NetworkImageHelper().getCachedNetworkImage(imageUrl: item['bgUrl'] ?? ""),
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -160,7 +263,7 @@ Widget _buildBusinessItem(Map<String,dynamic> item) {
             width: 16,
             height: 16,
             child: NetworkImageHelper().getNetworkImage(
-              imageUrl: item['businessLogo'] ?? "https://image.iweekly.top/i/2024/12/05/675120e7c5411.png",
+              imageUrl: item['businessLogo'] ?? "https://image.iweekly.top/i/2025/01/08/677e186e73d4a.png",
               width: 14.w,
               height: 14.w,
             ),
@@ -236,7 +339,7 @@ Widget _buildBusinessItem(Map<String,dynamic> item) {
         ClipRRect(
           borderRadius: BorderRadius.circular(8.0),
           child: NetworkImageHelper().getCachedNetworkImage(
-            imageUrl: item['caseMainPic'] ?? "https://image.iweekly.top/i/2024/12/05/675120e7c5411.png",
+            imageUrl: item['caseMainPic'] ?? "https://image.iweekly.top/i/2025/01/08/677e186e73d4a.png",
             width: double.infinity,
             height: 100.h, // 确保图片高度适中
             fit: BoxFit.cover,
@@ -250,7 +353,7 @@ Widget _buildBusinessItem(Map<String,dynamic> item) {
          Row(
            children: [
              ClipOval(
-               child: NetworkImageHelper().getCachedNetworkImage(imageUrl: item['avatar'] ?? "https://image.iweekly.top/i/2024/12/05/675120e7c5411.png", width: 16.w, height: 16.w),
+               child: NetworkImageHelper().getCachedNetworkImage(imageUrl: item['avatar'] ?? "https://image.iweekly.top/i/2025/01/08/677e186e73d4a.png", width: 16.w, height: 16.w),
              ),
              SizedBox(width: 5.w,),
              Text('${item['realName'] ?? ""}',style: TextStyle(color: HexColor('#999999'),fontSize: 12.sp),),
@@ -260,4 +363,59 @@ Widget _buildBusinessItem(Map<String,dynamic> item) {
        ],
     );
   }
+  Future<void> _getSearchResults() async {
+    try {
+      final apiManager = ApiManager();
+      final response = await apiManager.get(
+        '/api/home/search',
+         queryParameters: {
+          'searchValue': widget.searchValue,
+          'searchTypes': widget.searchTypes,
+          'pageNum': pageNum,
+          'pageSize': pageSize,
+         }
+      );
+      if (response['pageTotal'] == pageNum || response['pageTotal'] == 0) {
+        _refreshController.loadNoData();
+      }
+      if (response['rows'].isNotEmpty) {
+        final arr = List<Map<String, dynamic>>.from(response['rows']);
+        if(mounted) {
+          setState(() {
+             dataList.addAll(arr);
+          });
+        }
+
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _onRefresh() async {
+    pageNum = 1;
+    dataList.clear();
+    try {
+      // 执行数据刷新操作
+      await _getSearchResults(); // 或其他数据加载方法
+      _refreshController.refreshCompleted(); // 完成刷新
+    } catch (e) {
+      _refreshController.refreshFailed(); // 刷新失败
+    }
+
+  }
+
+  void _onLoading() async {
+    pageNum++;
+    await _getSearchResults();
+    if (dataList.isNotEmpty) {
+      _refreshController.loadFailed();
+    }
+    else {
+      _refreshController.loadComplete();
+    }
+  }
+
+ 
+  
 }

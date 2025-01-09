@@ -130,7 +130,7 @@ class _DiscoverHomeWidget extends State<DiscoverHomeWidget> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => HomeSearchPage(),
+                      builder: (context) => HomeSearchPage(type: 1,),
                     ),
                   );
                 },
