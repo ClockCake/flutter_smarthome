@@ -31,13 +31,12 @@ class SearchGridPageWidget extends StatefulWidget {
 class _SearchGridPageWidgetState extends State<SearchGridPageWidget> {
   int pageNum = 1;
   final int pageSize = 10;
-  late List<Map<String, dynamic>> dataList; //数据源
+  List<Map<String, dynamic>> dataList = []; //数据源
   RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   @override
   void initState() {
     super.initState();
-    dataList = [];
     _onRefresh();
   }
   @override
@@ -90,7 +89,20 @@ class _SearchGridPageWidgetState extends State<SearchGridPageWidget> {
   Widget _buildAllTypes() {
     return Padding(
       padding: EdgeInsets.all(10.w),
-      child: GridView.builder(
+      child: widget.searchTypes.first == 6 ? 
+      ListView.builder(
+        itemBuilder: (BuildContext context, int index) {
+          final item = dataList[index];
+          return GestureDetector(
+               onTap: () {
+                 Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingBusinessWidget(businessId: item['businessId'],businessLogo: item['businessLogo'],businessName: item['businessName'],)));
+               },
+               child: _buildBusinessInfo(item),
+             );
+        },
+        itemCount: dataList.length,
+      )
+      :GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 1.0,
@@ -99,42 +111,36 @@ class _SearchGridPageWidgetState extends State<SearchGridPageWidget> {
         ),
         itemBuilder: (BuildContext context, int index) {
           final item = dataList[index];
-          switch (item['resourceType']) {
-            case '1': //设计师
+          switch (widget.searchTypes.first) {
+            case 1: //设计师
               return GestureDetector(
                 onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => DesignerHomeWidget(userId: item['data']['userId'],)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => DesignerHomeWidget(userId: item['userId'],)));
                 },
-                child: _buildDesigner(item['data']),
+                child: _buildDesigner(item),
               );
-            case '2': //案例
+            case 2: //案例
               return GestureDetector(
                 onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => CaseDetailWidget(title: item['data']['caseTitle'], caseId: item['data']['id'],)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CaseDetailWidget(title: item['caseTitle'], caseId: item['id'],)));
                 },
-                child: _buildCaseCell(item['data']),
+                child: _buildCaseCell(item),
               );
-            case '3': //商品
+            case 3: //商品
               return GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingDetailPageWidget(commodityId: item['data']['id"'])));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingDetailPageWidget(commodityId: item['id"'])));
                 },
-                child: _buildBusinessItem(item['data']),
+                child: _buildBusinessItem(item),
               );
-            case '4': //产品
+            case 4: //产品
               return GestureDetector(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => QuickQuoteWidget(index: 0,)));
                 },
-                child: _buildPackages(item['data']),
+                child: _buildPackages(item),
               );
-            case '6': //店铺
-             return GestureDetector(
-               onTap: () {
-                 Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingBusinessWidget(businessId: item['data']['businessId'],businessLogo: item['data']['businessLogo'],businessName: item['data']['businessName'],)));
-               },
-               child: _buildBusinessInfo(item['data']),
-             );
+             
             default:
               return Placeholder();
           }
@@ -149,10 +155,11 @@ class _SearchGridPageWidgetState extends State<SearchGridPageWidget> {
     return Padding(
       padding: EdgeInsets.all(16.w),
       child: Container(
-        color: HexColor('#FFF7F0'),
         height: 160.h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.w),
+          color: HexColor('#FFF7F0'),
+
         ),
         child: Column(
           children: [
@@ -165,7 +172,7 @@ class _SearchGridPageWidgetState extends State<SearchGridPageWidget> {
                   child: NetworkImageHelper().getCachedNetworkImage(imageUrl: item['businessLogo'] ?? "",width: 20.w,height: 20.w),
                 ),
                 SizedBox(width: 10.w),
-                Text(item['businessName'],style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.bold, color: HexColor('#2A2A2A')),),
+                Text(item['businessName'] ?? "",style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.bold, color: HexColor('#2A2A2A')),),
                 Spacer(),
                 Container(
                   padding: EdgeInsets.fromLTRB(10.w, 5.h, 10.w, 5.h),
@@ -179,10 +186,10 @@ class _SearchGridPageWidgetState extends State<SearchGridPageWidget> {
                 SizedBox(width: 16.w),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.all(16.w),
-              child: NetworkImageHelper().getCachedNetworkImage(imageUrl: item['bgUrl'] ?? ""),
-            )
+            // Padding(
+            //   padding: EdgeInsets.all(16.w),
+            //   child: NetworkImageHelper().getCachedNetworkImage(imageUrl: item['bgUrl'] ?? ""),
+            // )
           ],
         ),
       ),
@@ -243,7 +250,7 @@ Widget _buildBusinessItem(Map<String,dynamic> item) {
       ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
         child: NetworkImageHelper().getCachedNetworkImage(
-          imageUrl: item['mainPic'],
+          imageUrl: item['picUrls'],
           width: double.infinity,
           height: 100.h, // 确保图片高度适中
           fit: BoxFit.cover,
@@ -286,7 +293,7 @@ Widget _buildBusinessItem(Map<String,dynamic> item) {
       Row(
         children: [
           Text(
-            '¥${item['salesPrice'] ?? ""}',
+            '¥${item['salesPrice'] ?? "0"}',
             style: TextStyle(
               fontSize: 16.sp,
               color: HexColor('#222222'),
@@ -378,7 +385,7 @@ Widget _buildBusinessItem(Map<String,dynamic> item) {
       if (response['pageTotal'] == pageNum || response['pageTotal'] == 0) {
         _refreshController.loadNoData();
       }
-      if (response['rows'].isNotEmpty) {
+      if (response.isNotEmpty) {
         final arr = List<Map<String, dynamic>>.from(response['rows']);
         if(mounted) {
           setState(() {

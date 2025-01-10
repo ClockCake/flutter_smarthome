@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   bool _isChecked = true;
   bool _isGettingCode = false;
   int _countdown = 60;
-  static final platform = MethodChannel('com.your.app/login');
+  static final platform = MethodChannel('com.smartlife.app/login');
 
   @override
   void dispose() {

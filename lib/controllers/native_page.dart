@@ -12,12 +12,11 @@ class NativePageWidget extends StatefulWidget {
 }
 
 class _NativePageWidgetState extends State<NativePageWidget> {
-  static const String viewType = 'native_ios_view';
+  static const String viewType = 'native_ios_smartlife';
 
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -63,7 +62,7 @@ class _NativePageWidgetState extends State<NativePageWidget> {
     
     // 其他平台的 fallback
     return const Center(
-      child: Text('This feature is only available on iOS'),
+      child: Text('SDK 版本过低, 请升级'),
     );
   }
 }

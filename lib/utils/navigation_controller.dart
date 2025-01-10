@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 
 class NavigationController {
-  static const platform = MethodChannel('com.yourapp.navigation');
+  static const platform = MethodChannel('com.smartlife.navigation');
 
   static Future<void> showNavigationBar() async {
     try {

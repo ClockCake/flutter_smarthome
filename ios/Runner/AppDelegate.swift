@@ -21,15 +21,15 @@ import UIKit
         let flutterViewController = FlutterViewController(engine: engine, nibName: nil, bundle: nil)
 
         // 爱家
-        if let registrar = engine.registrar(forPlugin: "native_ios_view") {
+        if let registrar = engine.registrar(forPlugin: "native_ios_smartlife") {
             let factory = FLNativeViewFactory(messenger: registrar.messenger(), flutterViewController: flutterViewController)
-            registrar.register(factory, withId: "native_ios_view")
+            registrar.register(factory, withId: "native_ios_smartlife")
         }
         
         // 快速报价
-        if let registrar = engine.registrar(forPlugin: "native_quote_view") {
+        if let registrar = engine.registrar(forPlugin: "native_ios_quick_quote") {
             let factory = FLQuoteViewFactory(messenger: registrar.messenger(), flutterViewController: flutterViewController)
-            registrar.register(factory, withId: "native_quote_view")
+            registrar.register(factory, withId: "native_ios_quick_quote")
         }
 
         DispatchQueue.global().async {
@@ -44,7 +44,7 @@ import UIKit
         navigationController.navigationBar.isHidden = true  // 默认隐藏导航栏
 
         // 配置导航方法通道
-        navigationChannel = FlutterMethodChannel(name: "com.yourapp.navigation",
+        navigationChannel = FlutterMethodChannel(name: "com.smartlife.navigation",
                                                  binaryMessenger: flutterViewController.binaryMessenger)
         
         navigationChannel?.setMethodCallHandler { [weak navigationController] (call, result) in
@@ -64,7 +64,7 @@ import UIKit
         }
         
         // 登录消息通道
-        let loginChannel = FlutterMethodChannel(name: "com.your.app/login",
+        let loginChannel = FlutterMethodChannel(name: "com.smartlife.app/login",
                                                 binaryMessenger: flutterViewController.binaryMessenger)
 
         loginChannel.setMethodCallHandler { (call: FlutterMethodCall, result: @escaping FlutterResult) in

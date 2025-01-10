@@ -89,13 +89,12 @@ class _HomeResultPageWidgetState extends State<HomeResultPageWidget> {
       child: ContainedTabBarView(
         tabs: [
           if (widget.type == 1) ...[
-            Text('全部'),
             Text('产品'),
+            Text('店铺'),
             Text('商品'),
             Text('设计师'),
             Text('案例'),
           ] else if (widget.type == 2) ...[
-            Text('全部'),
             Text('商品'),
             Text('店铺'),
           ]
@@ -112,14 +111,14 @@ class _HomeResultPageWidgetState extends State<HomeResultPageWidget> {
 
         views: [
           if (widget.type == 1) ...[
-            SearchGridPageWidget(searchTypes: [0],searchValue: _controller.text,), //全部
+            // SearchGridPageWidget(searchTypes: [0],searchValue: _controller.text,), //全部
             SearchGridPageWidget(searchTypes: [4],searchValue: _controller.text,), //产品
             SearchGridPageWidget(searchTypes: [3],searchValue: _controller.text,), //商品
             SearchGridPageWidget(searchTypes: [6], searchValue: _controller.text), //店铺
             SearchGridPageWidget(searchTypes: [1],searchValue: _controller.text,), //设计师
             SearchGridPageWidget(searchTypes: [2],searchValue: _controller.text,), //案例
           ] else if (widget.type == 2) ...[
-            SearchGridPageWidget(searchTypes: [3,6],searchValue: _controller.text,), //全部
+            // SearchGridPageWidget(searchTypes: [3,6],searchValue: _controller.text,), //全部
             SearchGridPageWidget(searchTypes: [3],searchValue: _controller.text,), //商品
             SearchGridPageWidget(searchTypes: [6], searchValue: _controller.text), //店铺
           ],

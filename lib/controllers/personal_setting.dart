@@ -24,7 +24,7 @@ class _PersonalSettingWidgetState extends State<PersonalSettingWidget> {
   List<String> _titleList = ['个人信息', '收货地址管理', '隐私政策', '清除缓存', '版本'];
 
   String? _cacheSize; // 新增状态变量来存储缓存大小
-  static const platform = MethodChannel('com.your.app/login');
+  static const platform = MethodChannel('com.smartlife.app/login');
 
   @override
   void initState() {

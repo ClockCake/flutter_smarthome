@@ -17,9 +17,9 @@ class QuickQuoteWidget extends StatefulWidget {
 
 class _QuickQuoteWidgetState extends State<QuickQuoteWidget> {
   // 为这个页面定义一个新的 viewType，避免与其他原生视图冲突
-  static const String viewType = 'native_quote_view';
+  static const String viewType = 'native_ios_quick_quote';
   
-  static const platform = MethodChannel('com.yourapp.navigation');
+  static const platform = MethodChannel('com.smartlife.navigation');
 
   @override
   void initState() {
