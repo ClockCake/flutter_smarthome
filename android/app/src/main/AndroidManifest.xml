@@ -42,28 +42,7 @@
             </intent-filter>
         </activity>
 
-        <!-- 微信支付回调相关配置 -->
-        <service
-            android:name="com.tencent.mm.opensdk.openapi.WXApiImplV10"
-            android:exported="true"> <!-- 添加 exported 属性 -->
-            <intent-filter>
-                <action android:name="com.tencent.mm.openapi.constants.ACTION_PAY" />
-            </intent-filter>
-        </service>
 
-        <!-- 微信支付回调Activity -->
-        <activity
-            android:name="com.tencent.mm.opensdk.openapi.WXPayEntryActivity"
-            android:label="WeChatPayEntryActivity"
-            android:exported="true" 
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="wx8531759f373d8a56" /> <!-- 替换为你的AppID -->
-            </intent-filter>
-        </activity>
 
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

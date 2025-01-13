@@ -1,12 +1,12 @@
 buildscript {
-    ext.kotlin_version = '1.7.10'
+    ext.kotlin_version = '1.9.22'  // 更新到最新稳定版
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.0'
+        classpath 'com.android.tools.build:gradle:7.3.1'  // 更新 Android Gradle 插件版本
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -14,7 +14,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()  // 替换 jcenter，因为它已经废弃
         maven { url 'https://jitpack.io' }
     }
 }
@@ -27,6 +27,7 @@ subprojects {
     project.evaluationDependsOn(':app')
 }
 
-task clean(type: Delete) {
+// 更新 clean task 的写法以适应新版本 Gradle
+tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
