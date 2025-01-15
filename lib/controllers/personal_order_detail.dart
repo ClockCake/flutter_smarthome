@@ -458,7 +458,7 @@ Widget _buildBusinessInfo(Map<String,dynamic> business){
               children: [
                 GestureDetector(
                   onTap: () {
-                    // Handle cancellation
+                    _modifyAddress(widget.id);
                   },
                   child: Container(
                     width: 74.w,
@@ -480,6 +480,7 @@ Widget _buildBusinessInfo(Map<String,dynamic> business){
                     ),
                   ),
                 ),
+                SizedBox(width: 20.w),
               ],
             ),
           if (orderDetail['orderStatus'] == "4") //待收货

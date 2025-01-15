@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class MyWebView extends StatefulWidget {
+  final String title;
   final String url;
 
-  const MyWebView({Key? key, required this.url}) : super(key: key);
+  const MyWebView({Key? key, required this.url, required this.title}) : super(key: key);
 
   @override
   _MyWebViewState createState() => _MyWebViewState();
@@ -17,7 +18,6 @@ class _MyWebViewState extends State<MyWebView> {
   void initState() {
     super.initState();
 
-    // 初始化 WebViewController
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
@@ -38,6 +38,19 @@ class _MyWebViewState extends State<MyWebView> {
 
   @override
   Widget build(BuildContext context) {
-    return WebViewWidget(controller: _controller);
+    return Scaffold(
+      appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          title: Text(widget.title, style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+      body: WebViewWidget(controller: _controller),
+    );
   }
 }

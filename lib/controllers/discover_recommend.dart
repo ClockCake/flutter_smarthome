@@ -18,6 +18,7 @@ import 'package:flutter_smarthome/utils/navigation_controller.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
 import 'package:flutter_smarthome/utils/network_state_helper.dart';
 import 'package:flutter_smarthome/utils/video_page.dart';
+import 'package:flutter_smarthome/view/webview_page.dart';
 import 'package:gif_view/gif_view.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -151,7 +152,12 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> with 
             SizedBox(height: 24.h),
             _buildRecommendationSection(),
             _buildTenderSection(),
-            _buildOnlineSiteSection(),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MyWebView(url: "https://npm.iweekly.top/map",title: "在建工地",)));
+              },
+              child: _buildOnlineSiteSection(),
+            ),
             Container(
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.only(left: 16.w, top: 16.h),
