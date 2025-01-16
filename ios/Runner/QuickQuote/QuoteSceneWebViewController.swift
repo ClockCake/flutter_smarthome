@@ -121,7 +121,7 @@ class QuoteSceneWebViewController: BaseViewController {
             make.edges.equalToSuperview()
         }
         //加载 URL
-        if let url = URL(string: "https://vr.justeasy.cn/view/xz165se6x8k14880-1657179172.html") {
+        if let url = URL(string: "https://npm.iweekly.top/preview") {
             let request = URLRequest(url: url)
             webView.load(request)
         }
@@ -156,30 +156,30 @@ extension QuoteSceneWebViewController:WKNavigationDelegate {
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
     }
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        let js = """
-                    var parentDiv = document.getElementById('krpanoSWFObject');
-                    var childDivs = parentDiv.getElementsByTagName('div');
-                    for (var i = 0; i < childDivs.length; i++) {
-                        childDivs[i].style.overflow = 'hidden';
-                    }
+        // let js = """
+        //             var parentDiv = document.getElementById('krpanoSWFObject');
+        //             var childDivs = parentDiv.getElementsByTagName('div');
+        //             for (var i = 0; i < childDivs.length; i++) {
+        //                 childDivs[i].style.overflow = 'hidden';
+        //             }
 
-                    var like = document.getElementById('btn_like');
-                    like.style.display = 'none';
+        //             var like = document.getElementById('btn_like');
+        //             like.style.display = 'none';
                     
-                    var scene = document.getElementById('show_scenes');
-                    scene.style.display = 'none';
-                """
+        //             var scene = document.getElementById('show_scenes');
+        //             scene.style.display = 'none';
+        //         """
         
-        //延迟0.5 执行
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            webView.evaluateJavaScript(js) { (result, error) in
-                if error == nil {
-                    print("执行成功")
-                }else{
-                    print("执行失败")
-                }
-            }
-        }
+        // //延迟0.5 执行
+        // DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        //     webView.evaluateJavaScript(js) { (result, error) in
+        //         if error == nil {
+        //             print("执行成功")
+        //         }else{
+        //             print("执行失败")
+        //         }
+        //     }
+        // }
  
     }
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {

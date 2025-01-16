@@ -89,13 +89,17 @@ class QuickQuoteNumController: BaseViewController {
             }
             switch self.type {
             case .wholeHouse: // 整装跳转到 360 预览图
-                let vc = QuoteSceneWebViewController.init(title: "", decorations:self.typeArray, type: self.headerView.type ?? .wholeHouse, areaNum: self.headerView.textField.text ?? "")
+//                let vc = QuoteSceneWebViewController.init(title: "", decorations:self.typeArray, type: self.headerView.type ?? .wholeHouse, areaNum: self.headerView.textField.text ?? "")
+//                self.navigationController?.pushViewController(vc, animated: true)
+                let vc = QuoteSchemeController.init(title: "", isShowBack: true, decorations: self.typeArray, type: self.headerView.type ?? .wholeHouse, areaNum: self.headerView.textField.text ?? "")
                 self.navigationController?.pushViewController(vc, animated: true)
             case .renovation: //翻新 去选面积
                 let vc = QuickQuoteAreaController(title: "快速报价", isShowBack:true, type: .renovation,typeArr: self.typeArray)
                 self.navigationController?.pushViewController(vc, animated: true)
             case .softDecoration:
-                let vc = QuoteSceneWebViewController.init(title: "", decorations:self.typeArray, type: self.headerView.type ?? .wholeHouse, areaNum: self.headerView.textField.text ?? "")
+//                let vc = QuoteSceneWebViewController.init(title: "", decorations:self.typeArray, type: self.headerView.type ?? .wholeHouse, areaNum: self.headerView.textField.text ?? "")
+//                self.navigationController?.pushViewController(vc, animated: true)
+                let vc = QuoteSchemeController.init(title: "", isShowBack: true, decorations: self.typeArray, type: self.headerView.type ?? .wholeHouse, areaNum: self.headerView.textField.text ?? "")
                 self.navigationController?.pushViewController(vc, animated: true)
             default:
                 break
