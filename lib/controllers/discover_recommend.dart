@@ -12,6 +12,7 @@ import 'package:flutter_smarthome/controllers/bidden_list.dart';
 import 'package:flutter_smarthome/controllers/case_detail.dart';
 import 'package:flutter_smarthome/controllers/designer_home.dart';
 import 'package:flutter_smarthome/controllers/quick_quote.dart';
+import 'package:flutter_smarthome/controllers/quote_number.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter_smarthome/utils/navigation_controller.dart';
@@ -234,7 +235,13 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> with 
               // 装修计算器
               GestureDetector(
                 onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => QuickQuoteWidget(index: 0,)));
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => QuoteNumberPage(
+                        renovationType: RenovationType.fullRenovation
+                      )
+                    )
+                  );      
                 },
                 child: Container(
                   color: HexColor('#F8F8F8'),
@@ -278,7 +285,37 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> with 
                       child: GestureDetector(
                         onTap: () {
                           if (i < 3) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => QuickQuoteWidget(index: i)));
+                          //  Navigator.push(context, MaterialPageRoute(builder: (context) => QuickQuoteWidget(index: i)));
+                          switch (i) {
+                            case 0:
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => QuoteNumberPage(
+                                    renovationType: RenovationType.fullRenovation
+                                  )
+                                )
+                              );
+                              break;
+                            case 1:
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => QuoteNumberPage(
+                                    renovationType: RenovationType.renovation
+                                  )
+                                )
+                              );
+                              break;
+                            case 2:
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => QuoteNumberPage(
+                                    renovationType: RenovationType.softFurnishing
+                                  )
+                                )
+                              );
+                              break;
+                            default:
+                          }                   
                           }else{
                             showToast('该功能暂未开放');
                           }
