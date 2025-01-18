@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/controllers/quote_package_list.dart';
+import 'package:flutter_smarthome/controllers/quote_renovation_area.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter_smarthome/utils/shopping_cart_count.dart';
 
@@ -454,7 +455,16 @@ final Map<RenovationType, List<Room>> roomTypeMap = {
             break;
           case RenovationType.renovation:
             // 翻新报价
-            print(_roomList);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => QuoteRenovationAreaPageWidget(
+                  renovationType: _currentType,
+                  area: double.parse(_areaController.text),
+                  roomList: _roomList,
+                ),
+              ),
+            );
             break;
           case RenovationType.softFurnishing:
             // 软装报价
