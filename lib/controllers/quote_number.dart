@@ -437,7 +437,7 @@ final Map<RenovationType, List<Room>> roomTypeMap = {
         }
         switch (_currentType) {
           case RenovationType.fullRenovation:
-            // 整装报价
+            // 整装报价≈
             Navigator.push(
               context,
               MaterialPageRoute(
