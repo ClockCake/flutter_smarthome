@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/controllers/quote_number.dart';
+import 'package:flutter_smarthome/controllers/quote_renovation_segments.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter/services.dart';
 
@@ -10,7 +11,7 @@ class ExpandedRoom {
   final String imageName;
   final String roomName;
   final RoomType roomType;
-  final TextEditingController controller;
+  final TextEditingController controller; //房间面积
   final int index; // 用于标识是第几个同类房间
 
   ExpandedRoom({
@@ -74,6 +75,7 @@ class _QuoteRenovationAreaPageWidgetState extends State<QuoteRenovationAreaPageW
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -90,7 +92,11 @@ class _QuoteRenovationAreaPageWidgetState extends State<QuoteRenovationAreaPageW
         child: Column(
           children: [
              _buildTips(),
-             SizedBox(height: 16.h),
+             SizedBox(height: 32.h),
+             Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: _buildGrid(),
+             )
           ],
         ),
       ),
@@ -168,19 +174,23 @@ class _QuoteRenovationAreaPageWidgetState extends State<QuoteRenovationAreaPageW
                     borderRadius: BorderRadius.circular(18.r),
                   ),
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center, // 添加此行使子组件垂直居中
                     children: [
                       //输入框
                       Expanded(
                         child: TextField(
                           controller: room.controller,
                           keyboardType: TextInputType.number,
+                          textAlignVertical: TextAlignVertical.center, // 添加此行使输入框文本垂直居中
+                          style: TextStyle(fontSize: 14.sp), // 设置输入框文字大小，与 m² 保持一致
                           inputFormatters: [
                             FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                           ],
                           decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(horizontal: 8.w),
                             border: InputBorder.none,
                             hintText: '请输入',
+                            isDense: true, // 添加此行减少输入框的默认内边距
+                            contentPadding: EdgeInsets.symmetric(vertical: 4.h,horizontal: 16.w), // 调整输入框内边距
                           ),
                         ),
                       ),
@@ -194,7 +204,7 @@ class _QuoteRenovationAreaPageWidgetState extends State<QuoteRenovationAreaPageW
           ),
         );
       },
-      itemCount: 12,
+      itemCount: _expandedRooms.length,
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
     );
@@ -203,7 +213,12 @@ class _QuoteRenovationAreaPageWidgetState extends State<QuoteRenovationAreaPageW
   _buildBottomButton() {
     return GestureDetector(
       onTap: () {
-
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => QuoteRenovationSegmentsWidget(roomList: _expandedRooms)
+          ),
+        );
       },
       child: SafeArea(
         child: Padding(

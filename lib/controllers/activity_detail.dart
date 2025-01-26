@@ -78,7 +78,7 @@ class _ActivityDetailWigetState extends State<ActivityDetailWiget> {
           color: _opacity >= 0.5 ? Colors.black : Colors.white,
         ),
         title: Text(
-          widget.title,
+          widget.title, 
           style: TextStyle(
             color: Colors.black.withOpacity(_opacity),
           ),

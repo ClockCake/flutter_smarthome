@@ -47,19 +47,19 @@ target 'Runner' do
   pod 'Kingfisher', '~> 7.0' #网络图片
   pod 'MBProgressHUD' #HUD
   pod 'MJRefresh' #刷新
-  pod 'JXBanner' #Banner轮播
-  pod 'PPNumberButton' #加减按钮
-  pod 'WechatOpenSDK-XCFramework' #微信SDK
-  pod 'lottie-ios' # 动效
+#  pod 'JXBanner' #Banner轮播
+#  pod 'PPNumberButton' #加减按钮
+#  pod 'WechatOpenSDK-XCFramework' #微信SDK
+#  pod 'lottie-ios' # 动效
   pod 'JXSegmentedView' #分栏控制器
-  pod 'JXPagingView/Paging' #分页扩展
-  pod 'JCore', '4.6.2-noidfa'    #极光
-  pod 'JVerification', '3.2.2'  #极光安全认证
-  pod 'SKPhotoBrowser' #图片浏览
-  pod 'WCScrollLabelView' #滚动播放
-  pod 'SwiftDate' #时间处理
-  pod 'IJKMediaFramework' #直播
-  pod 'Bugly' #Bug收集
+#  pod 'JXPagingView/Paging' #分页扩展
+#  pod 'JCore', '4.6.2-noidfa'    #极光
+#  pod 'JVerification', '3.2.2'  #极光安全认证
+#  pod 'SKPhotoBrowser' #图片浏览
+#  pod 'WCScrollLabelView' #滚动播放
+#  pod 'SwiftDate' #时间处理
+#  pod 'IJKMediaFramework' #直播
+#  pod 'Bugly' #Bug收集
 
   # 涂鸦SDK 相关
   pod "ThingSmartCryption", :path =>'./'

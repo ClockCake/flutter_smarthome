@@ -6,7 +6,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/controllers/case_detail.dart';
 import 'package:flutter_smarthome/controllers/designer_home.dart';
-import 'package:flutter_smarthome/controllers/quick_quote.dart';
+import 'package:flutter_smarthome/controllers/quote_number.dart';
 import 'package:flutter_smarthome/controllers/shopping_business.dart';
 import 'package:flutter_smarthome/controllers/shopping_detail.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
@@ -136,7 +136,7 @@ class _SearchGridPageWidgetState extends State<SearchGridPageWidget> {
             case 4: //产品
               return GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => QuickQuoteWidget(index: 0,)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const QuoteNumberPage(renovationType: RenovationType.fullRenovation,)));
                 },
                 child: _buildPackages(item),
               );

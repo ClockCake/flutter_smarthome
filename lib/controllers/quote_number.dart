@@ -437,7 +437,7 @@ final Map<RenovationType, List<Room>> roomTypeMap = {
         }
         switch (_currentType) {
           case RenovationType.fullRenovation:
-            // 整装报价≈
+            // 整装报价
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -448,7 +448,7 @@ final Map<RenovationType, List<Room>> roomTypeMap = {
                   livingRoomCount: _roomList.firstWhere((room) => room.roomType == RoomType.livingRoom).count,
                   bathroomCount: _roomList.firstWhere((room) => room.roomType == RoomType.bathroom).count,
                   kitchenCount: _roomList.firstWhere((room) => room.roomType == RoomType.kitchen).count,
-                  
+                  restaurantCount: 0,
                 ),
               ),
             );
@@ -468,7 +468,20 @@ final Map<RenovationType, List<Room>> roomTypeMap = {
             break;
           case RenovationType.softFurnishing:
             // 软装报价
-             print(_roomList);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => QuotePackageListWidget(
+                  renovationType: _currentType,
+                  area: 0,
+                  bedroomCount: _roomList.firstWhere((room) => room.roomType == RoomType.bedroom).count,
+                  livingRoomCount: _roomList.firstWhere((room) => room.roomType == RoomType.livingRoom).count,
+                  restaurantCount: _roomList.firstWhere((room) => room.roomType == RoomType.restaurant).count,
+                  bathroomCount: 0,
+                  kitchenCount: 0,
+                ),
+              ),
+            );
             break;
         }
       },

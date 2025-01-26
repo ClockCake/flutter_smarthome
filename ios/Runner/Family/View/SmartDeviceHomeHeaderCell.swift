@@ -61,8 +61,8 @@ class SmartDeviceHomeHeaderCell: UICollectionViewCell{
         imageView.isUserInteractionEnabled = true
         imageView.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
             guard let self = self else { return  }
-            let vc = QuoteSceneWebViewController.init(title: "", isShowBack: false, decorations: [], type: .none, areaNum: "")
-            UINavigationController.getCurrentNavigationController()?.pushViewController(vc, animated: true)
+//            let vc = QuoteSceneWebViewController.init(title: "", isShowBack: false, decorations: [], type: .none, areaNum: "")
+//            UINavigationController.getCurrentNavigationController()?.pushViewController(vc, animated: true)
         }).disposed(by: disposeBag)
         
         let bgView = UIView.init()

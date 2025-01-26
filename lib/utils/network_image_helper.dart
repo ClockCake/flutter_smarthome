@@ -9,7 +9,8 @@ class NetworkImageHelper {
   static final NetworkImageHelper _instance = NetworkImageHelper._internal();
   factory NetworkImageHelper() => _instance;
   NetworkImageHelper._internal();  
-  static const String defaultAvatarUrl = 'https://gazo-fileserver.oss-cn-shanghai.aliyuncs.com/2024/9/20240902_60bebec6345cc788ccd58fff25972a3b_20240902160245A065.png';
+  static const String defaultAvatarUrl =  'http://144.24.86.34:9002/i/2025/01/18/678b68afc1a68.png';
+  //'https://gazo-fileserver.oss-cn-shanghai.aliyuncs.com/2024/9/20240902_60bebec6345cc788ccd58fff25972a3b_20240902160245A065.png';
 
   // 自定义 HttpClient
   HttpClient get _customHttpClient {

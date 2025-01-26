@@ -168,33 +168,41 @@ class _QuotePriceDetailWidgetState extends State<QuotePriceDetailWidget> {
                             child: NetworkImageHelper().getNetworkImage(imageUrl: item?['skuPic'].length == 0 ? 'https://image.iweekly.top/i/2025/01/18/678b68afc1a68.png' : item?['skuPic'],fit: BoxFit.cover),
                           ),
                           SizedBox(width: 12.w),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                item?['materialName'] ?? '',
-                                style: TextStyle(
-                                  color: HexColor('#333333'),
-                                  fontSize: 14.sp,
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  item?['materialName'] ?? '',
+                                  style: TextStyle(
+                                    color: HexColor('#333333'),
+                                    fontSize: 14.sp,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              ),
-                              SizedBox(height: 6.h),
-                              Text(
-                                '品牌：${item?['brandName'] ?? ''}',
-                                style: TextStyle(
-                                  color: HexColor('#999999'),
-                                  fontSize: 12.sp,
+                                SizedBox(height: 6.h),
+                                Text(
+                                  '品牌：${item?['brandName'] ?? ''}',
+                                  style: TextStyle(
+                                    color: HexColor('#999999'),
+                                    fontSize: 12.sp,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              ),
-                              SizedBox(height: 4.h),
-                              Text(
-                                '规格：${item?['sku'] ?? ''}',
-                                style: TextStyle(
-                                  color: HexColor('#999999'),
-                                  fontSize: 12.sp,
+                                SizedBox(height: 4.h),
+                                Text(
+                                  '规格：${item?['sku'] ?? ''}',
+                                  style: TextStyle(
+                                    color: HexColor('#999999'),
+                                    fontSize: 12.sp,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           Spacer(),
                           Text(

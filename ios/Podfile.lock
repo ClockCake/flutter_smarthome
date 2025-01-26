@@ -31,7 +31,6 @@ PODS:
     - BRPickerView/Deprecated/Base
   - BRPickerView/TextPicker (2.9.1):
     - BRPickerView/Core
-  - Bugly (2.6.1)
   - connectivity_plus (0.0.1):
     - Flutter
     - ReachabilitySwift
@@ -218,45 +217,9 @@ PODS:
   - GZLQuickJS (1.0.2)
   - GZLRNCompatProtocol (1.1.0)
   - HMSegmentedControl (1.5.7-v1.5.7.thing.1)
-  - IJKMediaFramework (0.1.5)
   - image_picker_ios (0.0.1):
     - Flutter
   - IQKeyboardManager (6.5.19)
-  - JCore (4.6.2-noidfa)
-  - JVerification (3.2.2):
-    - JCore (>= 2.1.6)
-  - JXBanner (0.3.6):
-    - JXBanner/Banner (= 0.3.6)
-    - JXBanner/PageControl (= 0.3.6)
-  - JXBanner/Banner (0.3.6):
-    - JXBanner/Banner/API (= 0.3.6)
-    - JXBanner/Banner/Banner (= 0.3.6)
-    - JXBanner/Banner/Cell (= 0.3.6)
-    - JXBanner/Banner/Common (= 0.3.6)
-    - JXBanner/Banner/Transform (= 0.3.6)
-  - JXBanner/Banner/API (0.3.6):
-    - JXBanner/Banner/Cell
-    - JXBanner/PageControl
-  - JXBanner/Banner/Banner (0.3.6):
-    - JXBanner/Banner/API
-    - JXBanner/Banner/Common
-    - JXBanner/Banner/Transform
-  - JXBanner/Banner/Cell (0.3.6)
-  - JXBanner/Banner/Common (0.3.6)
-  - JXBanner/Banner/Transform (0.3.6):
-    - JXBanner/Banner/API
-  - JXBanner/PageControl (0.3.6):
-    - JXPageControl
-  - JXPageControl (0.1.5):
-    - JXPageControl/Common (= 0.1.5)
-    - JXPageControl/Jump (= 0.1.5)
-    - JXPageControl/Transform (= 0.1.5)
-  - JXPageControl/Common (0.1.5)
-  - JXPageControl/Jump (0.1.5):
-    - JXPageControl/Common
-  - JXPageControl/Transform (0.1.5):
-    - JXPageControl/Common
-  - JXPagingView/Paging (2.1.3)
   - JXSegmentedView (1.4.1)
   - Kingfisher (7.12.0)
   - libextobjc (0.6):
@@ -306,7 +269,6 @@ PODS:
   - libwebp/sharpyuv (1.3.2)
   - libwebp/webp (1.3.2):
     - libwebp/sharpyuv
-  - lottie-ios (4.5.0)
   - lottie-react-native (2.5.11.3):
     - React
     - ThingLottie
@@ -327,7 +289,6 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - PPNumberButton (0.8.0)
   - Protobuf (3.27.3)
   - QuickJSObjC (1.0.21):
     - GZLQuickJS
@@ -492,7 +453,6 @@ PODS:
   - RxSwift (6.7.1)
   - shared_preferences_ios (0.0.1):
     - Flutter
-  - SKPhotoBrowser (7.1.0)
   - SnapKit (5.7.1)
   - SocketRocket (0.7.0)
   - sqflite (0.0.3):
@@ -504,7 +464,6 @@ PODS:
   - SQLCipher/standard (4.6.0):
     - SQLCipher/common
   - SSZipArchive (2.4.3)
-  - SwiftDate (7.0.0)
   - TheAmazingAudioEngine (1.5.12)
   - ThingABTest (0.1.4-anonymize.1):
     - ThingConfigHub
@@ -5995,7 +5954,6 @@ PODS:
   - UICKeyChainStore (2.2.1)
   - video_player_avfoundation (0.0.1):
     - Flutter
-  - WCScrollLabelView (0.2.3)
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
   - WechatOpenSDK-XCFramework (2.0.4)
@@ -6004,33 +5962,23 @@ PODS:
 
 DEPENDENCIES:
   - BRPickerView
-  - Bugly
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - Flutter (from `Flutter`)
   - fluwx (from `.symlinks/plugins/fluwx/ios`)
-  - IJKMediaFramework
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - IQKeyboardManager
-  - JCore (= 4.6.2-noidfa)
-  - JVerification (= 3.2.2)
-  - JXBanner
-  - JXPagingView/Paging
   - JXSegmentedView
   - Kingfisher (~> 7.0)
-  - lottie-ios
   - MBProgressHUD
   - MJRefresh
   - Moya/RxSwift
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
-  - PPNumberButton
   - RxGesture
   - RxSwift
   - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
-  - SKPhotoBrowser
   - SnapKit
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
-  - SwiftDate
   - ThingBLEInterfaceImpl
   - ThingBLEMeshInterfaceImpl
   - ThingSmartActivatorBizBundle (~> 5.8.0)
@@ -6045,32 +5993,22 @@ DEPENDENCIES:
   - ThingSmartPanelBizBundle (~> 5.8.0)
   - ThingSmartSceneBizBundle (~> 5.8.0)
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/ios`)
-  - WCScrollLabelView
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
-  - WechatOpenSDK-XCFramework
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - Alamofire
     - boost-for-react-native
     - BRPickerView
-    - Bugly
     - DACircularProgress
     - EZAudio
     - FLAnimatedImage
     - FMDB
-    - IJKMediaFramework
     - IQKeyboardManager
-    - JCore
-    - JVerification
-    - JXBanner
-    - JXPageControl
-    - JXPagingView
     - JXSegmentedView
     - Kingfisher
     - libextobjc
     - libwebp
-    - lottie-ios
     - Masonry
     - MBProgressHUD
     - MJRefresh
@@ -6078,22 +6016,18 @@ SPEC REPOS:
     - MMKVCore
     - Moya
     - OpenCV
-    - PPNumberButton
     - Protobuf
     - ReachabilitySwift
     - RxCocoa
     - RxGesture
     - RxRelay
     - RxSwift
-    - SKPhotoBrowser
     - SnapKit
     - SocketRocket
     - SQLCipher
     - SSZipArchive
-    - SwiftDate
     - TPCircularBuffer
     - UICKeyChainStore
-    - WCScrollLabelView
     - WechatOpenSDK-XCFramework
     - YYModel
   https://github.com/tuya/tuya-pod-specs.git:
@@ -6670,7 +6604,6 @@ SPEC CHECKSUMS:
   ATGestureLockView: 2eb8983cb4176efd562d65a4645957967f391bf6
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BRPickerView: 6dd69ea2c48e0a0abf1d197a705050e13143ee63
-  Bugly: 217ac2ce5f0f2626d43dbaa4f70764c953a26a31
   connectivity_plus: bf0076dd84a130856aa636df1c71ccaff908fa1d
   DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
@@ -6706,19 +6639,12 @@ SPEC CHECKSUMS:
   GZLQuickJS: 1a7e80f1b42741ebb04f5ff42b9108879afda9fe
   GZLRNCompatProtocol: 6022fdab6304003eaee2687b9f06d674a631a84e
   HMSegmentedControl: 52a1f69c6d4283d282f70a5386f1f2fb96acbddb
-  IJKMediaFramework: f1119f6324c96bc4654f3045a5beaa95ba0596c0
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
   IQKeyboardManager: c8665b3396bd0b79402b4c573eac345a31c7d485
-  JCore: a955440a542e12f086edfac3ff5daadcdace000f
-  JVerification: bbbf8a9e22c90310c3a3f33c666d6961b47f5370
-  JXBanner: 348dbef856e786494cbf30fb45d6b84826f2d3c5
-  JXPageControl: e9487b39e2e58fc17790833214f3b8e935bef98b
-  JXPagingView: afdd2e9af09c90160dd232b970d603cc6e7ddd0e
   JXSegmentedView: cd73555ce2134d1656db2cb383ba9c2f36fb5078
   Kingfisher: 53a10ea35051a436b5fb626ca2dd8f3144d755e9
   libextobjc: aed8b7d2b07f511c1a7ecaacb33ea03e327c69b7
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
-  lottie-ios: a881093fab623c467d3bce374367755c272bdd59
   lottie-react-native: 714757474c244ee4df837fde44a300473bffec36
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
@@ -6729,7 +6655,6 @@ SPEC CHECKSUMS:
   OpenCV: 52cd4d72ff29e2be83421477aec5447320b7fb19
   package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
   path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
-  PPNumberButton: 4442ff64c21d91733057ca1b3dc05fb4df55f2c0
   Protobuf: c1cbc880ea7c4e9b157e113515c720a22ee7cf50
   QuickJSObjC: 9a84762f3e058a5ed4551718947562b20ac1ecc2
   ReachabilitySwift: 7f151ff156cea1481a8411701195ac6a984f4979
@@ -6754,13 +6679,11 @@ SPEC CHECKSUMS:
   RxRelay: 4151ba01152436b08271e08410135e099880eae5
   RxSwift: b9a93a26031785159e11abd40d1a55bcb8057e52
   shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
-  SKPhotoBrowser: cd95b95a6f352fc2a50992721299f75ead77f9ab
   SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
   SQLCipher: 30a8e81afa6128e600b17ffa77d0f92fa05ed208
   SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
-  SwiftDate: bbc26e26fc8c0c33fbee8c140c5e8a68293a148a
   TheAmazingAudioEngine: 36e24d3c1a3d8a089fdc2d3b34020f7eab5b29b6
   ThingABTest: 3cd30b7f85d11f95d7fac68cd352e177b922852c
   ThingActivatorModule: dea742e920661adcdb8b726123091b6ca56c38fb
@@ -7259,12 +7182,11 @@ SPEC CHECKSUMS:
   TUNIWidgetManager: bc248e691547a5e4de212620670d68473de5f5e0
   UICKeyChainStore: ba3bff2c762b12db1e516f395c837dd25298b05e
   video_player_avfoundation: 81e49bb3d9fb63dccf9fa0f6d877dc3ddbeac126
-  WCScrollLabelView: 14172c898cc206511f920566fe75cd5b978f955b
   webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
   WechatOpenSDK-XCFramework: 36fb2bea0754266c17184adf4963d7e6ff98b69f
   yoga: 76ca4f4290c4d9000db2a00ca9556ffd2dd7cfdd
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: d4d9edf0109b88f25ba7ccb26937e82a1d3246aa
+PODFILE CHECKSUM: 0608e28411b55b53d463780f51d508d1f1516804
 
 COCOAPODS: 1.16.2

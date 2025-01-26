@@ -26,11 +26,6 @@ import UIKit
             registrar.register(factory, withId: "native_ios_smartlife")
         }
         
-        // 快速报价
-        if let registrar = engine.registrar(forPlugin: "native_ios_quick_quote") {
-            let factory = FLQuoteViewFactory(messenger: registrar.messenger(), flutterViewController: flutterViewController)
-            registrar.register(factory, withId: "native_ios_quick_quote")
-        }
 
         DispatchQueue.global().async {
             ThingSmartSDK.sharedInstance().start(withAppKey: self.tuyaAppkey, secretKey: self.tuyaSecretKey)

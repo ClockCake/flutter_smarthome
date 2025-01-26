@@ -11,7 +11,6 @@ import 'package:flutter_smarthome/controllers/article_detail.dart';
 import 'package:flutter_smarthome/controllers/bidden_list.dart';
 import 'package:flutter_smarthome/controllers/case_detail.dart';
 import 'package:flutter_smarthome/controllers/designer_home.dart';
-import 'package:flutter_smarthome/controllers/quick_quote.dart';
 import 'package:flutter_smarthome/controllers/quote_number.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';

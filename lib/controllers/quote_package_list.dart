@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/controllers/quote_number.dart';
 import 'package:flutter_smarthome/controllers/quote_price_detail.dart';
+import 'package:flutter_smarthome/controllers/quote_soft_styles_segments.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
@@ -15,10 +16,11 @@ class QuotePackageListWidget extends StatefulWidget {
   final RenovationType renovationType;   //装修类型
   final int bedroomCount;  //卧室数量
   final int livingRoomCount;  //客厅数量
-  final int bathroomCount;  //卫生间数量
+  final int restaurantCount;  //餐厅数量
   final int kitchenCount;  //厨房数量
+  final int bathroomCount;  //卫生间数量
   final double area;  //面积
-  const QuotePackageListWidget({super.key, required this.renovationType, required this.bedroomCount, required this.livingRoomCount, required this.bathroomCount, required this.area,required this.kitchenCount});
+  const QuotePackageListWidget({super.key, required this.renovationType, required this.bedroomCount, required this.livingRoomCount, required this.bathroomCount, required this.area,required this.kitchenCount,required this.restaurantCount});
 
   @override
   State<QuotePackageListWidget> createState() => _QuotePackageListWidgetState();
@@ -29,7 +31,8 @@ class _QuotePackageListWidgetState extends State<QuotePackageListWidget> {
   @override
   void initState() {
     super.initState();
-    _getPackageList();
+    widget.renovationType == RenovationType.fullRenovation ? _getPackageList() : _getSoftPackageList();
+   
   }
   @override
   void dispose() {
@@ -42,9 +45,9 @@ class _QuotePackageListWidgetState extends State<QuotePackageListWidget> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text(
+        title: const Text(
           '方案列表',
-          style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
@@ -77,7 +80,7 @@ class _QuotePackageListWidgetState extends State<QuotePackageListWidget> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 child: Text(
-                  '${widget.bedroomCount}室${widget.livingRoomCount}厅${widget.bathroomCount}卫 · ${widget.area}㎡',
+                  widget.renovationType == RenovationType.fullRenovation ? '${widget.bedroomCount}室${widget.livingRoomCount}厅${widget.bathroomCount}卫 · ${widget.area}㎡' :  '${widget.bedroomCount}室${widget.livingRoomCount}厅',
                   style: TextStyle(
                     color: Colors.grey,
                     fontSize: 14.sp
@@ -97,8 +100,6 @@ class _QuotePackageListWidgetState extends State<QuotePackageListWidget> {
   }
 
   Widget _buildPackageList() {
-      // Add shrinkWrap: true and physics: NeverScrollableScrollPhysics()
-      // to prevent nested scrolling behavior
       return ListView.builder(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
@@ -168,19 +169,35 @@ class _QuotePackageListWidgetState extends State<QuotePackageListWidget> {
                       GestureDetector(
                         onTap: () {
                           // Navigation code here
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => QuotePriceDetailWidget(
-                                packageId: item['packageId'],
-                                bedroomCount: widget.bedroomCount,
-                                livingRoomCount: widget.livingRoomCount,
-                                bathroomCount: widget.bathroomCount,
-                                area: widget.area,
-                                kitchenCount: widget.kitchenCount,
-                              ),
-                            ),
-                          );
+                          if (widget.renovationType == RenovationType.fullRenovation) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => QuotePriceDetailWidget(
+                                    packageId: item['packageId'],
+                                    bedroomCount: widget.bedroomCount,
+                                    livingRoomCount: widget.livingRoomCount,
+                                    bathroomCount: widget.bathroomCount,
+                                    area: widget.area,
+                                    kitchenCount: widget.kitchenCount,
+                                  ),
+                                ),
+                              );
+                          } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => QuoteSoftStylesSegmentsWidget(
+                                    segementList: generateRoomList(
+                                      livingRoomCount: widget.livingRoomCount,
+                                      restaurantCount: widget.restaurantCount,
+                                      bedroom: widget.bedroomCount,
+                                    ),
+                                    packageId: item['packageId'],
+                                  )
+                                ),
+                              );
+                            }
                         },
                         child: Container(
                           padding: EdgeInsets.fromLTRB(10.w, 5.h, 10.w, 5.h),
@@ -208,7 +225,7 @@ class _QuotePackageListWidgetState extends State<QuotePackageListWidget> {
         },
       );
   }
-
+  //获取整装方案列表
   Future<void> _getPackageList() async {
     //获取方案列表
     final apiManager = ApiManager();
@@ -221,4 +238,52 @@ class _QuotePackageListWidgetState extends State<QuotePackageListWidget> {
       });
     }
   }
+
+  //获取软装装修方案列表
+  Future<void> _getSoftPackageList() async {
+    //获取方案列表
+    final apiManager = ApiManager();
+    final result = await apiManager.get(
+      '/api/valuation/packages/soft-loading',
+    );
+    if (result != null && mounted) {
+      setState(() {
+        _packageList = List<Map<String, dynamic>>.from(result);
+      });
+    }
+  }
+
+  List<Map<String, dynamic>> generateRoomList({
+  required int bedroom,
+  required int restaurantCount,
+  required int livingRoomCount,
+}) {
+  List<Map<String, dynamic>> resultList = [];
+  
+  // 添加卧室
+  for (int i = 0; i < bedroom; i++) {
+    resultList.add({
+      'roomName': '卧室${i + 1}',
+      'roomType': RoomType.bedroom,  
+    });
+  }
+    // 添加客厅
+  for (int i = 0; i < livingRoomCount; i++) {
+    resultList.add({
+      'roomName': '客厅${i + 1}',
+      'roomType': RoomType.livingRoom,  
+    });
+  }
+  // 添加餐厅
+  for (int i = 0; i < restaurantCount; i++) {
+    resultList.add({
+      'roomName': '餐厅${i + 1}',
+      'roomType': RoomType.restaurant,  
+    });
+  }
+  
+
+  
+  return resultList;
+}
 }
