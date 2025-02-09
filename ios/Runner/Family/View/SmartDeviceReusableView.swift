@@ -16,11 +16,9 @@ enum SmartDeviceReusableViewType {
 class SmartDeviceReusableView: UICollectionReusableView {
     public var titleLab: UILabel!
     private var currentType: SmartDeviceReusableViewType?
-    private var filterBtn: UIButton?
     private var buttonView: HorizontalScrollingButtonsView?
     private var currentRooms: [ThingSmartRoomModel] = []
     private let disposeBag = DisposeBag()
-    private var arrowImageView:UIImageView!
     //房间按钮点击回调
     var onButtonTapped: ((Int) -> Void)?
     // 家庭管理回调
@@ -39,12 +37,14 @@ class SmartDeviceReusableView: UICollectionReusableView {
 
     
     private func setupCommonUI() {
-        titleLab = UILabel.labelLayout(text: "", font: FontSizes.medium16, textColor: AppColors.c_333333, ali: .left, isPriority: false, tag: 0)
-        addSubview(titleLab)
+        let titleLab = UILabel.labelLayout(text: "全部设备", font: FontSizes.medium16, textColor: AppColors.c_333333, ali: .left, isPriority: false, tag: 0)
+        self.addSubview(titleLab)
         titleLab.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
             make.top.equalToSuperview().offset(10)
         }
+        self.titleLab = titleLab
+
         let symbolConfig = UIImage.SymbolConfiguration(pointSize: 16) // 设定图像大小为 12 点
         let image = UIImage(systemName: "chevron.right", withConfiguration: symbolConfig)?.withRenderingMode(.alwaysTemplate)
         let tintedImage = image?.withTintColor(AppColors.c_333333)
@@ -52,21 +52,15 @@ class SmartDeviceReusableView: UICollectionReusableView {
         addSubview(imageView)
         imageView.snp.makeConstraints { make in
             make.centerY.equalTo(titleLab)
-            make.leading.equalTo(titleLab.snp.trailing).offset(8)
+            make.trailing.equalToSuperview().offset(-16)
         }
-        self.arrowImageView = imageView
-        imageView.isHidden = true
-        let titleLabTap = titleLab.rx.tapGesture().when(.recognized)
-        let imageViewTap = imageView.rx.tapGesture().when(.recognized)
-
-        Observable.merge(titleLabTap, imageViewTap)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, _ in
-                if owner.currentType == .deviceFilter {
-                    owner.onFamilyManageTapped?()
-                }
+        
+        imageView.rx.tapGesture().when(.recognized)
+            .subscribe(onNext: { [weak self] _ in
+                self?.onAllDevicesTapped?()
             })
             .disposed(by: disposeBag)
+
     }
     
     func configure(for type: SmartDeviceReusableViewType, rooms: [ThingSmartRoomModel]? = nil) {
@@ -78,45 +72,17 @@ class SmartDeviceReusableView: UICollectionReusableView {
             updateRoomButtons()
         } else {
             buttonView?.isHidden = true
-            self.arrowImageView.isHidden = true
         }
     }
     
     private func updateUIForCurrentType() {
         switch currentType {
         case .common:
-            filterBtn?.isHidden = true
             buttonView?.isHidden = true
-            arrowImageView.isHidden = true
         case .deviceFilter:
-            setupDeviceFilterUIIfNeeded()
-            filterBtn?.isHidden = false
             buttonView?.isHidden = false
-            arrowImageView.isHidden = false
         case .none:
             break
-        }
-    }
-    
-    private func setupDeviceFilterUIIfNeeded() {
-        if filterBtn == nil {
-            let symbolConfig = UIImage.SymbolConfiguration(pointSize: 12) // 设定图像大小为 12 点
-            let image = UIImage(systemName: "chevron.right", withConfiguration: symbolConfig)?.withRenderingMode(.alwaysTemplate)
-            let tintedImage = image?.withTintColor(AppColors.c_999999)
-            filterBtn = UIButton(title: "全部设备", backgroundColor: .clear, titleColor: AppColors.c_999999, font: FontSizes.regular12, alignment: .right,image: tintedImage)
-            filterBtn?.adjustTitleAndImage(spacing: 8.0)
-            if let filterBtn = filterBtn {
-                addSubview(filterBtn)
-                filterBtn.snp.makeConstraints { make in
-                    make.centerY.equalTo(titleLab)
-                    make.trailing.equalToSuperview().offset(-0)
-                }
-            }
-            filterBtn?.rx.tap
-                .subscribe(onNext: { [weak self] in
-                    self?.onAllDevicesTapped?()
-                })
-                .disposed(by: disposeBag)
         }
     }
     
@@ -129,7 +95,6 @@ class SmartDeviceReusableView: UICollectionReusableView {
                 addSubview(existingButtonView)
                 setupButtonViewConstraints(existingButtonView)
             }
-            self.arrowImageView.isHidden = false
 
         } else {
             let newButtonView = HorizontalScrollingButtonsView(items: items)
@@ -140,11 +105,10 @@ class SmartDeviceReusableView: UICollectionReusableView {
                 print("Button tapped at index: \(index)")
                 self?.onButtonTapped?(index)
             }
-            self.arrowImageView.isHidden = false
 
         }
     }
-    
+   
     private func setupButtonViewConstraints(_ buttonView: HorizontalScrollingButtonsView) {
         buttonView.snp.remakeConstraints { make in
             make.top.equalTo(titleLab.snp.bottom).offset(16)
@@ -152,15 +116,7 @@ class SmartDeviceReusableView: UICollectionReusableView {
             make.height.equalTo(50)
         }
     }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        titleLab.text = ""
-        filterBtn?.isHidden = true
-        buttonView?.isHidden = true
-        arrowImageView.isHidden = true
-        // 保持 currentType 和 currentRooms 不变
-    }
+
     
     deinit {
         print("SmartDeviceReusableView deinitialized")

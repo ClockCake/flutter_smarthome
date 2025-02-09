@@ -1,6 +1,8 @@
 // base_tabbar_controller.dart
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_smarthome/controllers/decoration_logs_segments.dart';
+import 'package:flutter_smarthome/controllers/my_project_list.dart';
 import 'package:flutter_smarthome/controllers/native_page.dart';
 import 'package:flutter_smarthome/controllers/shopping_home.dart';
 import 'controllers/discover_home.dart';
@@ -17,8 +19,9 @@ class _BaseTabBarControllerState extends State<BaseTabBarController> {
   Widget build(BuildContext context) {
     final List<Widget> _tabItems = [
       DiscoverHomeWidget(),
-      // Center(child: Text("Home Page222")),
       NativePageWidget(),
+      // DecorationLogsSegmentsWidget(customerProjectId: '1'),
+      // MyProjectListPage(),
       ShoppingHomeWidget(),
       PersonalHomeWidget(),
 

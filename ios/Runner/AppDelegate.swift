@@ -126,5 +126,21 @@ import UIKit
     func popToFlutter() {
         navigationChannel?.invokeMethod("popToFlutter", arguments: nil)
     }
+    
+    // 添加一个方法来获取或创建 FlutterViewController
+    func getRootFlutterViewController() -> FlutterViewController {
+        if let rootVC = window?.rootViewController as? UINavigationController,
+           let flutterVC = rootVC.viewControllers.first as? FlutterViewController {
+            return flutterVC
+        }
+        // 如果没有找到，创建一个新的
+        return FlutterViewController(engine: flutterEngine!, nibName: nil, bundle: nil)
+    }
+    
+    func navigateToFlutterRoute(_ route: String) {
+        if let channel = navigationChannel {
+            channel.invokeMethod(route, arguments: nil)
+        }
+    }
 }
 

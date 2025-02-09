@@ -7,7 +7,6 @@
 
 import UIKit
 import RxSwift
-import BRPickerView
 class SmartDeviceHomeController: BaseViewController {
     private let disposeBag = DisposeBag()
     //进入配网的按钮
@@ -26,13 +25,7 @@ class SmartDeviceHomeController: BaseViewController {
     //是否需要刷新设备列表的头部
     private var needRefreshHeader = true
     
-    ///  弹框选择框
-    private var pickerSelectIndex = 0
-    
-    private let viewModel = SmartHomeViewModel()
-    /// 选中的项目
-    private var selectProjectItem:PropertyInfo?
-    
+
     func updateCollectionViewHeight(height: CGFloat) {
           collectionView.snp.updateConstraints { make in
               make.height.equalTo(height)
@@ -78,6 +71,21 @@ class SmartDeviceHomeController: BaseViewController {
 
         }).disposed(by: disposeBag)
         
+        
+        let projectBtn = UIImageView.init(image:UIImage(named: "icon_project_checklist"))
+        self.customNavBar.addSubview(projectBtn)
+        projectBtn.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(kStatusBarHeight + 5.0)
+            make.trailing.equalTo(imageBtn.snp.leading).offset(-16)
+            make.width.height.equalTo(24)
+        }
+        
+        projectBtn.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+                // 通知 Flutter 显示项目列表页面
+                appDelegate.navigateToFlutterRoute("showProjectList")
+            }
+        }).disposed(by: disposeBag)
  
 
     }
@@ -99,27 +107,17 @@ class SmartDeviceHomeController: BaseViewController {
             self.roomModels.removeAll()
             ///请求数据
             getHomeList()
-            fecthLocalData()
+            
 
         }else{
             collectionView.isHidden = true
         }
         ///请求数据
         getHomeList()
-        fecthLocalData()
         
     }
     
-    func fecthLocalData(){
-        self.viewModel.phone.accept(UserManager.shared.currentUser?.mobile ?? "")
-        self.viewModel.fetchProjectList()
-        self.viewModel.projectListModel.subscribe(onNext: { [weak self] _ in
-            guard let self = self else { return  }
-            let indexPaths = [IndexPath(row: 0, section: 0)]
-            self.selectProjectItem = self.viewModel.projectListModel.value.first
-            self.collectionView.reloadItems(at: indexPaths)
-        }).disposed(by: disposeBag)
-    }
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -222,12 +220,12 @@ extension SmartDeviceHomeController:UICollectionViewDelegate,UICollectionViewDat
                     return header
                 }
                 header.configure(for: .deviceFilter, rooms: self.roomModels)
-                header.titleLab.text = self.home?.homeModel.name
                 //全部设备的回调
                 header.onAllDevicesTapped = { [weak self] in
                     guard let self = self else { return  }
                     let vc = SmartDeviceSegmentController.init(homeId: self.selectHomeId)
                     self.navigationController?.pushViewController(vc, animated: true)
+                    
                 }
                 //房间按钮点击回调
                 header.onButtonTapped = { [weak self] index in
@@ -235,49 +233,49 @@ extension SmartDeviceHomeController:UICollectionViewDelegate,UICollectionViewDat
                     let roomId = self.roomModels[index].roomId
                     self.getDeviceList(homeId: self.selectHomeId, roomId: roomId)
                 }
-
-                header.onFamilyManageTapped = { [weak self] in
-                    guard let self = self else { return }
-                    let pickerView = BRStringPickerView.init(pickerMode: .componentSingle)
-                    pickerView.pickerStyle?.selectRowColor = UIColor.black.withAlphaComponent(0.3)
-                    pickerView.title = "请选择家庭"
-                    var dataSource:[BRResultModel] = []
-                    for (index,item) in self.homeManager.homes.enumerated() {
-                        let model = BRResultModel.init()
-                        model.value = item.name
-                        model.key = "\(item.homeId)"
-                        model.index = index
-                        dataSource.append(model)
-                    }
-                    let model = BRResultModel.init()
-                    model.value = "家庭管理"
-                    model.key = "0"
-                    dataSource.append(model)
-                    
-                    
-                    pickerView.dataSourceArr = dataSource
-                    pickerView.selectIndex =  self.pickerSelectIndex;
-                    pickerView.resultModelBlock = { [weak self] model in
-                        guard let self = self else { return  }
-                        if model?.value ?? "" == "家庭管理"{
-                            guard let impl = ThingSmartBizCore.sharedInstance().service(of: ThingFamilyProtocol.self) as? ThingFamilyProtocol else {
-                                return
-                            }
-                            impl.gotoFamilyManagement?()
-                        }
-                        else{
-                            self.roomModels.removeAll()
-                            self.selectHomeId = Int64(model?.key ?? "0") ?? 0
-                            header.titleLab.text = model?.value ?? ""
-                            self.needRefreshHeader = true
-                            self.getRoomList(homeId: self.selectHomeId)
-                        }
-                        self.pickerSelectIndex = model?.index ?? 0
-
-                    }
-                    pickerView.show()
-
-                }
+//
+//                header.onFamilyManageTapped = { [weak self] in
+//                    guard let self = self else { return }
+//                    let pickerView = BRStringPickerView.init(pickerMode: .componentSingle)
+//                    pickerView.pickerStyle?.selectRowColor = UIColor.black.withAlphaComponent(0.3)
+//                    pickerView.title = "请选择家庭"
+//                    var dataSource:[BRResultModel] = []
+//                    for (index,item) in self.homeManager.homes.enumerated() {
+//                        let model = BRResultModel.init()
+//                        model.value = item.name
+//                        model.key = "\(item.homeId)"
+//                        model.index = index
+//                        dataSource.append(model)
+//                    }
+//                    let model = BRResultModel.init()
+//                    model.value = "家庭管理"
+//                    model.key = "0"
+//                    dataSource.append(model)
+//                    
+//                    
+//                    pickerView.dataSourceArr = dataSource
+//                    pickerView.selectIndex =  self.pickerSelectIndex;
+//                    pickerView.resultModelBlock = { [weak self] model in
+//                        guard let self = self else { return  }
+//                        if model?.value ?? "" == "家庭管理"{
+//                            guard let impl = ThingSmartBizCore.sharedInstance().service(of: ThingFamilyProtocol.self) as? ThingFamilyProtocol else {
+//                                return
+//                            }
+//                            impl.gotoFamilyManagement?()
+//                        }
+//                        else{
+//                            self.roomModels.removeAll()
+//                            self.selectHomeId = Int64(model?.key ?? "0") ?? 0
+//                            header.titleLab.text = model?.value ?? ""
+//                            self.needRefreshHeader = true
+//                            self.getRoomList(homeId: self.selectHomeId)
+//                        }
+//                        self.pickerSelectIndex = model?.index ?? 0
+//
+//                    }
+//                    pickerView.show()
+//
+//                }
             case 2:
                 header.configure(for: .common)
                 header.titleLab.text = "灵感来源"
@@ -297,23 +295,21 @@ extension SmartDeviceHomeController:UICollectionViewDelegate,UICollectionViewDat
         switch indexPath.section {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SmartDeviceHomeHeaderCell", for: indexPath) as! SmartDeviceHomeHeaderCell
-            cell.model = self.selectProjectItem
+            cell.titleLab.text = self.homeManager.homes.first?.name ?? ""
             cell.toogleBtnAction = { [weak self] in
                 guard let self = self else { return  }
-                let vc = MyFamilyListController(dataSource: self.viewModel.projectListModel.value)
+                let vc = SmartHomeFamilysController(data: self.homeManager.homes)
                 self.navigationController?.pushViewController(vc, animated: true)
-                vc.clickFamilyCell = { [weak self] model in
+                vc.onFamilyTapped = { [weak self] model in
                     guard let self = self else { return  }
-                    self.selectProjectItem = model
-                    self.collectionView.reloadItems(at: [indexPath])
+                    self.roomModels.removeAll()
+                    self.selectHomeId = model.homeId
+                    cell.titleLab.text = model.name
+                    self.needRefreshHeader = true
+                    self.getRoomList(homeId: model.homeId)
                 }
             }
-            cell.clickBtnAction = { [weak self] in
-                guard let self = self else { return  }
-                let vc = FamilyDecorationLogController.init(customerProjectId: self.selectProjectItem?.projectId ?? "")
-                self.navigationController?.pushViewController(vc, animated: true)
-            }
-            
+          
             return cell
         case 1: //随心搭/智能设备列表
 //            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SmartDeviceRecommedCell", for: indexPath) as! SmartDeviceRecommedCell
@@ -339,7 +335,6 @@ extension SmartDeviceHomeController:UICollectionViewDelegate,UICollectionViewDat
     }
 
     
-
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y
 
@@ -383,15 +378,16 @@ extension SmartDeviceHomeController {
         home = ThingSmartHome.init(homeId: homeId)
         home?.getDataWithSuccess({ [weak self] homeModels in
             guard let self = self else { return  }
-            let model = ThingSmartRoomModel()
-            model.name = "所有设备"
-            self.roomModels.append(model)
+            
+//            let model = ThingSmartRoomModel()
+//            model.name = "所有设备"
+//            self.roomModels.append(model)
             if let roomList = home?.roomList {
                 for (_ , roomModel) in roomList.enumerated() {
                     self.roomModels.append(roomModel)
                 }
             }
-            self.getDeviceList(homeId: self.selectHomeId, roomId:0)
+            self.getDeviceList(homeId: self.selectHomeId, roomId:self.roomModels.first?.roomId ?? 0)
             //更新家庭 ID
             let impl = ThingSmartBizCore.sharedInstance().service(of: ThingFamilyProtocol.self) as? ThingFamilyProtocol
             impl?.updateCurrentFamilyId?(self.selectHomeId)
@@ -411,13 +407,14 @@ extension SmartDeviceHomeController {
         let oldDeviceCount = self.deviceModels.count
 
         // 更新设备列表
-        if roomId == 0 {
-            self.deviceModels = self.home?.deviceList ?? []
-        } else {
-            let room = ThingSmartRoom(roomId: roomId, homeId: homeId)
-            self.deviceModels = room?.deviceList ?? []
-        }
-
+//        if roomId == 0 {
+//            self.deviceModels = self.home?.deviceList ?? []
+//        } else {
+//            let room = ThingSmartRoom(roomId: roomId, homeId: homeId)
+//            self.deviceModels = room?.deviceList ?? []
+//        }
+        let room = ThingSmartRoom(roomId: roomId, homeId: homeId)
+        self.deviceModels = room?.deviceList ?? []
         // 获取新的设备数量
         let newDeviceCount = self.deviceModels.count
         

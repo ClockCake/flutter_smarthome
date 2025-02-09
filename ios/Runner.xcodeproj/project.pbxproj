@@ -13,68 +13,42 @@
 		08057DC72CED8AF6007C6977 /* FLNativeViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DC52CED8AF6007C6977 /* FLNativeViewFactory.swift */; };
 		08057E2C2CEDA9EE007C6977 /* SmartDeviceSegmentListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DE52CEDA9EE007C6977 /* SmartDeviceSegmentListCell.swift */; };
 		08057E2D2CEDA9EE007C6977 /* SearchHistoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DF92CEDA9EE007C6977 /* SearchHistoryManager.swift */; };
-		08057E2F2CEDA9EE007C6977 /* ProjectCheckListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DE02CEDA9EE007C6977 /* ProjectCheckListCell.swift */; };
-		08057E302CEDA9EE007C6977 /* SmartHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DEB2CEDA9EE007C6977 /* SmartHomeViewModel.swift */; };
-		08057E312CEDA9EE007C6977 /* FamilyDecorationLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DEE2CEDA9EE007C6977 /* FamilyDecorationLogController.swift */; };
 		08057E332CEDA9EE007C6977 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DC92CEDA9EE007C6977 /* BaseViewController.swift */; };
-		08057E342CEDA9EE007C6977 /* MeasureHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DDC2CEDA9EE007C6977 /* MeasureHeaderView.swift */; };
 		08057E362CEDA9EE007C6977 /* DynamicPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057E212CEDA9EE007C6977 /* DynamicPresentationController.swift */; };
 		08057E372CEDA9EE007C6977 /* FurnishViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DF72CEDA9EE007C6977 /* FurnishViewModel.swift */; };
-		08057E382CEDA9EE007C6977 /* DecorationServiceListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DD62CEDA9EE007C6977 /* DecorationServiceListCell.swift */; };
 		08057E3A2CEDA9EE007C6977 /* CommonParametersPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DFF2CEDA9EE007C6977 /* CommonParametersPlugin.swift */; };
-		08057E3C2CEDA9EE007C6977 /* MeasureRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DDF2CEDA9EE007C6977 /* MeasureRoomView.swift */; };
 		08057E3D2CEDA9EE007C6977 /* LoadingHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057E252CEDA9EE007C6977 /* LoadingHUD.swift */; };
 		08057E3E2CEDA9EE007C6977 /* SmartDeviceReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DE42CEDA9EE007C6977 /* SmartDeviceReusableView.swift */; };
-		08057E3F2CEDA9EE007C6977 /* MyFamilyListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DF02CEDA9EE007C6977 /* MyFamilyListController.swift */; };
 		08057E422CEDA9EE007C6977 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057E272CEDA9EE007C6977 /* PaddingLabel.swift */; };
-		08057E432CEDA9EE007C6977 /* DecorationServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DD72CEDA9EE007C6977 /* DecorationServiceView.swift */; };
 		08057E442CEDA9EE007C6977 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DCC2CEDA9EE007C6977 /* Extension.swift */; };
-		08057E472CEDA9EE007C6977 /* ContractModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DCF2CEDA9EE007C6977 /* ContractModel.swift */; };
-		08057E492CEDA9EE007C6977 /* WarrantyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DE72CEDA9EE007C6977 /* WarrantyView.swift */; };
-		08057E4A2CEDA9EE007C6977 /* MeasurementDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DEF2CEDA9EE007C6977 /* MeasurementDetailController.swift */; };
 		08057E4C2CEDA9EE007C6977 /* GlobalReserveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057E222CEDA9EE007C6977 /* GlobalReserveView.swift */; };
 		08057E4D2CEDA9EE007C6977 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DFA2CEDA9EE007C6977 /* UserManager.swift */; };
 		08057E4E2CEDA9EE007C6977 /* HorizontalScrollingButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057E242CEDA9EE007C6977 /* HorizontalScrollingButtonsView.swift */; };
 		08057E522CEDA9EE007C6977 /* SmartDeviceHomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DF32CEDA9EE007C6977 /* SmartDeviceHomeController.swift */; };
-		08057E532CEDA9EE007C6977 /* WarrantyListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DE62CEDA9EE007C6977 /* WarrantyListCell.swift */; };
 		08057E542CEDA9EE007C6977 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DF82CEDA9EE007C6977 /* CacheManager.swift */; };
-		08057E552CEDA9EE007C6977 /* ContractLogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DD52CEDA9EE007C6977 /* ContractLogsView.swift */; };
-		08057E562CEDA9EE007C6977 /* LinearProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DDB2CEDA9EE007C6977 /* LinearProgressBar.swift */; };
 		08057E572CEDA9EE007C6977 /* SmartDeviceListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DE32CEDA9EE007C6977 /* SmartDeviceListCell.swift */; };
-		08057E582CEDA9EE007C6977 /* MeasureRoomListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DDE2CEDA9EE007C6977 /* MeasureRoomListCell.swift */; };
 		08057E5D2CEDA9EE007C6977 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DFD2CEDA9EE007C6977 /* APIService.swift */; };
 		08057E602CEDA9EE007C6977 /* GoToLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057E232CEDA9EE007C6977 /* GoToLoginView.swift */; };
 		08057E622CEDA9EE007C6977 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057E012CEDA9EE007C6977 /* NetworkMonitor.swift */; };
 		08057E632CEDA9EE007C6977 /* BlankCanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057E1F2CEDA9EE007C6977 /* BlankCanvasView.swift */; };
-		08057E642CEDA9EE007C6977 /* FurnishLogsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DE92CEDA9EE007C6977 /* FurnishLogsViewModel.swift */; };
 		08057E652CEDA9EE007C6977 /* ProgressHUDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057E292CEDA9EE007C6977 /* ProgressHUDManager.swift */; };
-		08057E672CEDA9EE007C6977 /* MeasurementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DEA2CEDA9EE007C6977 /* MeasurementViewModel.swift */; };
 		08057E682CEDA9EE007C6977 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057E022CEDA9EE007C6977 /* ViewModel.swift */; };
-		08057E692CEDA9EE007C6977 /* FamilyListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DDA2CEDA9EE007C6977 /* FamilyListCell.swift */; };
 		08057E6A2CEDA9EE007C6977 /* CommonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DFE2CEDA9EE007C6977 /* CommonModel.swift */; };
 		08057E6B2CEDA9EE007C6977 /* DebuggingDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DCB2CEDA9EE007C6977 /* DebuggingDecoder.swift */; };
-		08057E6C2CEDA9EE007C6977 /* MeasurementDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DDD2CEDA9EE007C6977 /* MeasurementDetailCell.swift */; };
 		08057E6D2CEDA9EE007C6977 /* SmartDeviceListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DF42CEDA9EE007C6977 /* SmartDeviceListController.swift */; };
 		08057E6E2CEDA9EE007C6977 /* SmartDeviceInspirationListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DE22CEDA9EE007C6977 /* SmartDeviceInspirationListCell.swift */; };
-		08057E6F2CEDA9EE007C6977 /* FurnishPhotosListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DD02CEDA9EE007C6977 /* FurnishPhotosListModel.swift */; };
 		08057E702CEDA9EE007C6977 /* BaseWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DCA2CEDA9EE007C6977 /* BaseWebController.swift */; };
 		08057E712CEDA9EE007C6977 /* DashLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057E202CEDA9EE007C6977 /* DashLineView.swift */; };
 		08057E722CEDA9EE007C6977 /* SmartDeviceHomeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DE12CEDA9EE007C6977 /* SmartDeviceHomeHeaderCell.swift */; };
 		08057E732CEDA9EE007C6977 /* NetworkLoggerPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057E002CEDA9EE007C6977 /* NetworkLoggerPlugin.swift */; };
-		08057E742CEDA9EE007C6977 /* ProjectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DD22CEDA9EE007C6977 /* ProjectModel.swift */; };
-		08057E752CEDA9EE007C6977 /* DesignLogsLIstCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DD82CEDA9EE007C6977 /* DesignLogsLIstCell.swift */; };
-		08057E762CEDA9EE007C6977 /* ContractDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DED2CEDA9EE007C6977 /* ContractDetailViewController.swift */; };
 		08057E772CEDA9EE007C6977 /* PlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057E282CEDA9EE007C6977 /* PlaceholderTextView.swift */; };
-		08057E792CEDA9EE007C6977 /* ProjectCheckListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DF12CEDA9EE007C6977 /* ProjectCheckListController.swift */; };
-		08057E7A2CEDA9EE007C6977 /* MeasurementDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DD12CEDA9EE007C6977 /* MeasurementDetailModel.swift */; };
 		08057E7C2CEDA9EE007C6977 /* SmartDeviceSegmentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DF52CEDA9EE007C6977 /* SmartDeviceSegmentController.swift */; };
-		08057E7D2CEDA9EE007C6977 /* DesignLogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DD92CEDA9EE007C6977 /* DesignLogsView.swift */; };
 		08057E7E2CEDA9EE007C6977 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DFB2CEDA9EE007C6977 /* UserModel.swift */; };
 		08057E7F2CEDA9EE007C6977 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DCD2CEDA9EE007C6977 /* Screen.swift */; };
 		08057E802CEDA9EE007C6977 /* ZGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057E2A2CEDA9EE007C6977 /* ZGestureRecognizer.swift */; };
-		08057E812CEDA9EE007C6977 /* ContractLogsListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DD42CEDA9EE007C6977 /* ContractLogsListCell.swift */; };
-		08057E822CEDA9EE007C6977 /* ProjectSegmentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DF22CEDA9EE007C6977 /* ProjectSegmentController.swift */; };
 		08057E832CEDA9EE007C6977 /* thing_custom_config.json in Resources */ = {isa = PBXBuildFile; fileRef = 08057E1E2CEDA9EE007C6977 /* thing_custom_config.json */; };
+		08B03E142D5463FC00CF2B7B /* QuoteSceneWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B03E132D5463FC00CF2B7B /* QuoteSceneWebViewController.swift */; };
+		08B55F9E2D587EC900455258 /* SmartHomeFamilysController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B55F9D2D587EC900455258 /* SmartHomeFamilysController.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
@@ -108,39 +82,11 @@
 		08057DCB2CEDA9EE007C6977 /* DebuggingDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebuggingDecoder.swift; sourceTree = "<group>"; };
 		08057DCC2CEDA9EE007C6977 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		08057DCD2CEDA9EE007C6977 /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
-		08057DCF2CEDA9EE007C6977 /* ContractModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractModel.swift; sourceTree = "<group>"; };
-		08057DD02CEDA9EE007C6977 /* FurnishPhotosListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FurnishPhotosListModel.swift; sourceTree = "<group>"; };
-		08057DD12CEDA9EE007C6977 /* MeasurementDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementDetailModel.swift; sourceTree = "<group>"; };
-		08057DD22CEDA9EE007C6977 /* ProjectModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectModel.swift; sourceTree = "<group>"; };
-		08057DD42CEDA9EE007C6977 /* ContractLogsListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractLogsListCell.swift; sourceTree = "<group>"; };
-		08057DD52CEDA9EE007C6977 /* ContractLogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractLogsView.swift; sourceTree = "<group>"; };
-		08057DD62CEDA9EE007C6977 /* DecorationServiceListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecorationServiceListCell.swift; sourceTree = "<group>"; };
-		08057DD72CEDA9EE007C6977 /* DecorationServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecorationServiceView.swift; sourceTree = "<group>"; };
-		08057DD82CEDA9EE007C6977 /* DesignLogsLIstCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignLogsLIstCell.swift; sourceTree = "<group>"; };
-		08057DD92CEDA9EE007C6977 /* DesignLogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignLogsView.swift; sourceTree = "<group>"; };
-		08057DDA2CEDA9EE007C6977 /* FamilyListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyListCell.swift; sourceTree = "<group>"; };
-		08057DDB2CEDA9EE007C6977 /* LinearProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearProgressBar.swift; sourceTree = "<group>"; };
-		08057DDC2CEDA9EE007C6977 /* MeasureHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureHeaderView.swift; sourceTree = "<group>"; };
-		08057DDD2CEDA9EE007C6977 /* MeasurementDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementDetailCell.swift; sourceTree = "<group>"; };
-		08057DDE2CEDA9EE007C6977 /* MeasureRoomListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureRoomListCell.swift; sourceTree = "<group>"; };
-		08057DDF2CEDA9EE007C6977 /* MeasureRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureRoomView.swift; sourceTree = "<group>"; };
-		08057DE02CEDA9EE007C6977 /* ProjectCheckListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCheckListCell.swift; sourceTree = "<group>"; };
 		08057DE12CEDA9EE007C6977 /* SmartDeviceHomeHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartDeviceHomeHeaderCell.swift; sourceTree = "<group>"; };
 		08057DE22CEDA9EE007C6977 /* SmartDeviceInspirationListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartDeviceInspirationListCell.swift; sourceTree = "<group>"; };
 		08057DE32CEDA9EE007C6977 /* SmartDeviceListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartDeviceListCell.swift; sourceTree = "<group>"; };
 		08057DE42CEDA9EE007C6977 /* SmartDeviceReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartDeviceReusableView.swift; sourceTree = "<group>"; };
 		08057DE52CEDA9EE007C6977 /* SmartDeviceSegmentListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartDeviceSegmentListCell.swift; sourceTree = "<group>"; };
-		08057DE62CEDA9EE007C6977 /* WarrantyListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarrantyListCell.swift; sourceTree = "<group>"; };
-		08057DE72CEDA9EE007C6977 /* WarrantyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarrantyView.swift; sourceTree = "<group>"; };
-		08057DE92CEDA9EE007C6977 /* FurnishLogsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FurnishLogsViewModel.swift; sourceTree = "<group>"; };
-		08057DEA2CEDA9EE007C6977 /* MeasurementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementViewModel.swift; sourceTree = "<group>"; };
-		08057DEB2CEDA9EE007C6977 /* SmartHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartHomeViewModel.swift; sourceTree = "<group>"; };
-		08057DED2CEDA9EE007C6977 /* ContractDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractDetailViewController.swift; sourceTree = "<group>"; };
-		08057DEE2CEDA9EE007C6977 /* FamilyDecorationLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyDecorationLogController.swift; sourceTree = "<group>"; };
-		08057DEF2CEDA9EE007C6977 /* MeasurementDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementDetailController.swift; sourceTree = "<group>"; };
-		08057DF02CEDA9EE007C6977 /* MyFamilyListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFamilyListController.swift; sourceTree = "<group>"; };
-		08057DF12CEDA9EE007C6977 /* ProjectCheckListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCheckListController.swift; sourceTree = "<group>"; };
-		08057DF22CEDA9EE007C6977 /* ProjectSegmentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSegmentController.swift; sourceTree = "<group>"; };
 		08057DF32CEDA9EE007C6977 /* SmartDeviceHomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartDeviceHomeController.swift; sourceTree = "<group>"; };
 		08057DF42CEDA9EE007C6977 /* SmartDeviceListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartDeviceListController.swift; sourceTree = "<group>"; };
 		08057DF52CEDA9EE007C6977 /* SmartDeviceSegmentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartDeviceSegmentController.swift; sourceTree = "<group>"; };
@@ -168,6 +114,8 @@
 		08057E292CEDA9EE007C6977 /* ProgressHUDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressHUDManager.swift; sourceTree = "<group>"; };
 		08057E2A2CEDA9EE007C6977 /* ZGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZGestureRecognizer.swift; sourceTree = "<group>"; };
 		083D9C0B2D12AC750003FDA7 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
+		08B03E132D5463FC00CF2B7B /* QuoteSceneWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteSceneWebViewController.swift; sourceTree = "<group>"; };
+		08B55F9D2D587EC900455258 /* SmartHomeFamilysController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartHomeFamilysController.swift; sourceTree = "<group>"; };
 		19A082F3039B457A6E80014A /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
 		40F14B3A09CD12123C9DC3BF /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
@@ -208,67 +156,24 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
-		08057DD32CEDA9EE007C6977 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				08057DCF2CEDA9EE007C6977 /* ContractModel.swift */,
-				08057DD02CEDA9EE007C6977 /* FurnishPhotosListModel.swift */,
-				08057DD12CEDA9EE007C6977 /* MeasurementDetailModel.swift */,
-				08057DD22CEDA9EE007C6977 /* ProjectModel.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		08057DE82CEDA9EE007C6977 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				08057DD42CEDA9EE007C6977 /* ContractLogsListCell.swift */,
-				08057DD52CEDA9EE007C6977 /* ContractLogsView.swift */,
-				08057DD62CEDA9EE007C6977 /* DecorationServiceListCell.swift */,
-				08057DD72CEDA9EE007C6977 /* DecorationServiceView.swift */,
-				08057DD82CEDA9EE007C6977 /* DesignLogsLIstCell.swift */,
-				08057DD92CEDA9EE007C6977 /* DesignLogsView.swift */,
-				08057DDA2CEDA9EE007C6977 /* FamilyListCell.swift */,
-				08057DDB2CEDA9EE007C6977 /* LinearProgressBar.swift */,
-				08057DDC2CEDA9EE007C6977 /* MeasureHeaderView.swift */,
-				08057DDD2CEDA9EE007C6977 /* MeasurementDetailCell.swift */,
-				08057DDE2CEDA9EE007C6977 /* MeasureRoomListCell.swift */,
-				08057DDF2CEDA9EE007C6977 /* MeasureRoomView.swift */,
-				08057DE02CEDA9EE007C6977 /* ProjectCheckListCell.swift */,
 				08057DE12CEDA9EE007C6977 /* SmartDeviceHomeHeaderCell.swift */,
 				08057DE22CEDA9EE007C6977 /* SmartDeviceInspirationListCell.swift */,
 				08057DE32CEDA9EE007C6977 /* SmartDeviceListCell.swift */,
 				08057DE42CEDA9EE007C6977 /* SmartDeviceReusableView.swift */,
 				08057DE52CEDA9EE007C6977 /* SmartDeviceSegmentListCell.swift */,
-				08057DE62CEDA9EE007C6977 /* WarrantyListCell.swift */,
-				08057DE72CEDA9EE007C6977 /* WarrantyView.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		08057DEC2CEDA9EE007C6977 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				08057DE92CEDA9EE007C6977 /* FurnishLogsViewModel.swift */,
-				08057DEA2CEDA9EE007C6977 /* MeasurementViewModel.swift */,
-				08057DEB2CEDA9EE007C6977 /* SmartHomeViewModel.swift */,
-			);
-			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		08057DF62CEDA9EE007C6977 /* Family */ = {
 			isa = PBXGroup;
 			children = (
-				08057DD32CEDA9EE007C6977 /* Model */,
 				08057DE82CEDA9EE007C6977 /* View */,
-				08057DEC2CEDA9EE007C6977 /* ViewModel */,
-				08057DED2CEDA9EE007C6977 /* ContractDetailViewController.swift */,
-				08057DEE2CEDA9EE007C6977 /* FamilyDecorationLogController.swift */,
-				08057DEF2CEDA9EE007C6977 /* MeasurementDetailController.swift */,
-				08057DF02CEDA9EE007C6977 /* MyFamilyListController.swift */,
-				08057DF12CEDA9EE007C6977 /* ProjectCheckListController.swift */,
-				08057DF22CEDA9EE007C6977 /* ProjectSegmentController.swift */,
 				08057DF32CEDA9EE007C6977 /* SmartDeviceHomeController.swift */,
+				08B55F9D2D587EC900455258 /* SmartHomeFamilysController.swift */,
 				08057DF42CEDA9EE007C6977 /* SmartDeviceListController.swift */,
 				08057DF52CEDA9EE007C6977 /* SmartDeviceSegmentController.swift */,
 			);
@@ -370,6 +275,7 @@
 				08057DC92CEDA9EE007C6977 /* BaseViewController.swift */,
 				08057DCA2CEDA9EE007C6977 /* BaseWebController.swift */,
 				08057DCB2CEDA9EE007C6977 /* DebuggingDecoder.swift */,
+				08B03E132D5463FC00CF2B7B /* QuoteSceneWebViewController.swift */,
 				08057DCE2CEDA9EE007C6977 /* Extension */,
 				08057DF62CEDA9EE007C6977 /* Family */,
 				08057DF72CEDA9EE007C6977 /* FurnishViewModel.swift */,
@@ -567,67 +473,41 @@
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
 				08057E2C2CEDA9EE007C6977 /* SmartDeviceSegmentListCell.swift in Sources */,
 				08057E2D2CEDA9EE007C6977 /* SearchHistoryManager.swift in Sources */,
-				08057E2F2CEDA9EE007C6977 /* ProjectCheckListCell.swift in Sources */,
-				08057E302CEDA9EE007C6977 /* SmartHomeViewModel.swift in Sources */,
-				08057E312CEDA9EE007C6977 /* FamilyDecorationLogController.swift in Sources */,
+				08B03E142D5463FC00CF2B7B /* QuoteSceneWebViewController.swift in Sources */,
 				08057E332CEDA9EE007C6977 /* BaseViewController.swift in Sources */,
-				08057E342CEDA9EE007C6977 /* MeasureHeaderView.swift in Sources */,
 				08057E362CEDA9EE007C6977 /* DynamicPresentationController.swift in Sources */,
 				08057E372CEDA9EE007C6977 /* FurnishViewModel.swift in Sources */,
-				08057E382CEDA9EE007C6977 /* DecorationServiceListCell.swift in Sources */,
 				08057E3A2CEDA9EE007C6977 /* CommonParametersPlugin.swift in Sources */,
-				08057E3C2CEDA9EE007C6977 /* MeasureRoomView.swift in Sources */,
 				08057E3D2CEDA9EE007C6977 /* LoadingHUD.swift in Sources */,
 				08057E3E2CEDA9EE007C6977 /* SmartDeviceReusableView.swift in Sources */,
-				08057E3F2CEDA9EE007C6977 /* MyFamilyListController.swift in Sources */,
+				08B55F9E2D587EC900455258 /* SmartHomeFamilysController.swift in Sources */,
 				08057E422CEDA9EE007C6977 /* PaddingLabel.swift in Sources */,
-				08057E432CEDA9EE007C6977 /* DecorationServiceView.swift in Sources */,
 				08057E442CEDA9EE007C6977 /* Extension.swift in Sources */,
-				08057E472CEDA9EE007C6977 /* ContractModel.swift in Sources */,
-				08057E492CEDA9EE007C6977 /* WarrantyView.swift in Sources */,
-				08057E4A2CEDA9EE007C6977 /* MeasurementDetailController.swift in Sources */,
 				08057E4C2CEDA9EE007C6977 /* GlobalReserveView.swift in Sources */,
 				08057E4D2CEDA9EE007C6977 /* UserManager.swift in Sources */,
 				08057E4E2CEDA9EE007C6977 /* HorizontalScrollingButtonsView.swift in Sources */,
 				08057E522CEDA9EE007C6977 /* SmartDeviceHomeController.swift in Sources */,
-				08057E532CEDA9EE007C6977 /* WarrantyListCell.swift in Sources */,
 				08057E542CEDA9EE007C6977 /* CacheManager.swift in Sources */,
-				08057E552CEDA9EE007C6977 /* ContractLogsView.swift in Sources */,
-				08057E562CEDA9EE007C6977 /* LinearProgressBar.swift in Sources */,
 				08057E572CEDA9EE007C6977 /* SmartDeviceListCell.swift in Sources */,
-				08057E582CEDA9EE007C6977 /* MeasureRoomListCell.swift in Sources */,
 				08057E5D2CEDA9EE007C6977 /* APIService.swift in Sources */,
 				08057E602CEDA9EE007C6977 /* GoToLoginView.swift in Sources */,
 				08057E622CEDA9EE007C6977 /* NetworkMonitor.swift in Sources */,
 				08057E632CEDA9EE007C6977 /* BlankCanvasView.swift in Sources */,
-				08057E642CEDA9EE007C6977 /* FurnishLogsViewModel.swift in Sources */,
 				08057E652CEDA9EE007C6977 /* ProgressHUDManager.swift in Sources */,
-				08057E672CEDA9EE007C6977 /* MeasurementViewModel.swift in Sources */,
 				08057E682CEDA9EE007C6977 /* ViewModel.swift in Sources */,
-				08057E692CEDA9EE007C6977 /* FamilyListCell.swift in Sources */,
 				08057E6A2CEDA9EE007C6977 /* CommonModel.swift in Sources */,
 				08057E6B2CEDA9EE007C6977 /* DebuggingDecoder.swift in Sources */,
-				08057E6C2CEDA9EE007C6977 /* MeasurementDetailCell.swift in Sources */,
 				08057E6D2CEDA9EE007C6977 /* SmartDeviceListController.swift in Sources */,
 				08057E6E2CEDA9EE007C6977 /* SmartDeviceInspirationListCell.swift in Sources */,
-				08057E6F2CEDA9EE007C6977 /* FurnishPhotosListModel.swift in Sources */,
 				08057E702CEDA9EE007C6977 /* BaseWebController.swift in Sources */,
 				08057E712CEDA9EE007C6977 /* DashLineView.swift in Sources */,
 				08057E722CEDA9EE007C6977 /* SmartDeviceHomeHeaderCell.swift in Sources */,
 				08057E732CEDA9EE007C6977 /* NetworkLoggerPlugin.swift in Sources */,
-				08057E742CEDA9EE007C6977 /* ProjectModel.swift in Sources */,
-				08057E752CEDA9EE007C6977 /* DesignLogsLIstCell.swift in Sources */,
-				08057E762CEDA9EE007C6977 /* ContractDetailViewController.swift in Sources */,
 				08057E772CEDA9EE007C6977 /* PlaceholderTextView.swift in Sources */,
-				08057E792CEDA9EE007C6977 /* ProjectCheckListController.swift in Sources */,
-				08057E7A2CEDA9EE007C6977 /* MeasurementDetailModel.swift in Sources */,
 				08057E7C2CEDA9EE007C6977 /* SmartDeviceSegmentController.swift in Sources */,
-				08057E7D2CEDA9EE007C6977 /* DesignLogsView.swift in Sources */,
 				08057E7E2CEDA9EE007C6977 /* UserModel.swift in Sources */,
 				08057E7F2CEDA9EE007C6977 /* Screen.swift in Sources */,
 				08057E802CEDA9EE007C6977 /* ZGestureRecognizer.swift in Sources */,
-				08057E812CEDA9EE007C6977 /* ContractLogsListCell.swift in Sources */,
-				08057E822CEDA9EE007C6977 /* ProjectSegmentController.swift in Sources */,
 				08057DC72CED8AF6007C6977 /* FLNativeViewFactory.swift in Sources */,
 				08057DC42CED8896007C6977 /* GeneratedPluginRegistrant.m in Sources */,
 			);

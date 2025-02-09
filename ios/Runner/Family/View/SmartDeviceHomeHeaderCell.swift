@@ -13,17 +13,10 @@ import RxGesture
 class SmartDeviceHomeHeaderCell: UICollectionViewCell{
     private let disposeBag = DisposeBag()
     var toogleBtnAction: (() -> Void)?
-    //点击回调
-    var clickBtnAction: (() -> Void)?
-    var model:PropertyInfo?{
-        didSet{
-            setModel()
-            
-        }
-    }
+
+
     private var containerImageView:UIImageView!
-    private var titleLab:UILabel!
-    private var descLab:UILabel!
+    var titleLab:UILabel!
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUI()
@@ -41,7 +34,7 @@ class SmartDeviceHomeHeaderCell: UICollectionViewCell{
         self.backgroundColor = UIColor.white
         
         //加载 URL
-        if let url = URL(string: "https://npm.iweekly.top/preview") {
+        if let url = URL(string: "https://xjf7711.github.io/decoration/index.html") {
             let request = URLRequest(url: url)
             webView.load(request)
         }
@@ -61,8 +54,8 @@ class SmartDeviceHomeHeaderCell: UICollectionViewCell{
         imageView.isUserInteractionEnabled = true
         imageView.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
             guard let self = self else { return  }
-//            let vc = QuoteSceneWebViewController.init(title: "", isShowBack: false, decorations: [], type: .none, areaNum: "")
-//            UINavigationController.getCurrentNavigationController()?.pushViewController(vc, animated: true)
+            let vc = QuoteSceneWebViewController.init(title: "", isShowBack: false, areaNum: "")
+            UINavigationController.getCurrentNavigationController()?.pushViewController(vc, animated: true)
         }).disposed(by: disposeBag)
         
         let bgView = UIView.init()
@@ -94,21 +87,12 @@ class SmartDeviceHomeHeaderCell: UICollectionViewCell{
         bgView.addSubview(titleLab)
         titleLab.snp.makeConstraints { make in
             make.leading.equalTo(img.snp.trailing).offset(12)
-            make.top.equalToSuperview().offset(16)
+//            make.top.equalToSuperview().offset(16)
+            make.centerY.equalTo(bgView)
             make.trailing.equalToSuperview().offset(-48)
         }
         self.titleLab = titleLab
-        
-        let descLab = UILabel.labelLayout(text: "请先去ERP添加项目", font: FontSizes.regular12, textColor: AppColors.c_999999, ali: .left, isPriority: true, tag: 0)
-        descLab.numberOfLines = 0
-        bgView.addSubview(descLab)
-        descLab.snp.makeConstraints { make in
-            make.leading.equalTo(titleLab)
-            make.top.equalTo(titleLab.snp.bottom).offset(4)
-            make.trailing.equalToSuperview().offset(-48)
-            
-        }
-        self.descLab = descLab
+
         
         let toggleBtn = UIButton.init(image: UIImage(named: "icon_family_toggle"))
         bgView.addSubview(toggleBtn)
@@ -124,47 +108,10 @@ class SmartDeviceHomeHeaderCell: UICollectionViewCell{
             callback()
         }).disposed(by: disposeBag)
         
-        bgView.rx.tapGesture().when(.recognized).subscribe(onNext: {  [weak self] _ in
-            guard let self = self else { return  }
-            guard let callback = self.clickBtnAction else { return  }
-            callback()
-        }).disposed(by: disposeBag)
-        
-    }
-    
-    func setModel(){
-        guard let model = model else { return  }
-        self.titleLab.text = model.address
-        
-        generateLayoutDescription(layout: model)
-            .subscribe(onNext: { formattedString in
-                self.descLab.text = "\(model.address ?? "")・\(formattedString)・\(model.area ?? 0)㎡"
-            })
-            .disposed(by: disposeBag)
 
+        
     }
-    
-    func generateLayoutDescription(layout: PropertyInfo) -> Observable<String> {
-        return Observable.just(layout)
-            .map { layout -> [(Int?, String)] in
-                [
-                    (layout.bedroomNumber, "室"),
-                    (layout.livingRoomNumber, "厅"),
-                    (layout.kitchenRoomNumber, "厨"),
-                    (layout.toiletRoomNumber, "卫")
-                ]
-            }
-            .map { rooms in
-                rooms.compactMap { count, type in
-                    guard let count = count, count > 0 else { return nil }
-                    return "\(count)\(type)"
-                }.joined()
-            }
-            .map { description in
-                description.isEmpty ? "暂无布局信息" : description
-            }
-    }
-    
+
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
