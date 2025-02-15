@@ -14,7 +14,8 @@ class SmartDeviceHomeHeaderCell: UICollectionViewCell{
     private let disposeBag = DisposeBag()
     var toogleBtnAction: (() -> Void)?
 
-
+    // 添加新的回调属性
+    var imageViewTapAction: (() -> Void)?
     private var containerImageView:UIImageView!
     var titleLab:UILabel!
     override init(frame: CGRect) {
@@ -34,7 +35,7 @@ class SmartDeviceHomeHeaderCell: UICollectionViewCell{
         self.backgroundColor = UIColor.white
         
         //加载 URL
-        if let url = URL(string: "https://xjf7711.github.io/decoration/index.html") {
+        if let url = URL(string: "http://192.168.10.20:8080/case") {
             let request = URLRequest(url: url)
             webView.load(request)
         }
@@ -53,9 +54,8 @@ class SmartDeviceHomeHeaderCell: UICollectionViewCell{
         }
         imageView.isUserInteractionEnabled = true
         imageView.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-            guard let self = self else { return  }
-            let vc = QuoteSceneWebViewController.init(title: "", isShowBack: false, areaNum: "")
-            UINavigationController.getCurrentNavigationController()?.pushViewController(vc, animated: true)
+            guard let self = self else { return }
+            self.imageViewTapAction?()
         }).disposed(by: disposeBag)
         
         let bgView = UIView.init()
@@ -123,31 +123,7 @@ extension SmartDeviceHomeHeaderCell:WKNavigationDelegate {
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
     }
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        // let js = """
-        //             var parentDiv = document.getElementById('krpanoSWFObject');
-        //             var childDivs = parentDiv.getElementsByTagName('div');
-        //             for (var i = 0; i < childDivs.length; i++) {
-        //                 childDivs[i].style.overflow = 'hidden';
-        //             }
-
-        //             var like = document.getElementById('btn_like');
-        //             like.style.display = 'none';
-                    
-        //             var scene = document.getElementById('show_scenes');
-        //             scene.style.display = 'none';
-        //         """
-        
-        // //延迟0.5 执行
-        // DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-        //     webView.evaluateJavaScript(js) { (result, error) in
-        //         if error == nil {
-        //             print("执行成功")
-        //         }else{
-        //             print("执行失败")
-        //         }
-        //     }
-        // }
- 
+    
     }
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
     }

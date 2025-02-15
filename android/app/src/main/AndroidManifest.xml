@@ -14,9 +14,16 @@
     <application
         android:name="androidx.multidex.MultiDexApplication" 
 
-        android:label="flutter_smarthome"
-        android:icon="@mipmap/launcher_icon">
-        
+        android:label="极家汇"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        >
+        <activity
+            android:name=".WebViewActivity"
+            android:configChanges="orientation|screenSize" />
+<!--        <activity-->
+<!--            android:name=".SmartHomeDevicesActivity"-->
+<!--            android:exported="false"/>-->
         <!-- 微信支付的meta-data -->
         <meta-data
             android:name="com.tencent.mm.sdk.appid"

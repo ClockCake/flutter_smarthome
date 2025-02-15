@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
+import 'package:flutter_smarthome/utils/login_event.dart';
 import 'package:oktoast/oktoast.dart';
 import '../network/api_manager.dart';
 import '../utils/user_manager.dart';
@@ -339,6 +340,10 @@ class _LoginPageState extends State<LoginPage> {
         // 处理登录成功
         UserModel user = UserModel.fromJson(response);
         await UserManager.instance.saveUser(user);
+
+        // 发送登录成功事件
+        eventBus.emit(LoginEvent(true));
+        
         if (widget.onLoginSuccess != null) {
           widget.onLoginSuccess!();
         }

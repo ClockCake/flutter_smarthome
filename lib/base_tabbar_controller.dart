@@ -7,7 +7,7 @@ import 'package:flutter_smarthome/controllers/native_page.dart';
 import 'package:flutter_smarthome/controllers/shopping_home.dart';
 import 'controllers/discover_home.dart';
 import 'controllers/login_page.dart';
-import 'controllers/personal_home.dart';
+import 'controllers/personal_home.dart';  
 class BaseTabBarController extends StatefulWidget {
   @override
   _BaseTabBarControllerState createState() => _BaseTabBarControllerState();
@@ -20,8 +20,6 @@ class _BaseTabBarControllerState extends State<BaseTabBarController> {
     final List<Widget> _tabItems = [
       DiscoverHomeWidget(),
       NativePageWidget(),
-      // DecorationLogsSegmentsWidget(customerProjectId: '1'),
-      // MyProjectListPage(),
       ShoppingHomeWidget(),
       PersonalHomeWidget(),
 
@@ -63,3 +61,62 @@ class _BaseTabBarControllerState extends State<BaseTabBarController> {
     );
   }
 }
+
+// class _BaseTabBarControllerState extends State<BaseTabBarController> {
+//   int _selectedIndex = 0;
+  
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Stack(
+//         children: [
+//           Offstage(
+//             offstage: _selectedIndex != 0,
+//             child: DiscoverHomeWidget(),
+//           ),
+//           Offstage(
+//             offstage: _selectedIndex != 1,
+//             child: _selectedIndex == 1 ? NativePageWidget() : Container(),
+//           ),
+//           Offstage(
+//             offstage: _selectedIndex != 2,
+//             child: ShoppingHomeWidget(),
+//           ),
+//           Offstage(
+//             offstage: _selectedIndex != 3,
+//             child: PersonalHomeWidget(),
+//           ),
+//         ],
+//       ),
+//       bottomNavigationBar: FlashyTabBar(
+//         animationCurve: Curves.linear,
+//         selectedIndex: _selectedIndex,
+//         iconSize: 30,
+//         showElevation: false,
+//         onItemSelected: (index) {
+//           setState(() {
+//             _selectedIndex = index;
+//           });
+//         },
+//         items: [
+//           FlashyTabBarItem(
+//             icon: Image.asset('assets/images/icon_tabbar_first.png'),
+//             title: Text('发现', style: TextStyle(color: Colors.black)),
+//           ),
+//           FlashyTabBarItem(
+//             icon: Image.asset('assets/images/icon_tabbar_second.png'),
+//             title: Text('爱家', style: TextStyle(color: Colors.black)),
+//           ),
+//           FlashyTabBarItem(
+//             icon: Image.asset('assets/images/icon_tabbar_third.png'),
+//             title: Text('惊喜', style: TextStyle(color: Colors.black)),
+//           ),
+//           FlashyTabBarItem(
+//             icon: Image.asset('assets/images/icon_tabbar_four.png'),
+//             title: Text('我的', style: TextStyle(color: Colors.black)),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

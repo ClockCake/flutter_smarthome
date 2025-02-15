@@ -25,7 +25,8 @@ class SmartDeviceHomeController: BaseViewController {
     //是否需要刷新设备列表的头部
     private var needRefreshHeader = true
     
-
+    private var selectModel:ThingSmartDeviceModel?
+    
     func updateCollectionViewHeight(height: CGFloat) {
           collectionView.snp.updateConstraints { make in
               make.height.equalTo(height)
@@ -233,49 +234,7 @@ extension SmartDeviceHomeController:UICollectionViewDelegate,UICollectionViewDat
                     let roomId = self.roomModels[index].roomId
                     self.getDeviceList(homeId: self.selectHomeId, roomId: roomId)
                 }
-//
-//                header.onFamilyManageTapped = { [weak self] in
-//                    guard let self = self else { return }
-//                    let pickerView = BRStringPickerView.init(pickerMode: .componentSingle)
-//                    pickerView.pickerStyle?.selectRowColor = UIColor.black.withAlphaComponent(0.3)
-//                    pickerView.title = "请选择家庭"
-//                    var dataSource:[BRResultModel] = []
-//                    for (index,item) in self.homeManager.homes.enumerated() {
-//                        let model = BRResultModel.init()
-//                        model.value = item.name
-//                        model.key = "\(item.homeId)"
-//                        model.index = index
-//                        dataSource.append(model)
-//                    }
-//                    let model = BRResultModel.init()
-//                    model.value = "家庭管理"
-//                    model.key = "0"
-//                    dataSource.append(model)
-//                    
-//                    
-//                    pickerView.dataSourceArr = dataSource
-//                    pickerView.selectIndex =  self.pickerSelectIndex;
-//                    pickerView.resultModelBlock = { [weak self] model in
-//                        guard let self = self else { return  }
-//                        if model?.value ?? "" == "家庭管理"{
-//                            guard let impl = ThingSmartBizCore.sharedInstance().service(of: ThingFamilyProtocol.self) as? ThingFamilyProtocol else {
-//                                return
-//                            }
-//                            impl.gotoFamilyManagement?()
-//                        }
-//                        else{
-//                            self.roomModels.removeAll()
-//                            self.selectHomeId = Int64(model?.key ?? "0") ?? 0
-//                            header.titleLab.text = model?.value ?? ""
-//                            self.needRefreshHeader = true
-//                            self.getRoomList(homeId: self.selectHomeId)
-//                        }
-//                        self.pickerSelectIndex = model?.index ?? 0
-//
-//                    }
-//                    pickerView.show()
-//
-//                }
+
             case 2:
                 header.configure(for: .common)
                 header.titleLab.text = "灵感来源"
@@ -309,11 +268,15 @@ extension SmartDeviceHomeController:UICollectionViewDelegate,UICollectionViewDat
                     self.getRoomList(homeId: model.homeId)
                 }
             }
+            
+            cell.imageViewTapAction = { [weak self] in
+                guard let self = self else { return }
+                let vc = QuoteSceneWebViewController(title: "", isShowBack: false, model: self.selectModel ?? ThingSmartDeviceModel())
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
           
             return cell
         case 1: //随心搭/智能设备列表
-//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SmartDeviceRecommedCell", for: indexPath) as! SmartDeviceRecommedCell
-//            return cell
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SmartDeviceListCell", for: indexPath) as! SmartDeviceListCell
             let model = self.deviceModels[indexPath.row]
             cell.model = model
@@ -329,6 +292,7 @@ extension SmartDeviceHomeController:UICollectionViewDelegate,UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.section == 1 {
             let model = self.deviceModels[indexPath.row]
+            self.selectModel = model
             let impl = ThingSmartBizCore.sharedInstance().service(of: ThingPanelProtocol.self) as? ThingPanelProtocol
             impl?.gotoPanelViewController(withDevice: model, group: nil, initialProps: nil, contextProps: nil, completion: nil)
         }

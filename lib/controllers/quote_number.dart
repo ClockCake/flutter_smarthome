@@ -487,7 +487,7 @@ final Map<RenovationType, List<Room>> roomTypeMap = {
       },
       child: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 16.h),
           child: Container(
             height: 48.h,
             decoration: BoxDecoration(

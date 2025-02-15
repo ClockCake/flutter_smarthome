@@ -557,7 +557,7 @@ extension BFFAPIService: TargetType {
   //      let baseUrl = "http://192.168.201.21:6380"  //本地
  //       let baseUrl = "http://erf.gazo.net.cn:6380" //测试
  //     let baseUrl = "https://api.gazolife.cn" //生产
-        let baseUrl = UserDefaults.standard.string(forKey: "CurrentBaseUrl") ?? "http://erf.gazo.net.cn:6380"
+        let baseUrl = "http://erf.gazo.net.cn:6380"
         return URL(string: baseUrl)!
     }
     
