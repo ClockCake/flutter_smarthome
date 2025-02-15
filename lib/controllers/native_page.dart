@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_smarthome/utils/login_event.dart';
-import 'package:flutter_smarthome/utils/login_redirect.dart';
+import 'package:flutter_smarthome/utils/login_redirect.dart'; 
 import 'package:flutter_smarthome/utils/user_manager.dart';
 
 class NativePageWidget extends StatefulWidget {
