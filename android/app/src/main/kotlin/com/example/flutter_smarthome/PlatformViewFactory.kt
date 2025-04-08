@@ -2,6 +2,7 @@ package com.jiyoujiaju.jijiahui
 
 import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.util.Log
 import android.view.View
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import android.view.Gravity
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import io.flutter.plugin.common.StandardMessageCodec
 import io.flutter.plugin.platform.PlatformView
 import io.flutter.plugin.platform.PlatformViewFactory
@@ -18,6 +20,7 @@ import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 
 // ViewFactory 类
 class NativeViewFactory : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
         Log.d("NativeViewFactory", "Creating view with id: $viewId, args: $args")
         val creationParams = args as? Map<String?, Any?>
@@ -25,6 +28,7 @@ class NativeViewFactory : PlatformViewFactory(StandardMessageCodec.INSTANCE) {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class NativeView(
     private val context: Context,
     id: Int,
@@ -46,6 +50,7 @@ class NativeView(
 
     override fun getView(): View = smartHomeView
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun dispose() {
         Log.d("NativeView", "dispose called")
         smartHomeView.cleanup()

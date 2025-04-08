@@ -219,7 +219,7 @@ class _CaseDetailWidgetState extends State<CaseDetailWidget> {
 
   Widget _buildCaseInfo() {
     final result =
-    '${_caseDetail['excelStyle'] == null || (_caseDetail['excelStyle'] as List).isEmpty ? "" : StringUtils.joinList(_caseDetail['excelStyle'], separator: '、')}';
+    '${_caseDetail['designStyle'] == null || (_caseDetail['designStyle'] as List).isEmpty ? "" : StringUtils.joinList(_caseDetail['designStyle'], separator: '、')}';
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.w),

@@ -1,12 +1,12 @@
 buildscript {
-    ext.kotlin_version = '1.9.22'  // 更新到最新稳定版
+    ext.kotlin_version = '1.9.22'  
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.1'  // 更新 Android Gradle 插件版本
+        classpath 'com.android.tools.build:gradle:7.3.1' 
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -14,7 +14,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        mavenCentral()  // 替换 jcenter，因为它已经废弃
+        mavenCentral()  
         maven { url 'https://jitpack.io' }
     }
 }

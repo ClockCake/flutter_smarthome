@@ -157,9 +157,7 @@ class ApiManager {
           for (var request in _penddingRequests) {
             // 重新设置新的 accessToken
             request.headers["Authorization"] = UserManager.instance.user?.accessToken ?? "";
-            // 注意：这里要使用 dio 再次发起请求，不要直接 handler.resolve
             final response = await _dio.fetch(request);
-            // 这里就相当于把之前的请求成功结果返回给之前的调用处
             handler.resolve(response);
           }
         } catch (e) {

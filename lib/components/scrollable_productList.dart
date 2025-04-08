@@ -116,14 +116,14 @@ class _ProductCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                      Container(
-                        width: 14.w,
-                        height: 14.w,
-                        margin: EdgeInsets.only(right: 4),
-                        child: NetworkImageHelper().getCachedNetworkImage(
-                          imageUrl: (product.shopIcon?.isEmpty ?? true) ? 'https://image.iweekly.top/i/2025/01/08/677e186e73d4a.png' : product.shopIcon!,
-                        ),
-                      ),
+                      // Container(
+                      //   width: 14.w,
+                      //   height: 14.w,
+                      //   margin: EdgeInsets.only(right: 4),
+                      //   child: NetworkImageHelper().getCachedNetworkImage(
+                      //     imageUrl: (product.shopIcon?.isEmpty ?? true) ? 'https://image.iweekly.top/i/2025/01/08/677e186e73d4a.png' : product.shopIcon!,
+                      //   ),
+                      // ),
                       Expanded( // 添加 Expanded 让文字可以自适应宽度
                         child: Text(
                           product.shop,

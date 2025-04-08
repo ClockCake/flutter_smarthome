@@ -24,7 +24,7 @@ class SmartDeviceHomeController: BaseViewController {
     
     //是否需要刷新设备列表的头部
     private var needRefreshHeader = true
-    
+
     private var selectModel:ThingSmartDeviceModel?
     
     func updateCollectionViewHeight(height: CGFloat) {
@@ -34,6 +34,7 @@ class SmartDeviceHomeController: BaseViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+
         self.titleLab.text = ""
         self.backArrowButton.isHidden = true
         registerProtocol()
@@ -82,6 +83,7 @@ class SmartDeviceHomeController: BaseViewController {
         }
         
         projectBtn.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+            // 先请求使用时定位权限
             if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
                 // 通知 Flutter 显示项目列表页面
                 appDelegate.navigateToFlutterRoute("showProjectList")
@@ -98,7 +100,7 @@ class SmartDeviceHomeController: BaseViewController {
         super.viewWillDisappear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: true) //防止 flutter 工程中出现导航栏
     }
-    
+
     //子类重写刷新的方法
     override func refreshData() {
         super.refreshData()

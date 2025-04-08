@@ -54,7 +54,7 @@ class _MyProjectListPageState extends State<MyProjectListPage> {
           )
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 18.sp,),
           onPressed: () async {
           await NavigationController.popToFlutter();
           Navigator.pop(context);

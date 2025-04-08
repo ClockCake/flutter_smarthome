@@ -27,8 +27,8 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     compileSdkVersion 33
-    //flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
+    namespace 'com.jiyoujiaju.jijiahui'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -56,8 +56,8 @@ android {
 
     defaultConfig {
         applicationId "com.jiyoujiaju.jijiahui"
-        minSdkVersion 19 // 修改为至少 19
-        targetSdkVersion 33 // 或者使用最新的 SDK 版本
+        minSdkVersion 21 
+        targetSdkVersion 33 
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true // 启用 MultiDex
@@ -89,6 +89,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'com.google.android.exoplayer:exoplayer-common:2.18.7'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.4.0'
 
 
 }

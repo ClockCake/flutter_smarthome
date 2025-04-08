@@ -100,7 +100,7 @@ class _ShoppingHomeListWidgetState extends State<ShoppingHomeListWidget> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 0.w),
                 child: ScrollableProductList(
-                  products: products,
+                  products: recommendProducts,
                   itemWidth: 140,
                   itemHeight: 220,
                   spacing: 12,
@@ -236,7 +236,7 @@ class _ShoppingHomeListWidgetState extends State<ShoppingHomeListWidget> {
       if (response != null) {
         final recommendProductsData = response['recommendProducations'];
         final productsData = response['producations'];
-
+      
       if (response['pageTotal'] == pageNum || response['pageTotal'] == 0) {
         _refreshController.loadNoData();
       }

@@ -284,7 +284,7 @@ class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget>with WidgetsBi
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text('${business['salesPrice']}', style: TextStyle(fontSize: 12.sp, color: Colors.black)),
+                Text('¥${business['salesPrice']}', style: TextStyle(fontSize: 12.sp, color: Colors.black)),
                 SizedBox(width: 8.w,),
                 Text('积分 ${business['pointPrice']}', style: TextStyle(fontSize: 12.sp, color: HexColor('#CA9C72'))),
               ],

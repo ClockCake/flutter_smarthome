@@ -332,7 +332,7 @@ class _LoginPageState extends State<LoginPage> {
         '/api/login/via-code',
         data: {
           'mobile': phone,
-          'code': code,
+          'code': code.toString(),
         },
       );
 

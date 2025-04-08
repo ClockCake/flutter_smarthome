@@ -60,7 +60,7 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> with 
   void initState() {
     super.initState();
     NavigationController.hideNavigationBar();
-    _initNetworkListener();
+    // _initNetworkListener();
     _loadInitialData();
   }
 
@@ -154,7 +154,7 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> with 
             _buildTenderSection(),
             GestureDetector(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => MyWebView(url: "https://npm.iweekly.top/map",title: "在建工地",)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MyWebView(url: "http://erf.gazo.net.cn:8087/webExtension/#/map",title: "在建工地",)));
               },
               child: _buildOnlineSiteSection(),
             ),
@@ -620,7 +620,7 @@ Widget _buildInfiniteMarquee() {
             },
             child: _buildArticleCell(item['gazoHuiArticle']),
           );
-        case 2: // 案例
+        case 1: // 案例
           final caseItem = item['gazoHuiDesignerCase'];
           return GestureDetector(
             onTap: () {
@@ -778,7 +778,12 @@ Widget _buildInfiniteMarquee() {
   Future<void>getRecommendData() async {
     // 获取推荐数据
     try{
-      final response = await ApiManager().get('/api/home/recommend/case');
+      final response = await ApiManager().get('/api/home/recommend/case',
+        queryParameters: {
+          'pageNum': pageNum,
+          'pageSize': pageSize,
+        },
+      );
       if (response['pageTotal'] == pageNum || response['pageTotal'] == 0) {
         _refreshController.loadNoData();
       }

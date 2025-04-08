@@ -121,7 +121,7 @@ class _RankDesigherListWidgetState extends State<RankDesigherListWidget> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(item['realName'],style: TextStyle(color: Colors.black,fontSize: 16.sp, fontWeight: FontWeight.bold),),
+                        Text(item['realName'] ?? "",style: TextStyle(color: Colors.black,fontSize: 16.sp, fontWeight: FontWeight.bold),),
                         SizedBox(height: 4.h,),
                         Text('从业${item['workingYears']}年 ｜ 案例${item['caseNumber']}套',style: TextStyle(color: HexColor('#999999'),fontSize: 12.sp),),
                         SizedBox(height: 8.h,),

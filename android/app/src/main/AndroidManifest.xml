@@ -21,9 +21,6 @@
         <activity
             android:name=".WebViewActivity"
             android:configChanges="orientation|screenSize" />
-<!--        <activity-->
-<!--            android:name=".SmartHomeDevicesActivity"-->
-<!--            android:exported="false"/>-->
         <!-- 微信支付的meta-data -->
         <meta-data
             android:name="com.tencent.mm.sdk.appid"

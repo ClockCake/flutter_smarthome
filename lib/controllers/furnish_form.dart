@@ -478,6 +478,8 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
 
   //显示区域选择器
   void showAreaSelector() {
+    FocusScope.of(context).unfocus();
+
     List<Map<String, dynamic>> items = [];
     for (var item in _areaList) {
       items.add({
@@ -500,6 +502,7 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
 
   //显示房屋类型选择器
   void showHouseTypeSelector() {
+    FocusScope.of(context).unfocus();
     if (_houseTypeList.isNotEmpty) {
       List<Map<String, dynamic>> items = [];
       for (var item in _houseTypeList) {
@@ -524,6 +527,7 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
   //显示装修类型选择器
   // ignore: unused_element
   void showDecorationTypeSelector() {
+    FocusScope.of(context).unfocus();
     if (_decorationTypeList.isNotEmpty) {
       List<Map<String, dynamic>> items = [];
       for (var item in _decorationTypeList) {
@@ -587,10 +591,10 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
       showToast('请选择装修类型');
       return;
     }
-    if (remarkController.text.isEmpty) {
-      showToast('请输入需求备注');
-      return;
-    }
+    // if (remarkController.text.isEmpty) {
+    //   showToast('请输入需求备注');
+    //   return;
+    // }
     _submitForm();
 
   }
@@ -612,7 +616,7 @@ class _FurnishFormWidgetState extends State<FurnishFormWidget> {
           'livingRoomNumber': hallController.text,
           'kitchenRoomNumber': kitchenController.text,
           'toiletRoomNumber': toiletController.text,
-          'remark': remarkController.text,
+          'remark': remarkController.text ?? '',
         },
       );
         showToast('提交成功');

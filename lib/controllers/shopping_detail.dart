@@ -33,14 +33,31 @@ class _ShoppingDetailPageWidgetState extends State<ShoppingDetailPageWidget> {
   List<String> imageList = []; //Banner数组
   late bool isLogin; // 是否登录
 
+@override
+void initState() {
+  super.initState();
+  isLogin = UserManager.instance.isLoggedIn;
+
+  _scrollController.addListener(_onScroll);
+}
+
+@override
+void didChangeDependencies() {
+  super.didChangeDependencies();
+  // 在每次依赖变化时刷新数据（包括从其他页面返回）
+  Navigator.of(context).popUntil((route) {
+    // 确保只有在当前页面重新显示时才刷新数据
+    if (route.isFirst) {
+      _getShoppingDetail();
+    }
+    return true;
+  });
+}
 
   @override
-  void initState() {
-    super.initState();
-    isLogin = UserManager.instance.isLoggedIn;
-
+  void didPopNext() {
+    // 当前页面重新显示时调用数据刷新
     _getShoppingDetail();
-    _scrollController.addListener(_onScroll);
   }
 
   @override
@@ -110,8 +127,8 @@ class _ShoppingDetailPageWidgetState extends State<ShoppingDetailPageWidget> {
                     },
                     child:Row(
                       children: [
-                        SizedBox(width: 16.w,),
-                        NetworkImageHelper().getCachedNetworkImage(imageUrl: _shoppingDetail['businessLogo'] ?? "",width: 18.w,height: 18.h),
+                         SizedBox(width: 16.w,),
+                        // NetworkImageHelper().getCachedNetworkImage(imageUrl: _shoppingDetail['businessLogo'] ?? "",width: 18.w,height: 18.h),
                         SizedBox(width: 4.w,),
                         Text(_shoppingDetail['businessName'] ?? "",style: TextStyle(color: HexColor('#222222'),fontSize: 12.sp),),
                       ],
@@ -124,26 +141,26 @@ class _ShoppingDetailPageWidgetState extends State<ShoppingDetailPageWidget> {
                     height: 8.h,
                     color: HexColor('#F8F8F8'),
                   ),
-                  Container( //选择参数
-                    width: double.infinity,
-                    height: 52.h,
-                    color: Colors.white,
-                    child: GestureDetector(
-                      onTap: () {
+                  // Container( //选择参数
+                  //   width: double.infinity,
+                  //   height: 52.h,
+                  //   color: Colors.white,
+                  //   child: GestureDetector(
+                  //     onTap: () {
 
-                      },
-                      child: Row(
-                        children: [
-                          SizedBox(width: 16.w,),
-                          Text('参数', style: TextStyle(color: Colors.black, fontSize: 14.sp),),
-                          Spacer(),
-                          Text('选择参数 ', style: TextStyle(color: HexColor('#222222'), fontSize: 14.sp),),
-                          Icon(Icons.arrow_forward_ios, size: 16.sp, color: HexColor('#999999')),
-                          SizedBox(width: 16.w,),
-                        ],
-                      ),
-                    )
-                  ),
+                  //     },
+                  //     child: Row(
+                  //       children: [
+                  //         SizedBox(width: 16.w,),
+                  //         Text('参数', style: TextStyle(color: Colors.black, fontSize: 14.sp),),
+                  //         Spacer(),
+                  //         Text('选择参数 ', style: TextStyle(color: HexColor('#222222'), fontSize: 14.sp),),
+                  //         Icon(Icons.arrow_forward_ios, size: 16.sp, color: HexColor('#999999')),
+                  //         SizedBox(width: 16.w,),
+                  //       ],
+                  //     ),
+                  //   )
+                  // ),
                   Container(
                     width: double.infinity,
                     height: 8.h,

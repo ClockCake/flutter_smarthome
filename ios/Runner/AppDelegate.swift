@@ -1,18 +1,19 @@
 import Flutter
 import UIKit
-
 @UIApplicationMain
-@objc class AppDelegate: FlutterAppDelegate {
+@objc class AppDelegate: FlutterAppDelegate{
     private let tuyaAppkey = "ktuupjsdgaheh7gtxhfn"
     private let tuyaSecretKey = "u73nktdvmrxd979aexxx5ug9khum9vhc"
     lazy var flutterEngine: FlutterEngine? = FlutterEngine(name: "my flutter engine")
-    
+    var locationManager: CLLocationManager?
+
     var navigationChannel: FlutterMethodChannel?
     
     override func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+
         guard let engine = flutterEngine else { return false }
         engine.run()
         
@@ -142,5 +143,7 @@ import UIKit
             channel.invokeMethod(route, arguments: nil)
         }
     }
+    
+
 }
 

@@ -24,6 +24,8 @@ class _DiscoverHomeWidget extends State<DiscoverHomeWidget> {
     );
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,7 +89,7 @@ class _DiscoverHomeWidget extends State<DiscoverHomeWidget> {
                     FurnishFormWidget(),
                     DiscoverInformationWidget(),
                   ],
-                  onChange: (index) => print(index),
+                  onChange: (index) => FocusScope.of(context).unfocus(),
                 ),
               ),
             ],
@@ -96,4 +98,6 @@ class _DiscoverHomeWidget extends State<DiscoverHomeWidget> {
       ),
     );
   }
+
+
 }

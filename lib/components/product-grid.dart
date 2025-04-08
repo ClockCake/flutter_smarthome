@@ -71,12 +71,12 @@ class ProductGrid extends StatelessWidget {
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        Container(
-                          width: 16,
-                          height: 16,
-                          child: NetworkImageHelper().getNetworkImage(imageUrl: (product.shopIcon?.isEmpty ?? true) ? 'https://image.iweekly.top/i/2025/01/08/677e186e73d4a.png' : product.shopIcon!),
-                        ),
-                        const SizedBox(width: 4),
+                        // Container(
+                        //   width: 16,
+                        //   height: 16,
+                        //   child: NetworkImageHelper().getNetworkImage(imageUrl: (product.shopIcon?.isEmpty ?? true) ? 'https://image.iweekly.top/i/2025/01/08/677e186e73d4a.png' : product.shopIcon!),
+                        // ),
+                        // const SizedBox(width: 4),
                         Expanded(
                           child: Text(
                             product.shop,

@@ -129,7 +129,7 @@ class _SearchGridPageWidgetState extends State<SearchGridPageWidget> {
             case 3: //商品
               return GestureDetector(
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingDetailPageWidget(commodityId: item['id"'])));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingDetailPageWidget(commodityId: item['id'])));
                 },
                 child: _buildBusinessItem(item),
               );
@@ -266,16 +266,16 @@ Widget _buildBusinessItem(Map<String,dynamic> item) {
       SizedBox(height: 5.h),
       Row(
         children: [
-          Container(
-            width: 16,
-            height: 16,
-            child: NetworkImageHelper().getNetworkImage(
-              imageUrl: item['businessLogo'] ?? "https://image.iweekly.top/i/2025/01/08/677e186e73d4a.png",
-              width: 14.w,
-              height: 14.w,
-            ),
-          ),
-          const SizedBox(width: 4),
+          // Container(
+          //   width: 16,
+          //   height: 16,
+          //   child: NetworkImageHelper().getNetworkImage(
+          //     imageUrl: item['businessLogo'] ?? "https://image.iweekly.top/i/2025/01/08/677e186e73d4a.png",
+          //     width: 14.w,
+          //     height: 14.w,
+          //   ),
+          // ),
+          // const SizedBox(width: 4),
           Expanded(
             child: Text(
               "${item['businessName'] ?? ""}",
@@ -385,7 +385,7 @@ Widget _buildBusinessItem(Map<String,dynamic> item) {
       if (response['pageTotal'] == pageNum || response['pageTotal'] == 0) {
         _refreshController.loadNoData();
       }
-      if (response.isNotEmpty) {
+      if (response != null) {
         final arr = List<Map<String, dynamic>>.from(response['rows']);
         if(mounted) {
           setState(() {
