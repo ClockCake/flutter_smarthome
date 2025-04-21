@@ -60,16 +60,15 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> with 
   void initState() {
     super.initState();
     NavigationController.hideNavigationBar();
-    // _initNetworkListener();
+     _initNetworkListener();
     _loadInitialData();
   }
 
   void _initNetworkListener() {
     NetworkStateHelper.initNetworkListener(() {
-      if (mounted && !_isInitialLoad) { // 检查是否为初始加载
-        setState(() {
-          _refreshData();
-        });
+      if (mounted) {
+        // 网络从无到有时自动下拉刷新
+        _refreshController.requestRefresh();
       }
     });
   }
@@ -151,7 +150,8 @@ class _DiscoverRecommendWidgetState extends State<DiscoverRecommendWidget> with 
             _buildBanner(),
             SizedBox(height: 24.h),
             _buildRecommendationSection(),
-            _buildTenderSection(),
+            if (monthlyNumber != 0)
+              _buildTenderSection(),
             GestureDetector(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => MyWebView(url: "http://erf.gazo.net.cn:8087/webExtension/#/map",title: "在建工地",)));
@@ -671,6 +671,7 @@ Widget _buildInfiniteMarquee() {
   Widget _buildCaseCell(Map<String,dynamic> item) {
     final pics = item['caseMainPic'] ?? [];
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0),

@@ -10,6 +10,7 @@ import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
 import 'package:fluwx/fluwx.dart' as fluwx;
+import 'package:oktoast/oktoast.dart';
 
 class ShoppingOrderWidget extends StatefulWidget {
   final List<Map<String, dynamic>> businessList;
@@ -167,7 +168,7 @@ class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget>with WidgetsBi
               Text('${address['firstName']} ${address['phoneNumber']}', style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold)),
               SizedBox(height: 8.h,),
               Text('${address['detailedAddress']}', style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
-              SizedBox(height: 4.h,),
+              SizedBox(height: 3.h,),
             ]
           ),
           Spacer(),
@@ -372,68 +373,68 @@ class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget>with WidgetsBi
               )
             ],
           ),
-          SizedBox(height: 16.h,),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                _selectedMethod = PaymentMethod.alipay;
-              });
-            },
-            child: Row(
-              children: [
-                Image.asset(
-                  'assets/images/icon_alipay.png',
-                  width: 20.w,
-                  height: 20.w,
-                ),
-                SizedBox(width: 4), // Adjust spacing as needed
-                Text(
-                  '支付宝',
-                  style: TextStyle(fontSize: 14.sp, color: Colors.black),
-                ),
-                Spacer(),
-                Icon(
-                  _selectedMethod == PaymentMethod.alipay
-                    ? Icons.check_box
-                    : Icons.check_box_outline_blank,
-                  color: Colors.black,
-                  size: 18.sp,
-                ),
+        //   SizedBox(height: 16.h,),
+        //   GestureDetector(
+        //     onTap: () {
+        //       setState(() {
+        //         _selectedMethod = PaymentMethod.alipay;
+        //       });
+        //     },
+        //     child: Row(
+        //       children: [
+        //         Image.asset(
+        //           'assets/images/icon_alipay.png',
+        //           width: 20.w,
+        //           height: 20.w,
+        //         ),
+        //         SizedBox(width: 4), // Adjust spacing as needed
+        //         Text(
+        //           '支付宝',
+        //           style: TextStyle(fontSize: 14.sp, color: Colors.black),
+        //         ),
+        //         Spacer(),
+        //         Icon(
+        //           _selectedMethod == PaymentMethod.alipay
+        //             ? Icons.check_box
+        //             : Icons.check_box_outline_blank,
+        //           color: Colors.black,
+        //           size: 18.sp,
+        //         ),
 
-              ],
-            ),
-          ),
-          SizedBox(height: 16.h),
-        // WeChat Pay Option
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                _selectedMethod = PaymentMethod.wechat;
-              });
-            },
-            child: Row(
-              children: [
-                Image.asset(
-                  'assets/images/icon_wechat_pay.png',
-                  width: 20.w,
-                  height: 20.w,
-                ),
-                SizedBox(width: 4.w), // Adjust spacing as needed
-                Text(
-                  '微信支付',
-                  style: TextStyle(fontSize: 14, color: Colors.black),
-                ),
-                Spacer(),
-                Icon(
-                  _selectedMethod == PaymentMethod.wechat
-                    ? Icons.check_box
-                    : Icons.check_box_outline_blank,
-                  color: Colors.black,
-                  size: 18.sp,
-                ),
-              ],
-            ),
-          ),
+        //       ],
+        //     ),
+        //   ),
+        //   SizedBox(height: 16.h),
+        // // WeChat Pay Option
+        //   GestureDetector(
+        //     onTap: () {
+        //       setState(() {
+        //         _selectedMethod = PaymentMethod.wechat;
+        //       });
+        //     },
+        //     child: Row(
+        //       children: [
+        //         Image.asset(
+        //           'assets/images/icon_wechat_pay.png',
+        //           width: 20.w,
+        //           height: 20.w,
+        //         ),
+        //         SizedBox(width: 4.w), // Adjust spacing as needed
+        //         Text(
+        //           '微信支付',
+        //           style: TextStyle(fontSize: 14, color: Colors.black),
+        //         ),
+        //         Spacer(),
+        //         Icon(
+        //           _selectedMethod == PaymentMethod.wechat
+        //             ? Icons.check_box
+        //             : Icons.check_box_outline_blank,
+        //           color: Colors.black,
+        //           size: 18.sp,
+        //         ),
+        //       ],
+        //     ),
+        //   ),
         ],
       ),
     );
@@ -511,7 +512,8 @@ class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget>with WidgetsBi
       );
       if (response != null) {
         orderId = response['orderId'];
-        payAmountData(response);
+        // payAmountData(response);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => PersonalOrderDetailWidget(id: orderId)));
       }
     }catch(e){
       print(e);
@@ -520,6 +522,11 @@ class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget>with WidgetsBi
 
 
   Future<void> payAmountData(Map<String,dynamic>item) async {
+    // if (_selectedMethod !=  PaymentMethod.alipay && _selectedMethod != PaymentMethod.wechat) {
+    //   showToast("请选择支付方式");
+    //   return;
+    // }
+ 
     final apiManager = ApiManager();
     final response = await apiManager.post(
       '/api/shopping/pay/unionpay',
@@ -543,7 +550,7 @@ class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget>with WidgetsBi
       payUrl,
       title: "支付",
       description: "打开支付链接",
-      thumbnail: fluwx.WeChatImage.network(''), // 缩略图 URL
+      thumbnail: fluwx.WeChatImage.network('https://image.iweekly.top/i/2025/01/08/677e186e73d4a.png'), // 缩略图 URL
       scene: scene,
     );
  

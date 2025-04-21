@@ -37,8 +37,22 @@ class SmartDeviceReusableView: UICollectionReusableView {
 
     
     private func setupCommonUI() {
+        let hangView = UIView.init()
+        addSubview(hangView)
+        hangView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(30)
+        }
+        
+        hangView.rx.tapGesture().when(.recognized)
+            .subscribe(onNext: { [weak self] _ in
+                self?.onAllDevicesTapped?()
+            })
+            .disposed(by: disposeBag)
+        
         let titleLab = UILabel.labelLayout(text: "全部设备", font: FontSizes.medium16, textColor: AppColors.c_333333, ali: .left, isPriority: false, tag: 0)
-        self.addSubview(titleLab)
+        hangView.addSubview(titleLab)
         titleLab.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
             make.top.equalToSuperview().offset(10)
@@ -49,18 +63,12 @@ class SmartDeviceReusableView: UICollectionReusableView {
         let image = UIImage(systemName: "chevron.right", withConfiguration: symbolConfig)?.withRenderingMode(.alwaysTemplate)
         let tintedImage = image?.withTintColor(AppColors.c_333333)
         let imageView = UIImageView(image: tintedImage)
-        addSubview(imageView)
+        hangView.addSubview(imageView)
         imageView.snp.makeConstraints { make in
             make.centerY.equalTo(titleLab)
             make.trailing.equalToSuperview().offset(-16)
         }
         
-        imageView.rx.tapGesture().when(.recognized)
-            .subscribe(onNext: { [weak self] _ in
-                self?.onAllDevicesTapped?()
-            })
-            .disposed(by: disposeBag)
-
     }
     
     func configure(for type: SmartDeviceReusableViewType, rooms: [ThingSmartRoomModel]? = nil) {

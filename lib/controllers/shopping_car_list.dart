@@ -10,7 +10,9 @@ import 'package:flutter_smarthome/utils/shopping_cart_count.dart';
 import 'package:oktoast/oktoast.dart';
 
 class ShoppingCarListWidget extends StatefulWidget {
-  const ShoppingCarListWidget({super.key});
+  final Function()? onBackPressed; // 可选回调
+
+  const ShoppingCarListWidget({super.key, this.onBackPressed});
 
   @override
   State<ShoppingCarListWidget> createState() => _ShoppingCarListWidgetState();
@@ -57,7 +59,12 @@ class _ShoppingCarListWidgetState extends State<ShoppingCarListWidget> {
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            if (widget.onBackPressed != null) {
+              widget.onBackPressed!(); // 调用回调
+            } 
+            Navigator.pop(context);
+          }
         ),
         actions: [
           GestureDetector(

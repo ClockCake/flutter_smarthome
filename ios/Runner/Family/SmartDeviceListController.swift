@@ -52,6 +52,12 @@ extension SmartDeviceListController:UITableViewDelegate,UITableViewDataSource {
         return 90
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let model = self.dataSource[indexPath.row]
+        let impl = ThingSmartBizCore.sharedInstance().service(of: ThingPanelProtocol.self) as? ThingPanelProtocol
+        impl?.gotoPanelViewController(withDevice: model, group: nil, initialProps: nil, contextProps: nil, completion: nil)
+    }
+    
 }
 
 

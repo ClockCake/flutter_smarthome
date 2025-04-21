@@ -36,10 +36,10 @@ class _HomeResultPageWidgetState extends State<HomeResultPageWidget> {
     _controller.dispose();
     super.dispose();
   }
-
-  void _onSearchChanged(String searchText) {
+  
+  void _refreshSearchGridPage() {
     setState(() {
-      // 每次文本变化时刷新界面，SearchGridPageWidget 会根据新的搜索值重新加载
+      // Trigger the refresh of SearchGridPageWidget
     });
   }
 
@@ -76,12 +76,8 @@ class _HomeResultPageWidgetState extends State<HomeResultPageWidget> {
                           filled: true,
                           fillColor: Colors.grey[200],
                         ),
-                        onChanged: _onSearchChanged,  // 监听输入变化
                         onSubmitted: (value) {
-                          // 处理键盘完成时的逻辑
-                          setState(() {
-                            // 更新搜索值时触发重新加载
-                          });
+                          _refreshSearchGridPage(); // Trigger refresh
                         },
                       ),
                     ),
@@ -122,14 +118,42 @@ class _HomeResultPageWidgetState extends State<HomeResultPageWidget> {
         ),
         views: [
           if (widget.type == 1) ...[
-            SearchGridPageWidget(searchTypes: [4],searchValue: _controller.text,), //产品
-            SearchGridPageWidget(searchTypes: [6],searchValue: _controller.text,), //商店铺
-            SearchGridPageWidget(searchTypes: [3], searchValue: _controller.text), //商品
-            SearchGridPageWidget(searchTypes: [1],searchValue: _controller.text,), //设计师
-            SearchGridPageWidget(searchTypes: [2],searchValue: _controller.text,), //案例
+            SearchGridPageWidget(
+              searchTypes: [4],
+              searchValue: _controller.text,
+              onRefresh: _refreshSearchGridPage,
+            ), // 产品
+            SearchGridPageWidget(
+              searchTypes: [6],
+              searchValue: _controller.text,
+              onRefresh: _refreshSearchGridPage,
+            ), // 商店铺
+            SearchGridPageWidget(
+              searchTypes: [3],
+              searchValue: _controller.text,
+              onRefresh: _refreshSearchGridPage,
+            ), // 商品
+            SearchGridPageWidget(
+              searchTypes: [1],
+              searchValue: _controller.text,
+              onRefresh: _refreshSearchGridPage,
+            ), // 设计师
+            SearchGridPageWidget(
+              searchTypes: [2],
+              searchValue: _controller.text,
+              onRefresh: _refreshSearchGridPage,
+            ), // 案例
           ] else if (widget.type == 2) ...[
-            SearchGridPageWidget(searchTypes: [3],searchValue: _controller.text,), //商品
-            SearchGridPageWidget(searchTypes: [6], searchValue: _controller.text), //店铺
+            SearchGridPageWidget(
+              searchTypes: [3],
+              searchValue: _controller.text,
+              onRefresh: _refreshSearchGridPage,
+            ), // 商品
+            SearchGridPageWidget(
+              searchTypes: [6],
+              searchValue: _controller.text,
+              onRefresh: _refreshSearchGridPage,
+            ), // 店铺
           ],
         ],
         onChange: (index) => print(index),

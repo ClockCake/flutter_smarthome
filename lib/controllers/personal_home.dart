@@ -4,6 +4,7 @@ import 'package:flutter_smarthome/controllers/login_page.dart';
 import 'package:flutter_smarthome/controllers/personal_order_segment.dart';
 import 'package:flutter_smarthome/utils/hex_color.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
+import 'package:oktoast/oktoast.dart';
 import '../models/user_model.dart';
 import '../utils/user_manager.dart';
 import './personal_setting.dart';
@@ -125,7 +126,9 @@ class _PersonalHomeWidgetState extends State<PersonalHomeWidget> {
                   height: 48.w, // 使用相同的单位(w)
                   child: isLogin 
                     ? NetworkImageHelper().getNetworkImage(
-                      imageUrl: user?.avatar ?? '',
+                    imageUrl: (user?.avatar?.isEmpty ?? true) 
+                        ? 'http://144.24.86.34:9002/i/2025/04/11/67f8c0c9e36d6.png' 
+                        : user!.avatar!,
                       width: 48.w,
                       height: 48.w,
                       fit: BoxFit.cover,
@@ -182,8 +185,8 @@ class _PersonalHomeWidgetState extends State<PersonalHomeWidget> {
           Expanded(
             child: InkWell(
               onTap: () {
-                print('Tapped A');
-                // 处理 A 区域的点击事件
+                 showToast("暂未开放");
+
               },
               child: Container(
                 height: 50.h, // 设置合适的点击区域高度
@@ -220,7 +223,7 @@ class _PersonalHomeWidgetState extends State<PersonalHomeWidget> {
           Expanded(
             child: InkWell(
               onTap: () {
-                print('Tapped B');
+                showToast("暂未开放");
                 // 处理 B 区域的点击事件
               },
               child: Container(
@@ -294,7 +297,7 @@ class _PersonalHomeWidgetState extends State<PersonalHomeWidget> {
             Spacer(),
             InkWell(
               onTap: () {
-                print('Tapped 积分商城');
+                 showToast("暂未开放");
                 // 处理积分商城点击事件
               },
               child: Container(
@@ -423,57 +426,72 @@ class _PersonalHomeWidgetState extends State<PersonalHomeWidget> {
             ),
            ),
            SizedBox(height: 16.h),
-           Row(
-            children: [
-              //加载本地图片
-              Container(
-                width: 24.w,
-                height: 24.h,
-                margin: EdgeInsets.only(left: 16.w,top: 12.h,bottom: 12.h),
-                child: Image.asset('assets/images/icon_my_contract.png'),
-              ),
-              SizedBox(width: 8.w),
-              Text('我的合同',style: TextStyle(color: HexColor('#222222'),fontSize: 14.sp)),
-              Spacer(),
-              Icon(Icons.arrow_forward_ios,color: HexColor('#999999'),size: 16.sp),
-              SizedBox(width: 16.w),
-
-            ],
-           ),
-            Divider(height: 1.h,color: HexColor('#E5E5E5')),
-           Row(
-            children: [
-              //加载本地图片
-              Container(
-                width: 24.w,
-                height: 24.h,
-                margin: EdgeInsets.only(left: 16.w,top: 12.h,bottom: 12.h),
-                child: Image.asset('assets/images/icon_my_reserve.png'),
-              ),
-              SizedBox(width: 8.w),
-              Text('我的预约',style: TextStyle(color: HexColor('#222222'),fontSize: 14.sp)),
-              Spacer(),
-              Icon(Icons.arrow_forward_ios,color: HexColor('#999999'),size: 16.sp),
-              SizedBox(width: 16.w),
-
-            ],
-           ),
-            Divider(height: 1.h,color: HexColor('#E5E5E5')),
-            Row(
+          GestureDetector(
+            onTap: () {
+              showToast("暂未开放");
+            },
+            child:Row(
               children: [
                 //加载本地图片
                 Container(
                   width: 24.w,
                   height: 24.h,
                   margin: EdgeInsets.only(left: 16.w,top: 12.h,bottom: 12.h),
-                  child: Image.asset('assets/images/icon_my_comment.png'),
+                  child: Image.asset('assets/images/icon_my_contract.png'),
                 ),
                 SizedBox(width: 8.w),
-                Text('我的评论',style: TextStyle(color: HexColor('#222222'),fontSize: 14.sp)),
+                Text('我的合同',style: TextStyle(color: HexColor('#222222'),fontSize: 14.sp)),
                 Spacer(),
                 Icon(Icons.arrow_forward_ios,color: HexColor('#999999'),size: 16.sp),
                 SizedBox(width: 16.w),
+
               ],
+            ),
+            ),
+            Divider(height: 1.h,color: HexColor('#E5E5E5')),
+            GestureDetector(
+              onTap: () {
+                showToast("暂未开放");
+              },
+              child:Row(
+                children: [
+                  //加载本地图片
+                  Container(
+                    width: 24.w,
+                    height: 24.h,
+                    margin: EdgeInsets.only(left: 16.w,top: 12.h,bottom: 12.h),
+                    child: Image.asset('assets/images/icon_my_reserve.png'),
+                  ),
+                  SizedBox(width: 8.w),
+                  Text('我的预约',style: TextStyle(color: HexColor('#222222'),fontSize: 14.sp)),
+                  Spacer(),
+                  Icon(Icons.arrow_forward_ios,color: HexColor('#999999'),size: 16.sp),
+                  SizedBox(width: 16.w),
+
+                ],
+              ),
+            ),
+            Divider(height: 1.h,color: HexColor('#E5E5E5')),
+            GestureDetector(
+              onTap: () {
+                showToast("暂未开放");
+              },
+              child:Row(
+                children: [
+                  //加载本地图片
+                  Container(
+                    width: 24.w,
+                    height: 24.h,
+                    margin: EdgeInsets.only(left: 16.w,top: 12.h,bottom: 12.h),
+                    child: Image.asset('assets/images/icon_my_comment.png'),
+                  ),
+                  SizedBox(width: 8.w),
+                  Text('我的评论',style: TextStyle(color: HexColor('#222222'),fontSize: 14.sp)),
+                  Spacer(),
+                  Icon(Icons.arrow_forward_ios,color: HexColor('#999999'),size: 16.sp),
+                  SizedBox(width: 16.w),
+                ],
+              )
             )
          ],
       );

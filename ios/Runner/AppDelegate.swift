@@ -1,11 +1,10 @@
 import Flutter
 import UIKit
 @UIApplicationMain
-@objc class AppDelegate: FlutterAppDelegate{
+@objc class AppDelegate: FlutterAppDelegate,CLLocationManagerDelegate{
     private let tuyaAppkey = "ktuupjsdgaheh7gtxhfn"
     private let tuyaSecretKey = "u73nktdvmrxd979aexxx5ug9khum9vhc"
     lazy var flutterEngine: FlutterEngine? = FlutterEngine(name: "my flutter engine")
-    var locationManager: CLLocationManager?
 
     var navigationChannel: FlutterMethodChannel?
     
@@ -119,7 +118,7 @@ import UIKit
         window.backgroundColor = UIColor.white
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
-        
+ 
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     

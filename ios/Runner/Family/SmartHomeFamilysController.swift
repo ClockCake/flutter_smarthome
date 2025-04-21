@@ -20,9 +20,9 @@ class SmartHomeFamilysController: BaseViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return tableView
     }()
-    
+    private let homeManager = ThingSmartHomeManager()
+
     init(data:[ThingSmartHomeModel]) {
-        self.dataSource = data
         super.init()
     }
     
@@ -31,6 +31,13 @@ class SmartHomeFamilysController: BaseViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        homeManager.getHomeList { [weak self] homes in
+            guard let self = self else { return }
+            self.dataSource = self.homeManager.homes
+            self.tableView.reloadData()
+        } failure: { error in
+            print("获取家庭失败")
+        }
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     override func viewDidLoad() {

@@ -46,7 +46,8 @@
 		08057E7E2CEDA9EE007C6977 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DFB2CEDA9EE007C6977 /* UserModel.swift */; };
 		08057E7F2CEDA9EE007C6977 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057DCD2CEDA9EE007C6977 /* Screen.swift */; };
 		08057E802CEDA9EE007C6977 /* ZGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08057E2A2CEDA9EE007C6977 /* ZGestureRecognizer.swift */; };
-		08057E832CEDA9EE007C6977 /* thing_custom_config.json in Resources */ = {isa = PBXBuildFile; fileRef = 08057E1E2CEDA9EE007C6977 /* thing_custom_config.json */; };
+		081458822DA90B09001B0974 /* thing_custom_config.json in Resources */ = {isa = PBXBuildFile; fileRef = 081458812DA90B09001B0974 /* thing_custom_config.json */; };
+		08169D4A2DB238B900B316F8 /* deviceDetailConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 08169D492DB238B900B316F8 /* deviceDetailConfig.json */; };
 		08B03E142D5463FC00CF2B7B /* QuoteSceneWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B03E132D5463FC00CF2B7B /* QuoteSceneWebViewController.swift */; };
 		08B55F9E2D587EC900455258 /* SmartHomeFamilysController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B55F9D2D587EC900455258 /* SmartHomeFamilysController.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
@@ -101,7 +102,6 @@
 		08057E002CEDA9EE007C6977 /* NetworkLoggerPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLoggerPlugin.swift; sourceTree = "<group>"; };
 		08057E012CEDA9EE007C6977 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		08057E022CEDA9EE007C6977 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
-		08057E1E2CEDA9EE007C6977 /* thing_custom_config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = thing_custom_config.json; sourceTree = "<group>"; };
 		08057E1F2CEDA9EE007C6977 /* BlankCanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankCanvasView.swift; sourceTree = "<group>"; };
 		08057E202CEDA9EE007C6977 /* DashLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashLineView.swift; sourceTree = "<group>"; };
 		08057E212CEDA9EE007C6977 /* DynamicPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicPresentationController.swift; sourceTree = "<group>"; };
@@ -113,6 +113,8 @@
 		08057E282CEDA9EE007C6977 /* PlaceholderTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTextView.swift; sourceTree = "<group>"; };
 		08057E292CEDA9EE007C6977 /* ProgressHUDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressHUDManager.swift; sourceTree = "<group>"; };
 		08057E2A2CEDA9EE007C6977 /* ZGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZGestureRecognizer.swift; sourceTree = "<group>"; };
+		081458812DA90B09001B0974 /* thing_custom_config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = thing_custom_config.json; sourceTree = "<group>"; };
+		08169D492DB238B900B316F8 /* deviceDetailConfig.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = deviceDetailConfig.json; sourceTree = "<group>"; };
 		083D9C0B2D12AC750003FDA7 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		08B03E132D5463FC00CF2B7B /* QuoteSceneWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteSceneWebViewController.swift; sourceTree = "<group>"; };
 		08B55F9D2D587EC900455258 /* SmartHomeFamilysController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartHomeFamilysController.swift; sourceTree = "<group>"; };
@@ -271,6 +273,8 @@
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
 				97C147021CF9000F007C117D /* Info.plist */,
+				081458812DA90B09001B0974 /* thing_custom_config.json */,
+				08169D492DB238B900B316F8 /* deviceDetailConfig.json */,
 				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
 				08057DC92CEDA9EE007C6977 /* BaseViewController.swift */,
 				08057DCA2CEDA9EE007C6977 /* BaseWebController.swift */,
@@ -281,7 +285,6 @@
 				08057DF72CEDA9EE007C6977 /* FurnishViewModel.swift */,
 				08057DFC2CEDA9EE007C6977 /* Manager */,
 				08057E032CEDA9EE007C6977 /* Networking */,
-				08057E1E2CEDA9EE007C6977 /* thing_custom_config.json */,
 				08057E2B2CEDA9EE007C6977 /* UIComponents */,
 				08057DC52CED8AF6007C6977 /* FLNativeViewFactory.swift */,
 				08057DC22CED8896007C6977 /* GeneratedPluginRegistrant.h */,
@@ -365,11 +368,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08057E832CEDA9EE007C6977 /* thing_custom_config.json in Resources */,
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
+				08169D4A2DB238B900B316F8 /* deviceDetailConfig.json in Resources */,
+				081458822DA90B09001B0974 /* thing_custom_config.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -592,7 +596,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = VM8EAMJRY8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -601,6 +605,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 3.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jiyoujiaju.jijiahui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -728,7 +733,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = VM8EAMJRY8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -737,6 +742,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 3.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jiyoujiaju.jijiahui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -758,7 +764,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = VM8EAMJRY8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -767,6 +773,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 3.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jiyoujiaju.jijiahui;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

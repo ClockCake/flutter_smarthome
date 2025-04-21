@@ -290,9 +290,10 @@ class _PersonalOrderListWidgetState extends State<PersonalOrderListWidget> {
                 SizedBox(width: 12.w),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingPayPageWidget(paymentAmount: '${item['payAmount'] ?? 0}',orderId: item['id'],orderNumber: item['orderNumber'],onPaymentComplete: () {
-                      _onRefresh();
-                    },)));
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingPayPageWidget(paymentAmount: '${item['payAmount'] ?? 0}',orderId: item['id'],orderNumber: item['orderNumber'],onPaymentComplete: () {
+                    //   _onRefresh();
+                    // },)));
+                    showToast('支付功能暂未开放');
                   },
                   child: Container(
                     width: 74.w,
@@ -560,7 +561,7 @@ class _PersonalOrderListWidgetState extends State<PersonalOrderListWidget> {
       if (response['pageTotal'] == pageNum || response['pageTotal'] == 0) {
         _refreshController.loadNoData();
       }
-      if (response['rows'].isNotEmpty) {
+      // if (response['rows'].isNotEmpty) {
         final arr = List<Map<String, dynamic>>.from(response['rows']);
         if(mounted) {
           setState(() {
@@ -568,7 +569,7 @@ class _PersonalOrderListWidgetState extends State<PersonalOrderListWidget> {
           });
         }
 
-      }
+      // }
 
     }
     catch(e) {

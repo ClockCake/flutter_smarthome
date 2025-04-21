@@ -132,8 +132,8 @@ class _ShoppingCartSkuPopupWidgetState extends State<ShoppingCartSkuPopupWidget>
   Widget build(BuildContext context) {
     final double bottomPadding = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
-      // 背景为半透明黑色
-      backgroundColor: Colors.black54,
+      // 背景为灰色 + 透明度
+      backgroundColor: Colors.black.withOpacity(0.3),
       // 使用 Align 将 Container 放在底部
       body: GestureDetector(
         onTap: () => Navigator.of(context).pop(),

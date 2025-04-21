@@ -211,7 +211,7 @@ class _ShoppingPayPageWidgetState extends State<ShoppingPayPageWidget> with Widg
       payUrl,
       title: "支付",
       description: "打开支付链接",
-      thumbnail: fluwx.WeChatImage.network("https://www.example.com/thumb.png"),
+      thumbnail: fluwx.WeChatImage.network("https://image.iweekly.top/i/2025/01/08/677e186e73d4a.png"),
       scene: scene,
     );
  

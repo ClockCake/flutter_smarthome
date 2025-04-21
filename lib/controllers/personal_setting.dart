@@ -21,7 +21,7 @@ class PersonalSettingWidget extends StatefulWidget {
 
 class _PersonalSettingWidgetState extends State<PersonalSettingWidget> {
   //标题数组
-  List<String> _titleList = ['个人信息', '收货地址管理', '隐私政策', '清除缓存', '版本'];
+  List<String> _titleList = ['个人信息', '收货地址管理', '隐私政策', '清除缓存', '版本','注销用户'];
 
   String? _cacheSize; // 新增状态变量来存储缓存大小
   static const platform = MethodChannel('com.smartlife.app/login');
@@ -120,6 +120,31 @@ class _PersonalSettingWidgetState extends State<PersonalSettingWidget> {
                       case 4:
                         //版本
                         showToast('当前已是最新版本');
+                        break;
+                      case 5:
+                        //二次确定框
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('注销用户'),
+                              content: const Text('确定要注销当前用户吗？'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: const Text('取消'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    // 处理注销逻辑
+                                   showToast('已提交注销请求,我们将在3个工作日内处理,请耐心等待');
+                                    Navigator.of(context).pop();},
+                                  child: const Text('确定'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
                         break;
                       default:
                     }

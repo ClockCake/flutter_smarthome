@@ -14,9 +14,10 @@ class ApiManager {
   static final ApiManager _instance = ApiManager._internal();
   factory ApiManager() => _instance;
   late Dio _dio;
-  final String _baseUrl = 'http://erf.gazo.net.cn:6380';
-  //'http://erf.gazo.net.cn:6380';
+  final String _baseUrl = 'https://api.gazolife.cn';
+  //'http://erf.gazo.net.cn:6380'; 测试
   //'http://192.168.10.20:6380';
+  //https://api.gazolife.cn
   // 用来标记是否正在刷新
   bool _isRefreshing = false;
   // 存放需要重试的请求队列

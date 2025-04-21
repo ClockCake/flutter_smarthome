@@ -138,14 +138,17 @@ class _CancelOrderDialogWidgetState extends State<CancelOrderDialogWidget> {
         '/api/personal/order/cancel',
         data: {
           'id':widget.orderId,
-          'reason': list[selectedIndex!],
+          'cancelReason': list[selectedIndex!],
         },
       );
-      if (response['code'] == 200) {
+      if (response != null) {
         Navigator.pop(context);
         showToast('取消订单成功');
       } else {
         showToast('取消订单失败');
+      }
+      if(widget.onConfirm != null) {
+        widget.onConfirm!();
       }
     } catch (e) {
       showToast('取消订单失败');

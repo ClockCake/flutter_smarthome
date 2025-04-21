@@ -37,28 +37,10 @@ class _ShoppingDetailPageWidgetState extends State<ShoppingDetailPageWidget> {
 void initState() {
   super.initState();
   isLogin = UserManager.instance.isLoggedIn;
-
   _scrollController.addListener(_onScroll);
-}
+   _getShoppingDetail();
 
-@override
-void didChangeDependencies() {
-  super.didChangeDependencies();
-  // 在每次依赖变化时刷新数据（包括从其他页面返回）
-  Navigator.of(context).popUntil((route) {
-    // 确保只有在当前页面重新显示时才刷新数据
-    if (route.isFirst) {
-      _getShoppingDetail();
-    }
-    return true;
-  });
 }
-
-  @override
-  void didPopNext() {
-    // 当前页面重新显示时调用数据刷新
-    _getShoppingDetail();
-  }
 
   @override
   void dispose() {
@@ -223,6 +205,7 @@ void didChangeDependencies() {
   void _jumpToPage(int index,BuildContext contexts) {
     showModalBottomSheet(
       context: context,
+      backgroundColor: isLogin ? Colors.black.withOpacity(0.3) : Colors.transparent,
       isScrollControlled: true, 
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)), 
@@ -232,7 +215,7 @@ void didChangeDependencies() {
           return Padding(
             padding: EdgeInsets.only(
               top: MediaQuery.of(contexts).padding.top, 
-              bottom: MediaQuery.of(contexts).viewInsets.bottom,
+              bottom: 0,
             ),
             child: LoginPage(onLoginSuccess: () {
               setState(() {
@@ -290,7 +273,7 @@ void didChangeDependencies() {
                   showToast('请先登录');
                   return;
               }
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingCarListWidget()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingCarListWidget(onBackPressed: () => _getShoppingDetail(),)));
             },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

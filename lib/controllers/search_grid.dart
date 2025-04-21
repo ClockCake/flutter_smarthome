@@ -18,10 +18,13 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 class SearchGridPageWidget extends StatefulWidget {
   final List<dynamic> searchTypes; // 搜索类型
   final String searchValue; // 搜索关键字
+  final VoidCallback onRefresh; 
+
   const SearchGridPageWidget({
     super.key,
     required this.searchTypes,
     required this.searchValue,
+    required this.onRefresh,
   });
 
   @override
@@ -43,6 +46,14 @@ class _SearchGridPageWidgetState extends State<SearchGridPageWidget> {
   void dispose() {
     super.dispose();
     _refreshController.dispose();
+  }
+
+  @override
+  void didUpdateWidget(SearchGridPageWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.searchValue != widget.searchValue) {
+      _onRefresh();
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -322,7 +333,7 @@ Widget _buildBusinessItem(Map<String,dynamic> item) {
         ClipRRect(
           borderRadius: BorderRadius.circular(8.0),
           child: NetworkImageHelper().getCachedNetworkImage(
-            imageUrl: item['designerAvatar'] ?? "",
+            imageUrl: item['avatar'] ?? "",
             width: double.infinity,
             height: 100.h, // 确保图片高度适中
             fit: BoxFit.cover,
@@ -405,6 +416,7 @@ Widget _buildBusinessItem(Map<String,dynamic> item) {
     try {
       // 执行数据刷新操作
       await _getSearchResults(); // 或其他数据加载方法
+      widget.onRefresh();
       _refreshController.refreshCompleted(); // 完成刷新
     } catch (e) {
       _refreshController.refreshFailed(); // 刷新失败

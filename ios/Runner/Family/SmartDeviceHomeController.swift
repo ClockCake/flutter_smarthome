@@ -63,6 +63,7 @@ class SmartDeviceHomeController: BaseViewController {
         refreshData()
 
         imageBtn.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+
             let impl = ThingSmartBizCore.sharedInstance().service(of: ThingActivatorProtocol.self) as? ThingActivatorProtocol
             impl?.gotoCategoryViewController()
             //配网后的回调

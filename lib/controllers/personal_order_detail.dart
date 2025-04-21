@@ -108,7 +108,7 @@ Map<String,dynamic> orderDetail = {
               Text('${address['firstName'] ?? ''} ${address['phoneNumber'] ?? ''}', style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold)),
               SizedBox(height: 8.h,),
               Text('${address['detailedAddress'] ?? ''}', style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
-              SizedBox(height: 4.h,),
+              SizedBox(height: 3.h,),
             ]
           ),
         ],
@@ -425,9 +425,10 @@ Widget _buildBusinessInfo(Map<String,dynamic> business){
                 SizedBox(width: 12.w),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingPayPageWidget(paymentAmount: '${orderDetail['payAmount'] ?? 0}',orderId: widget.id,orderNumber: orderDetail['orderNumber'],onPaymentComplete: () {
-                      _getOrderDetail();
-                    },)));
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => ShoppingPayPageWidget(paymentAmount: '${orderDetail['payAmount'] ?? 0}',orderId: widget.id,orderNumber: orderDetail['orderNumber'],onPaymentComplete: () {
+                    //   _getOrderDetail();
+                    // },)));
+                    showToast("支付功能暂未开放");
                   },
                   child: Container(
                     width: 74.w,
