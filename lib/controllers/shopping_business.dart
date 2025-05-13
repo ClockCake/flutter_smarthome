@@ -72,33 +72,38 @@ class _ShoppingBusinessWidgetState extends State<ShoppingBusinessWidget>
   }
 
   Widget _buildSegmentedControl() {
-  return Expanded(
-    child: ContainedTabBarView(
-      tabs: const [
-        Text('精选'),
-        Text('商品'),
-        Text('活动'),
-        Text('新品'),
-      ],
-      tabBarProperties: TabBarProperties(
-        indicatorColor: HexColor('#FFB26D'),
-        indicatorWeight: 2.0,
-        labelColor: Colors.black,
-        unselectedLabelColor: Colors.grey,
-        labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        indicatorSize: TabBarIndicatorSize.label,
-        
+    return Expanded(
+      child: Theme(
+        data: Theme.of(context).copyWith(
+          tabBarTheme: const TabBarThemeData(
+            dividerColor: Colors.transparent, // 隐藏分割线
+            dividerHeight: 0,
+          ),
+        ),
+        child: ContainedTabBarView(
+          tabs: const [
+            Text('精选'),
+            Text('商品'),
+            Text('活动'),
+            Text('新品'),
+          ],
+          tabBarProperties: TabBarProperties(
+            indicatorColor: HexColor('#FFB26D'),
+            indicatorWeight: 2.0,
+            labelColor: Colors.black,
+            unselectedLabelColor: Colors.grey,
+            labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            indicatorSize: TabBarIndicatorSize.label,
+          ),
+          views: [
+            ShoppingListWidget(businessId: widget.businessId, type: "1"),
+            ShoppingListWidget(businessId: widget.businessId, type: "0"),
+            ShoppingListWidget(businessId: widget.businessId, type: "2"),
+            ShoppingListWidget(businessId: widget.businessId, type: "3"),
+          ],
+          onChange: (index) => print(index),
+        ),
       ),
-      views: [
-          ShoppingListWidget(businessId: widget.businessId,type: "1",),
-          ShoppingListWidget(businessId: widget.businessId,type: "0",),
-          ShoppingListWidget(businessId: widget.businessId,type: "2",),
-          ShoppingListWidget(businessId: widget.businessId,type: "3",),
-      ],
-
-      onChange: (index) => print(index),
-      
-    )
-  );    
+    );   
  }
 }

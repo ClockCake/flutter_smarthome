@@ -62,31 +62,37 @@ class _RankSegmentHomeWidgetState extends State<RankSegmentHomeWidget> {
                ),
              ),
              // 标签页部分
-             Expanded(
-               child: ContainedTabBarView(                 
-                 tabs: const [
-                   Text('设计师'),
-                   Text('案例'),
-                 ],
-                 tabBarProperties: TabBarProperties(
-                   indicatorColor: HexColor('#FFB26D'),
-                   indicatorWeight: 3.h,
-                   labelColor: Colors.black,
-                   unselectedLabelColor: Colors.grey,
-                   labelStyle: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
-                   indicatorSize: TabBarIndicatorSize.label,
-                   background: Container(
-                      color: HexColor('#FBF7F2')
-                   )
-                   
-                 ),
-                 views: [
-                    RankDesigherListWidget(),
-                    RankCaseListWidget(),
-                 ],
-                 onChange: (index) => print(index),
-               ),
-             ),
+              Expanded(
+                child: Theme(
+                  data: Theme.of(context).copyWith(
+                    tabBarTheme: const TabBarThemeData(
+                      dividerColor: Colors.transparent,
+                      dividerHeight: 0,
+                    ),
+                  ),
+                  child: ContainedTabBarView(
+                    tabs: const [
+                      Text('设计师'),
+                      Text('案例'),
+                    ],
+                    tabBarProperties: TabBarProperties(
+                      indicatorColor: HexColor('#FFB26D'),
+                      indicatorWeight: 3.h,
+                      labelColor: Colors.black,
+                      unselectedLabelColor: Colors.grey,
+                      labelStyle:
+                          TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                      indicatorSize: TabBarIndicatorSize.label,
+                      background: Container(color: HexColor('#FBF7F2')),
+                    ),
+                    views: [
+                      RankDesigherListWidget(),
+                      RankCaseListWidget(),
+                    ],
+                    onChange: (index) => print(index),
+                  ),
+                ),
+              ),
            ],
          ),
        ),

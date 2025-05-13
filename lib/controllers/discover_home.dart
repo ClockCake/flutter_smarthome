@@ -70,28 +70,38 @@ class _DiscoverHomeWidget extends State<DiscoverHomeWidget> {
                 ),
               ),
               Expanded(
-                child: ContainedTabBarView(
-                  tabs: const [
-                    Text('推荐'),
-                    Text('装修'),
-                    Text('资讯'),
-                  ],
-                  tabBarProperties: const TabBarProperties(
-                    indicatorColor: Colors.black,
-                    indicatorWeight: 2.0,
-                    labelColor: Colors.black,
-                    unselectedLabelColor: Colors.grey,
-                    labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    indicatorSize: TabBarIndicatorSize.label,
+                child: Theme(
+                  data: Theme.of(context).copyWith(
+                    tabBarTheme: const TabBarThemeData(
+                      dividerColor: Colors.transparent, // 隐藏那条分割线
+                      // 如果你的包里还用到了 dividerHeight，可以一起设 0
+                      dividerHeight: 0,
+                    ),
                   ),
-                  views: [
-                    DiscoverRecommendWidget(),
-                    FurnishFormWidget(),
-                    DiscoverInformationWidget(),
-                  ],
-                  onChange: (index) => FocusScope.of(context).unfocus(),
+                  child: ContainedTabBarView(
+                    tabs: const [
+                      Text('推荐'),
+                      Text('装修'),
+                      Text('资讯'),
+                    ],
+                    tabBarProperties: const TabBarProperties(
+                      indicatorColor: Colors.black,
+                      indicatorWeight: 2.0,
+                      labelColor: Colors.black,
+                      unselectedLabelColor: Colors.grey,
+                      labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      indicatorSize: TabBarIndicatorSize.label,
+                    ),
+                    views: [
+                      DiscoverRecommendWidget(),
+                      FurnishFormWidget(),
+                      DiscoverInformationWidget(),
+                    ],
+                    onChange: (index) => FocusScope.of(context).unfocus(),
+                  ),
                 ),
               ),
+              
             ],
           ),
         ),

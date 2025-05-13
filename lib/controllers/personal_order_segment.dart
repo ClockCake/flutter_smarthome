@@ -34,39 +34,51 @@ class _PersonalOrderSegmentWidgetState extends State<PersonalOrderSegmentWidget>
         child: Column(
           children: [
             Expanded(
-              child: ContainedTabBarView(
-                initialIndex: widget.index,
-                tabs: const [
-                  Text('全部'),
-                  Text('待付款'),
-                  Text('待发货'),
-                  Text('待收货'),
-                  Text('评价'),
-                ],
-                tabBarProperties:  TabBarProperties(
-                  // indicatorColor: HexColor('#CA9C72'),
-                  indicatorWeight: 2.sp,
-                  labelColor: Colors.black,
-                  unselectedLabelColor: Colors.grey,
-                  labelStyle: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
-                  indicatorSize: TabBarIndicatorSize.label,
-                  indicator: UnderlineTabIndicator(
-                    borderSide: BorderSide(width: 2.w,color: HexColor('#FFD700')), // 设置指示器的宽度和颜色
-                    insets: EdgeInsets.symmetric(horizontal: 6.w), // 设置指示器的水平边距
+              child: Theme(
+                data: Theme.of(context).copyWith(
+                  tabBarTheme: const TabBarThemeData(
+                    dividerColor: Colors.transparent,
+                    dividerHeight: 0,
                   ),
-                
                 ),
-                views: const [
-                  PersonalOrderListWidget(orderStatus: "0"),
-                  PersonalOrderListWidget(orderStatus: "1"),
-                  PersonalOrderListWidget(orderStatus: "3"),
-                  PersonalOrderListWidget(orderStatus: "4"),
-                  Scaffold(body: Center(child: Text('评价'))),
-                ],
-                onChange: (index) => print(index),
+                child: ContainedTabBarView(
+                  initialIndex: widget.index,
+                  tabs: const [
+                    Text('全部'),
+                    Text('待付款'),
+                    Text('待发货'),
+                    Text('待收货'),
+                    Text('评价'),
+                  ],
+                  tabBarProperties: TabBarProperties(
+                    indicatorWeight: 2.sp,
+                    labelColor: Colors.black,
+                    unselectedLabelColor: Colors.grey,
+                    labelStyle: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    indicatorSize: TabBarIndicatorSize.label,
+                    indicator: UnderlineTabIndicator(
+                      borderSide: BorderSide(
+                        width: 2.w,
+                        color: HexColor('#FFD700'),
+                      ),
+                      insets: EdgeInsets.symmetric(horizontal: 6.w),
+                    ),
+                  ),
+                  views: const [
+                    PersonalOrderListWidget(orderStatus: "0"),
+                    PersonalOrderListWidget(orderStatus: "1"),
+                    PersonalOrderListWidget(orderStatus: "3"),
+                    PersonalOrderListWidget(orderStatus: "4"),
+                    Scaffold(body: Center(child: Text('评价'))),
+                  ],
+                  onChange: (index) => print(index),
+                ),
               ),
             ),
-          ],
+                      ],
         )
       ),
     );

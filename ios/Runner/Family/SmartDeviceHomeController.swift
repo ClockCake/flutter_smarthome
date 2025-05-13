@@ -274,7 +274,7 @@ extension SmartDeviceHomeController:UICollectionViewDelegate,UICollectionViewDat
             
             cell.imageViewTapAction = { [weak self] in
                 guard let self = self else { return }
-                let vc = QuoteSceneWebViewController(title: "", isShowBack: false, model: self.selectModel ?? ThingSmartDeviceModel())
+                let vc = QuoteSceneWebViewController(title: "", isShowBack: false, models: self.deviceModels)
                 self.navigationController?.pushViewController(vc, animated: true)
             }
           

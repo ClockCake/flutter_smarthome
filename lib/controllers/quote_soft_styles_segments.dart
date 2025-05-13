@@ -74,30 +74,38 @@ class _QuoteSoftStylesSegmentsWidgetState extends State<QuoteSoftStylesSegmentsW
 
 
   Widget _buildSegmentedControl(){
-    return ContainedTabBarView(  
-      tabs: widget.segementList.map((e) => Tab(text: e['roomName'])).toList(),
-      tabBarProperties: TabBarProperties(     
-        isScrollable: true,
-        labelPadding: EdgeInsets.symmetric(horizontal: 16.w),
-        labelColor:  HexColor('#FFA555'),
-        unselectedLabelColor: HexColor('#999999'),
-        labelStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
-        indicatorSize: TabBarIndicatorSize.label,
-        indicator: CustomTabIndicator(
-          indicatorWidth: 20.w,  // 自定义宽度
-          indicatorColor: HexColor('#FFA555'),  // 指示器颜色
-          indicatorHeight: 2.w,  // 指示器高度
+    return Theme(
+      data: Theme.of(context).copyWith(
+        tabBarTheme: const TabBarThemeData(
+          dividerColor: Colors.transparent, // 隐藏分割线
+          dividerHeight: 0,
         ),
       ),
-      views: widget.segementList.asMap().entries.map((entry) => 
-        QuoteSoftStylesGridWidget(
-          roomType: entry.value['roomType'],
-          packageId: widget.packageId,
-          updatePackage: _handleUpdatePackage,
-          index: entry.key,  // 使用 map 的索引
-        )
-      ).toList(),
-      onChange: (index) => print(index),
+      child: ContainedTabBarView(
+        tabs: widget.segementList.map((e) => Tab(text: e['roomName'])).toList(),
+        tabBarProperties: TabBarProperties(
+          isScrollable: true,
+          labelPadding: EdgeInsets.symmetric(horizontal: 16.w),
+          labelColor: HexColor('#FFA555'),
+          unselectedLabelColor: HexColor('#999999'),
+          labelStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+          indicatorSize: TabBarIndicatorSize.label,
+          indicator: CustomTabIndicator(
+            indicatorWidth: 20.w,
+            indicatorColor: HexColor('#FFA555'),
+            indicatorHeight: 2.w,
+          ),
+        ),
+        views: widget.segementList.asMap().entries.map((entry) =>
+          QuoteSoftStylesGridWidget(
+            roomType: entry.value['roomType'],
+            packageId: widget.packageId,
+            updatePackage: _handleUpdatePackage,
+            index: entry.key,
+          )
+        ).toList(),
+        onChange: (index) => print(index),
+      ),
     );
   }
 

@@ -19,8 +19,8 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  #sdk: '>=3.1.0 <4.0.0'
-  sdk: '>=2.19.6 <3.0.0'
+  sdk: '>=3.1.0 <4.0.0'
+  #sdk: '>=2.19.6 <3.0.0'
   
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -35,31 +35,28 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2   #图标库
-  dio: ^5.0.0 #网络请求库
-  flutter_screenutil: ^5.5.4 #屏幕适配库
-  oktoast: ^3.0.0 #toast库
+  cupertino_icons: ^1.0.8   #图标库
+  dio: ^5.8.0+1 #网络请求库
+  flutter_screenutil: ^5.9.3 #屏幕适配库
+  oktoast: ^3.4.0 #toast库
   pull_to_refresh: ^2.0.0 #下拉刷新库
-  provider: ^6.0.0 #状态管理库
-  flashy_tab_bar2: ^0.0.6 #底部导航栏库
+  provider: ^6.1.4 #状态管理库
+  flashy_tab_bar2: ^0.0.10 #底部导航栏库
   contained_tab_bar_view: ^0.8.0 #SegmentedControl库
   card_swiper: ^3.0.1 #Banner库
-  gif_view: ^0.3.1 #gif库
+  gif_view: ^1.0.2 #gif库
   flutter_infinite_marquee: ^1.0.0 #跑马灯库
-  cached_network_image: ^3.2.3 #图片缓存库
+  cached_network_image: ^3.4.1 #图片缓存库
   flutter_easyloading: ^3.0.5 #加载loading库
-  shared_preferences: 2.0.15 #本地存储库
+  shared_preferences: 2.5.3 #本地存储库
   city_pickers: ^1.3.0 #城市选择器库
-  image_picker: ^1.0.4 #图片选择器库
-  webview_flutter: ^4.4.2 #webview库
-  webview_flutter_android: ^3.12.1
-  webview_flutter_wkwebview: ^3.9.4
-  package_info_plus: ^4.2.0 #获取app信息库
-  flutter_html: ^3.0.0-beta.2 #html解析库
-  connectivity_plus: ^5.0.1 
-  video_player: ^2.7.2 #播放器库
-  fluwx: ^3.13.1 #微信支付库
-  permission_handler: ^10.4.5
+  image_picker: ^1.1.2 #图片选择器库
+  webview_flutter: ^4.11.0 #webview库
+  package_info_plus: ^8.3.0 #获取app信息库
+  connectivity_plus: ^6.1.3 
+  video_player: ^2.9.5 #播放器库
+  fluwx: ^5.5.0 #微信支付库
+  permission_handler: ^12.0.0+1 #权限申请库
 
   flutter_localizations:
     sdk: flutter

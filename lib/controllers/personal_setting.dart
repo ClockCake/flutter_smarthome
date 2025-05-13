@@ -102,8 +102,8 @@ class _PersonalSettingWidgetState extends State<PersonalSettingWidget> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => const CustomWebView(
-                              url: 'https://www.baidu.com',
-                              title: '网页标题',
+                              url: 'http://www.gazolife.com/app/jijia_PrivacyPolicy.html',
+                              title: '隐私政策',
                             ),
                           ),
                         );

@@ -194,7 +194,7 @@ class _DesignerMomentsListWidgetState extends State<DesignerMomentsListWidget> {
     try{
       final apiManager = ApiManager();
       final response =  await apiManager.get(
-        '/api/designer/cases',
+        '/api/designer/dynamic',
         queryParameters: {
           'pageNum': pageNum,
           'pageSize': pageSize,

@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/hyd/Downloads/flutter_openSDK/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/hyd/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/hyd/Desktop/flutter_smarthome/android/app/.cxx/Debug/5v211od3/arm64-v8a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/hyd/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/hyd/Desktop/flutter_smarthome/android/app/.cxx/Debug/5v211od3/arm64-v8a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}

@@ -88,7 +88,7 @@ class _DesignerCaseGridWidgetState extends State<DesignerCaseGridWidget> {
         crossAxisCount: 2,
         mainAxisSpacing: 10.0,
         crossAxisSpacing: 10.0,
-        childAspectRatio: 0.75,
+        childAspectRatio: 0.95,
       ),
       itemBuilder: (context, index) {
         return GestureDetector(

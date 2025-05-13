@@ -20,10 +20,10 @@
             android:id="@+id/scroll_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:background="#FFFFFF"
+            android:clipChildren="false"
             android:clipToPadding="false"
-            android:clipChildren="false">
+            android:orientation="vertical">
 
             <!-- Header 区域：WebView 与图标 -->
             <RelativeLayout
@@ -41,30 +41,30 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/icon_vr"
-                    android:contentDescription="VR Icon" />
+                    android:contentDescription="VR Icon"
+                    android:src="@drawable/icon_vr" />
 
                 <ImageView
                     android:id="@+id/add_icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_alignParentEnd="true"
                     android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    android:src="@drawable/icon_add"
-                    android:contentDescription="Add Icon" />
+                    android:contentDescription="Add Icon"
+                    android:src="@drawable/icon_add" />
 
                 <ImageView
                     android:id="@+id/checklist_icon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_toStartOf="@id/add_icon"
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    android:src="@drawable/icon_checklist"
-                    android:contentDescription="CheckList Icon" />
+                    android:layout_toStartOf="@id/add_icon"
+                    android:contentDescription="CheckList Icon"
+                    android:src="@drawable/icon_checklist" />
             </RelativeLayout>
 
             <!-- CardView 叠加效果 -->
@@ -72,10 +72,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
                 android:layout_marginTop="-40dp"
-                app:cardCornerRadius="8dp"
+                android:layout_marginRight="16dp"
                 app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="8dp"
                 app:cardElevation="8dp"
                 app:cardUseCompatPadding="true" />
 
@@ -83,38 +83,38 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp">
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="智能化设备"
-                    android:textSize="16sp"
                     android:textColor="#000000"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="全部设备 >"
                     android:gravity="end"
-                    android:textSize="16sp"
-                    android:textColor="#000000" />
+                    android:text="全部设备 >"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <!-- 横向滚动的 segment 区域 -->
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="none"
                 android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp">
+                android:scrollbars="none">
 
                 <LinearLayout
                     android:id="@+id/segment_layout"
@@ -129,10 +129,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
-                android:nestedScrollingEnabled="false"/>
+                android:nestedScrollingEnabled="false" />
         </LinearLayout>
     </ScrollView>
 

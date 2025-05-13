@@ -6,35 +6,34 @@ PODS:
     - ThingFoundationKit
     - ThingUIKit
   - boost-for-react-native (1.63.0)
-  - BRPickerView (2.9.3):
-    - BRPickerView/All (= 2.9.3)
-  - BRPickerView/All (2.9.3):
+  - BRPickerView (2.9.5):
+    - BRPickerView/All (= 2.9.5)
+  - BRPickerView/All (2.9.5):
     - BRPickerView/Default
     - BRPickerView/Deprecated
-  - BRPickerView/Core (2.9.3)
-  - BRPickerView/DatePicker (2.9.3):
+  - BRPickerView/Core (2.9.5)
+  - BRPickerView/DatePicker (2.9.5):
     - BRPickerView/Core
-  - BRPickerView/Default (2.9.3):
+  - BRPickerView/Default (2.9.5):
     - BRPickerView/DatePicker
     - BRPickerView/TextPicker
-  - BRPickerView/Deprecated (2.9.3):
+  - BRPickerView/Deprecated (2.9.5):
     - BRPickerView/Core
-    - BRPickerView/Deprecated/AddressPickerView (= 2.9.3)
-    - BRPickerView/Deprecated/Base (= 2.9.3)
-    - BRPickerView/Deprecated/StringPickerView (= 2.9.3)
-  - BRPickerView/Deprecated/AddressPickerView (2.9.3):
-    - BRPickerView/Core
-    - BRPickerView/Deprecated/Base
-  - BRPickerView/Deprecated/Base (2.9.3):
-    - BRPickerView/Core
-  - BRPickerView/Deprecated/StringPickerView (2.9.3):
+    - BRPickerView/Deprecated/AddressPickerView (= 2.9.5)
+    - BRPickerView/Deprecated/Base (= 2.9.5)
+    - BRPickerView/Deprecated/StringPickerView (= 2.9.5)
+  - BRPickerView/Deprecated/AddressPickerView (2.9.5):
     - BRPickerView/Core
     - BRPickerView/Deprecated/Base
-  - BRPickerView/TextPicker (2.9.3):
+  - BRPickerView/Deprecated/Base (2.9.5):
+    - BRPickerView/Core
+  - BRPickerView/Deprecated/StringPickerView (2.9.5):
+    - BRPickerView/Core
+    - BRPickerView/Deprecated/Base
+  - BRPickerView/TextPicker (2.9.5):
     - BRPickerView/Core
   - connectivity_plus (0.0.1):
     - Flutter
-    - ReachabilitySwift
   - DACircularProgress (2.3.1)
   - DoubleConversion (1.1.6)
   - dsBridge (3.0.202.1):
@@ -49,7 +48,10 @@ PODS:
   - Flutter (1.0.0)
   - fluwx (0.0.1):
     - Flutter
-    - WechatOpenSDK-XCFramework (~> 2.0.2)
+    - fluwx/pay (= 0.0.1)
+  - fluwx/pay (0.0.1):
+    - Flutter
+    - WechatOpenSDK-XCFramework (~> 2.0.4)
   - FMDB (2.7.12):
     - FMDB/standard (= 2.7.12)
   - FMDB/Core (2.7.12)
@@ -111,7 +113,7 @@ PODS:
     - GZLMiniProgramAdapterAPI_iOS
     - Masonry
     - ThingEncryptImage
-  - GZLMiniAppCore_iOS (3.25.9):
+  - GZLMiniAppCore_iOS (3.25.10):
     - GodzillaMiniBaseKit
     - GodzillaMiniOpenAPI
     - GZLJSEngine
@@ -159,7 +161,7 @@ PODS:
     - SocketRocket
     - ThingModuleManager
     - ThingSmartNetworkKit
-  - GZLMiniAppShell_iOS (3.25.9):
+  - GZLMiniAppShell_iOS (3.25.10):
     - GodzillaMiniBaseKit (= 3.4.1)
     - GodzillaMiniIService (= 1.0.1)
     - GodzillaMiniOpenAPI (= 3.20.1)
@@ -171,7 +173,7 @@ PODS:
     - GZLMiniApp_iOS (= 2.6.2)
     - GZLMiniAppAPM_iOS (= 3.9.2)
     - GZLMiniAppCommonUI (= 3.23.0)
-    - GZLMiniAppCore_iOS (= 3.25.9)
+    - GZLMiniAppCore_iOS (= 3.25.10)
     - GZLMiniAppInject (= 3.25.1)
     - GZLMiniAppInterceptor_iOS (= 3.25.1)
     - GZLMiniAppRemoteIDE (= 3.25.2)
@@ -298,10 +300,9 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - permission_handler_apple (9.1.1):
+  - permission_handler_apple (9.3.0):
     - Flutter
   - Protobuf (3.29.4)
-  - ReachabilitySwift (5.2.4)
   - React (0.59.13-rc.100):
     - boost-for-react-native (= 1.63.0)
     - DoubleConversion
@@ -460,13 +461,14 @@ PODS:
   - RxRelay (6.9.0):
     - RxSwift (= 6.9.0)
   - RxSwift (6.9.0)
-  - shared_preferences_ios (0.0.1):
+  - shared_preferences_foundation (0.0.1):
     - Flutter
+    - FlutterMacOS
   - SnapKit (5.7.1)
   - SocketRocket (0.7.1)
-  - sqflite (0.0.3):
+  - sqflite_darwin (0.0.4):
     - Flutter
-    - FMDB (>= 2.7.5)
+    - FlutterMacOS
   - SQLCipher (4.7.0):
     - SQLCipher/standard (= 4.7.0)
   - SQLCipher/common (4.7.0)
@@ -869,7 +871,7 @@ PODS:
     - ThingModuleServices
     - ThingPanelContainer
     - ThingSmartCameraBizKit
-  - ThingCameraSDK (4.21.17):
+  - ThingCameraSDK (4.21.50):
     - ThingAudioEngineSDK
     - ThingAvLoggerSDK
     - ThingFFmpegWrapper
@@ -1538,8 +1540,8 @@ PODS:
   - ThingMicrophoneAuthManager (0.1.3-anonymize.2):
     - ThingAuthorizationServices
     - ThingModuleManager
-  - ThingMiniAppCore (3.25.24):
-    - GZLMiniAppShell_iOS (= 3.25.9)
+  - ThingMiniAppCore (3.25.25):
+    - GZLMiniAppShell_iOS (= 3.25.10)
   - ThingMiniAppTabModule (2.0.3):
     - ThingModuleManager
     - ThingModuleServices
@@ -2339,7 +2341,7 @@ PODS:
     - ThingThemeModule
     - ThingUIKit
     - TRCTResourceManager
-  - ThingSmartBizKitBizBundle (6.2.0.4):
+  - ThingSmartBizKitBizBundle (6.2.0.5):
     - dsBridge (= 3.0.202.1)
     - FMDB
     - FMDB/standard
@@ -2350,7 +2352,7 @@ PODS:
     - GZLJSEngine (= 1.0.8)
     - GZLMiniAppAPM_iOS (= 3.9.2)
     - GZLMiniAppCommonUI (= 3.23.0)
-    - GZLMiniAppCore_iOS (= 3.25.9)
+    - GZLMiniAppCore_iOS (= 3.25.10)
     - GZLMiniAppStorage (= 3.3.0)
     - GZLMiniProgramAdapterAPI_iOS (= 3.24.1)
     - GZLRNCompatProtocol (= 1.1.0)
@@ -2735,7 +2737,7 @@ PODS:
     - ThingSmartEventPredefined
     - ThingSmartPiPPlugAPI
   - ThingSmartCameraExtSDK (1.0.6)
-  - ThingSmartCameraKit (6.2.0.4):
+  - ThingSmartCameraKit (6.2.0.5):
     - libwebp
     - libwebp/demux
     - libwebp/mux
@@ -2743,7 +2745,7 @@ PODS:
     - libwebp/webp
     - ThingAudioEngineSDK (= 1.7.4)
     - ThingAvLoggerSDK (= 1.3.2)
-    - ThingCameraSDK (= 4.21.17)
+    - ThingCameraSDK (= 4.21.50)
     - ThingEncryptImage (= 4.33.0)
     - ThingFFmpegWrapper (= 4.4.2)
     - ThingMbedtls (= 3.5.2)
@@ -2776,7 +2778,7 @@ PODS:
     - ThingSmartDeviceCoreKit
     - ThingSmartMediaUIKit
     - ThingSmartP2pChannelKit
-  - ThingSmartCameraPanelBizBundle (6.2.1.4):
+  - ThingSmartCameraPanelBizBundle (6.2.1.5):
     - AFNetworking/Reachability
     - ATGestureLockView (= 0.2.3-anonymize.1)
     - boost-for-react-native
@@ -2802,11 +2804,11 @@ PODS:
     - GZLMiniApp_iOS (= 2.6.2)
     - GZLMiniAppAPM_iOS (= 3.9.2)
     - GZLMiniAppCommonUI (= 3.23.0)
-    - GZLMiniAppCore_iOS (= 3.25.9)
+    - GZLMiniAppCore_iOS (= 3.25.10)
     - GZLMiniAppInject (= 3.25.1)
     - GZLMiniAppInterceptor_iOS (= 3.25.1)
     - GZLMiniAppRemoteIDE (= 3.25.2)
-    - GZLMiniAppShell_iOS (= 3.25.9)
+    - GZLMiniAppShell_iOS (= 3.25.10)
     - GZLMiniAppStorage (= 3.3.0)
     - GZLMiniAppTab_iOS (= 3.25.2)
     - GZLMiniAppWebView_iOS (= 3.25.1)
@@ -3009,7 +3011,7 @@ PODS:
     - ThingMediaKit (= 3.3.2)
     - ThingMediaPlayerSDK (= 1.5.1)
     - ThingMicrophoneAuthManager (= 0.1.3-anonymize.2)
-    - ThingMiniAppCore (= 3.25.24)
+    - ThingMiniAppCore (= 3.25.25)
     - ThingMiniAppTabModule (= 2.0.3)
     - ThingModuleManager (~> 2.14)
     - ThingModuleServices (= 4.66.6)
@@ -3557,7 +3559,7 @@ PODS:
     - TRCTThingCameraPlayer (= 1.2.3-anonymize.3)
     - yoga (= 0.59.10)
     - YYModel
-  - ThingSmartCameraSettingBizBundle (6.2.1.4):
+  - ThingSmartCameraSettingBizBundle (6.2.1.5):
     - DACircularProgress
     - dsBridge (= 3.0.202.1)
     - EZAudio
@@ -3576,11 +3578,11 @@ PODS:
     - GZLMiniApp_iOS (= 2.6.2)
     - GZLMiniAppAPM_iOS (= 3.9.2)
     - GZLMiniAppCommonUI (= 3.23.0)
-    - GZLMiniAppCore_iOS (= 3.25.9)
+    - GZLMiniAppCore_iOS (= 3.25.10)
     - GZLMiniAppInject (= 3.25.1)
     - GZLMiniAppInterceptor_iOS (= 3.25.1)
     - GZLMiniAppRemoteIDE (= 3.25.2)
-    - GZLMiniAppShell_iOS (= 3.25.9)
+    - GZLMiniAppShell_iOS (= 3.25.10)
     - GZLMiniAppStorage (= 3.3.0)
     - GZLMiniAppTab_iOS (= 3.25.2)
     - GZLMiniAppWebView_iOS (= 3.25.1)
@@ -3727,7 +3729,7 @@ PODS:
     - ThingMbedtls (~> 3.5)
     - ThingMediaKit (= 3.3.2)
     - ThingMicrophoneAuthManager (= 0.1.3-anonymize.2)
-    - ThingMiniAppCore (= 3.25.24)
+    - ThingMiniAppCore (= 3.25.25)
     - ThingMiniAppTabModule (= 2.0.3)
     - ThingModuleManager (~> 2.14)
     - ThingModuleServices (= 4.66.6)
@@ -3938,7 +3940,7 @@ PODS:
     - ThingModuleManager
     - ThingModuleServices
     - ThingSmartBaseKit
-  - ThingSmartCloudServiceBizBundle (6.2.1.4):
+  - ThingSmartCloudServiceBizBundle (6.2.1.5):
     - DACircularProgress
     - dsBridge (= 3.0.202.1)
     - EZAudio
@@ -3957,11 +3959,11 @@ PODS:
     - GZLMiniApp_iOS (= 2.6.2)
     - GZLMiniAppAPM_iOS (= 3.9.2)
     - GZLMiniAppCommonUI (= 3.23.0)
-    - GZLMiniAppCore_iOS (= 3.25.9)
+    - GZLMiniAppCore_iOS (= 3.25.10)
     - GZLMiniAppInject (= 3.25.1)
     - GZLMiniAppInterceptor_iOS (= 3.25.1)
     - GZLMiniAppRemoteIDE (= 3.25.2)
-    - GZLMiniAppShell_iOS (= 3.25.9)
+    - GZLMiniAppShell_iOS (= 3.25.10)
     - GZLMiniAppStorage (= 3.3.0)
     - GZLMiniAppTab_iOS (= 3.25.2)
     - GZLMiniAppWebView_iOS (= 3.25.1)
@@ -4098,7 +4100,7 @@ PODS:
     - ThingMbedtls (~> 3.5)
     - ThingMediaKit (= 3.3.2)
     - ThingMicrophoneAuthManager (= 0.1.3-anonymize.2)
-    - ThingMiniAppCore (= 3.25.24)
+    - ThingMiniAppCore (= 3.25.25)
     - ThingMiniAppTabModule (= 2.0.3)
     - ThingModuleManager (~> 2.14)
     - ThingModuleServices (= 4.66.6)
@@ -5206,7 +5208,7 @@ PODS:
     - ThingUIKit
     - ThingUrlPredefined
     - ThingUrlPredefinedExternal
-  - ThingSmartIPCKitBizBundle (6.2.1.4):
+  - ThingSmartIPCKitBizBundle (6.2.1.5):
     - DACircularProgress
     - GodzillaMiniBaseKit (= 3.4.1)
     - GodzillaMiniIService (= 1.0.1)
@@ -5214,7 +5216,7 @@ PODS:
     - GZLJSEngine (= 1.0.8)
     - GZLMiniAppAPM_iOS (= 3.9.2)
     - GZLMiniAppCommonUI (= 3.23.0)
-    - GZLMiniAppCore_iOS (= 3.25.9)
+    - GZLMiniAppCore_iOS (= 3.25.10)
     - GZLMiniAppStorage (= 3.3.0)
     - GZLMiniProgramAdapterAPI_iOS (= 3.24.1)
     - GZLRNCompatProtocol (= 1.1.0)
@@ -5389,14 +5391,14 @@ PODS:
     - ThingPopupViewController
     - ThingSmartDeviceCoreKit
     - ThingUIKit
-  - ThingSmartMapKitBizBundle (6.0.1.15):
+  - ThingSmartMapKitBizBundle (6.0.1.16):
     - GodzillaMiniBaseKit (= 3.4.1)
     - GodzillaMiniIService (= 1.0.1)
     - GodzillaMiniOpenAPI (= 3.20.1)
     - GZLJSEngine (= 1.0.8)
     - GZLMiniAppAPM_iOS (= 3.9.2)
     - GZLMiniAppCommonUI (= 3.23.0)
-    - GZLMiniAppCore_iOS (= 3.25.9)
+    - GZLMiniAppCore_iOS (= 3.25.10)
     - GZLMiniAppStorage (= 3.3.0)
     - GZLMiniProgramAdapterAPI_iOS (= 3.24.1)
     - GZLRNCompatProtocol (= 1.1.0)
@@ -5535,7 +5537,7 @@ PODS:
   - ThingSmartMessageKit (5.6.0):
     - ThingSmartBaseKit
     - YYModel
-  - ThingSmartMiniAppBizBundle (6.2.0.4):
+  - ThingSmartMiniAppBizBundle (6.2.0.5):
     - GodzillaMiniBaseKit (= 3.4.1)
     - GodzillaMiniIService (= 1.0.1)
     - GodzillaMiniOpenAPI (= 3.20.1)
@@ -5547,11 +5549,11 @@ PODS:
     - GZLMiniApp_iOS (= 2.6.2)
     - GZLMiniAppAPM_iOS (= 3.9.2)
     - GZLMiniAppCommonUI (= 3.23.0)
-    - GZLMiniAppCore_iOS (= 3.25.9)
+    - GZLMiniAppCore_iOS (= 3.25.10)
     - GZLMiniAppInject (= 3.25.1)
     - GZLMiniAppInterceptor_iOS (= 3.25.1)
     - GZLMiniAppRemoteIDE (= 3.25.2)
-    - GZLMiniAppShell_iOS (= 3.25.9)
+    - GZLMiniAppShell_iOS (= 3.25.10)
     - GZLMiniAppStorage (= 3.3.0)
     - GZLMiniAppTab_iOS (= 3.25.2)
     - GZLMiniAppWebView_iOS (= 3.25.1)
@@ -5638,7 +5640,7 @@ PODS:
     - ThingMarketingBoothModule (= 2.3.7)
     - ThingMbedtls (~> 3.5)
     - ThingMediaKit (= 3.3.2)
-    - ThingMiniAppCore (= 3.25.24)
+    - ThingMiniAppCore (= 3.25.25)
     - ThingMiniAppTabModule (= 2.0.3)
     - ThingModuleManager (~> 2.14)
     - ThingModuleServices (= 4.66.6)
@@ -5737,7 +5739,7 @@ PODS:
     - ThingSmartSocketChannelKit (>= 5.0.0)
     - ThingSmartUtil (>= 5.16.0)
     - YYModel
-  - ThingSmartPanelBizBundle (6.2.1.4):
+  - ThingSmartPanelBizBundle (6.2.1.5):
     - ATGestureLockView (= 0.2.3-anonymize.1)
     - boost-for-react-native
     - DACircularProgress
@@ -5762,11 +5764,11 @@ PODS:
     - GZLMiniApp_iOS (= 2.6.2)
     - GZLMiniAppAPM_iOS (= 3.9.2)
     - GZLMiniAppCommonUI (= 3.23.0)
-    - GZLMiniAppCore_iOS (= 3.25.9)
+    - GZLMiniAppCore_iOS (= 3.25.10)
     - GZLMiniAppInject (= 3.25.1)
     - GZLMiniAppInterceptor_iOS (= 3.25.1)
     - GZLMiniAppRemoteIDE (= 3.25.2)
-    - GZLMiniAppShell_iOS (= 3.25.9)
+    - GZLMiniAppShell_iOS (= 3.25.10)
     - GZLMiniAppStorage (= 3.3.0)
     - GZLMiniAppTab_iOS (= 3.25.2)
     - GZLMiniAppWebView_iOS (= 3.25.1)
@@ -5940,7 +5942,7 @@ PODS:
     - ThingMbedtls (~> 3.5)
     - ThingMediaKit (= 3.3.2)
     - ThingMicrophoneAuthManager (= 0.1.3-anonymize.2)
-    - ThingMiniAppCore (= 3.25.24)
+    - ThingMiniAppCore (= 3.25.25)
     - ThingMiniAppTabModule (= 2.0.3)
     - ThingModuleManager (~> 2.14)
     - ThingModuleServices (= 4.66.6)
@@ -7946,8 +7948,10 @@ PODS:
   - UICKeyChainStore (2.2.1)
   - video_player_avfoundation (0.0.1):
     - Flutter
+    - FlutterMacOS
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
+    - FlutterMacOS
   - WechatOpenSDK-XCFramework (2.0.4)
   - yoga (0.59.10)
   - YYModel (1.0.4)
@@ -7965,13 +7969,13 @@ DEPENDENCIES:
   - MJRefresh
   - Moya/RxSwift
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
-  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - RxGesture
   - RxSwift
-  - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - SnapKit
-  - sqflite (from `.symlinks/plugins/sqflite/ios`)
+  - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
   - ThingSmartActivatorBizBundle (~> 6.2.0)
   - ThingSmartBusinessExtensionKitBLEExtra
   - ThingSmartCameraPanelBizBundle (~> 6.2.0)
@@ -7984,8 +7988,8 @@ DEPENDENCIES:
   - ThingSmartHomeKit (~> 6.2.0)
   - ThingSmartPanelBizBundle (~> 6.2.0)
   - ThingSmartSceneBizBundle (~> 6.2.0)
-  - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/ios`)
-  - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
+  - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
+  - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/darwin`)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -8006,7 +8010,6 @@ SPEC REPOS:
     - Moya
     - OpenCV
     - Protobuf
-    - ReachabilitySwift
     - RxCocoa
     - RxGesture
     - RxRelay
@@ -8636,33 +8639,33 @@ EXTERNAL SOURCES:
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
-    :path: ".symlinks/plugins/path_provider_foundation/ios"
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
-  shared_preferences_ios:
-    :path: ".symlinks/plugins/shared_preferences_ios/ios"
-  sqflite:
-    :path: ".symlinks/plugins/sqflite/ios"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
+  sqflite_darwin:
+    :path: ".symlinks/plugins/sqflite_darwin/darwin"
   ThingSmartCryption:
     :path: "./"
   video_player_avfoundation:
-    :path: ".symlinks/plugins/video_player_avfoundation/ios"
+    :path: ".symlinks/plugins/video_player_avfoundation/darwin"
   webview_flutter_wkwebview:
-    :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
+    :path: ".symlinks/plugins/webview_flutter_wkwebview/darwin"
 
 SPEC CHECKSUMS:
   AFNetworking: 3bd23d814e976cd148d7d44c3ab78017b744cd58
   Alamofire: 7193b3b92c74a07f85569e1a6c4f4237291e7496
   ATGestureLockView: 85735681cb8175f592b4b8cf34f58ce111ff59b4
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  BRPickerView: 3eb9408f993c27a87badd5e271322f899dbf604a
-  connectivity_plus: bf0076dd84a130856aa636df1c71ccaff908fa1d
+  BRPickerView: 6eb731d84385cc99c3ab4fec49af3336ed26c803
+  connectivity_plus: 2a701ffec2c0ae28a48cf7540e279787e77c447d
   DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
   DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
   dsBridge: 4e2e897ebb03487bc4d72a9f6576c4ca036807ce
   EZAudio: af107055a882839106e0bf94611ec8d4ae466766
-  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  fluwx: e9e728cfdb80e82dac5f4ff974b1901a7939dcd0
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  fluwx: daa284756ce53442b3d0417ceeda66e981906811
   FMDB: 728731dd336af3936ce00f91d9d8495f5718a0e6
   Folly: 84f8ff044a47e8eb6db65c2d4e5b3a371f93c42a
   glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
@@ -8677,11 +8680,11 @@ SPEC CHECKSUMS:
   GZLMiniApp_iOS: 93a29b374a5d9f22c1e2b65e95758cc85d1358f7
   GZLMiniAppAPM_iOS: 148dd9982121704a8bc6ce93dd9b63389456701c
   GZLMiniAppCommonUI: fa0da7f6e7cb9a80e13c5c9fd6c561b18a2eebd6
-  GZLMiniAppCore_iOS: 9353026d02a647be1d7944ea19cf8d126ffbd6d4
+  GZLMiniAppCore_iOS: 1443cf7e87f5e9f2dcec49285494a9ef1ae386ae
   GZLMiniAppInject: 9bb712ba3ebaebbda85de9967f2d7a1d5aa89790
   GZLMiniAppInterceptor_iOS: eac2f5b73b90fe6a8a22c5c1b58945a88e467826
   GZLMiniAppRemoteIDE: 8e679ede1a0e2b8a95dbbeee9ef3df5d50d631a8
-  GZLMiniAppShell_iOS: 9cbcc9d7a9602f30302af144b1a9488c2d2567f9
+  GZLMiniAppShell_iOS: 7a491852a34eb305c0265dcd606206918878ac8f
   GZLMiniAppStorage: 4886556b8e5cbeeacc22173ca3fb827c6ae390cb
   GZLMiniAppTab_iOS: 60b2856e6e4fb68e0518cf18ebd2148c47491139
   GZLMiniAppWebView_iOS: 1bc53b8fb18a13714359bbe68ac7456c3eeb2d13
@@ -8690,7 +8693,7 @@ SPEC CHECKSUMS:
   GZLRNCompat: 0cfa45569cd6960305429c5ccd7470c0c5d9547a
   GZLRNCompatProtocol: 08f18c3309e56c35bdd4c41bd5d2206d2df0b93d
   HMSegmentedControl: d1c5d14e4ad5f117c9826e476ee02c5a640aab64
-  image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
+  image_picker_ios: c560581cceedb403a6ff17f2f816d7fea1421fc1
   IQKeyboardManager: c8665b3396bd0b79402b4c573eac345a31c7d485
   JXSegmentedView: cd73555ce2134d1656db2cb383ba9c2f36fb5078
   Kingfisher: 53a10ea35051a436b5fb626ca2dd8f3144d755e9
@@ -8704,11 +8707,10 @@ SPEC CHECKSUMS:
   MMKVCore: c24975f7f2532fa96567ae9d2e91bea1256f4a84
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
   OpenCV: 52cd4d72ff29e2be83421477aec5447320b7fb19
-  package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
-  path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
-  permission_handler_apple: e76247795d700c14ea09e3a2d8855d41ee80a2e6
+  package_info_plus: c0502532a26c7662a62a356cebe2692ec5fe4ec4
+  path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
+  permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
   Protobuf: 2e6de032ba12b9efb390ae550d1a243a5b19ddfc
-  ReachabilitySwift: 32793e867593cfc1177f5d16491e3a197d2fccda
   React: d30f695eb3e09b8aeeda01bbd07f885866082f57
   react-native-blur: 43168b02f390cc4a7d6044a1f7f62165815485a4
   react-native-image-picker: 5ac898af5f8a4bd3ef5cb67d085d803b4a195d3e
@@ -8729,10 +8731,10 @@ SPEC CHECKSUMS:
   RxGesture: f3efb47ed2d26a8082f7b660d4a59970e275a7f8
   RxRelay: 6b0c930e5cef57d5fe2032571e5e65b78e3cbdb1
   RxSwift: 31649ace6aceeb422e16ff71c60804f9c3281ed9
-  shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
+  shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
   SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
+  sqflite_darwin: 5a7236e3b501866c1c9befc6771dfd73ffb8702d
   SQLCipher: ba9d0076041ed767c5bd3d3f77098318d04a403c
   SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
   TheAmazingAudioEngine: 35a48303608cdb5d0cc32d3f436587054559c17d
@@ -8793,7 +8795,7 @@ SPEC CHECKSUMS:
   ThingCameraPiPModule: cb471f34e16bdc05d3631648c26e8d215d8d517f
   ThingCameraRNPanelContext: e27eb91cc54cb8ef68d668a3666055b41135bbca
   ThingCameraRNPanelModule: ca76b8739ef8c32733076f93db68ce57d251d823
-  ThingCameraSDK: 5d2ba9ed4cea5799bbd0a4526cabb6694abc3905
+  ThingCameraSDK: 2f9e896d02ef4986f6443a48cf52f21ccdf6a919
   ThingCameraSettingModule: fa7cc304030c87dd2ce9565b87eeb9eb5354f780
   ThingCameraSkt: 4f430f555f56cb38ead6ae405d7cce03d2da0569
   ThingCameraSktAPI: ec84257e120511bff18ebf36710b13ffa6a09824
@@ -8900,7 +8902,7 @@ SPEC CHECKSUMS:
   ThingMediaPlayerSDK: de42cdafc0f375d5307aabc5b0d0a584b046328d
   ThingMerticKit: 0e86c5b38938476e7eab0ba14d51faa09296fb90
   ThingMicrophoneAuthManager: 0723956f15ca5c15d57e37d0b3722fc75fff193b
-  ThingMiniAppCore: 837c80174c68f2b6d657028be9f85aac467daf44
+  ThingMiniAppCore: d44a7a5de03187377c130b5a3e743281c2bd34b3
   ThingMiniAppTabModule: 4ecf136c4ae99fba72db4e572a2fee737a692a8d
   ThingModuleManager: 077e86d8715f01a215af4cb1d0b117b33677126b
   ThingModuleServices: 360181113786a554591ab586181d1a0340274f79
@@ -8976,7 +8978,7 @@ SPEC CHECKSUMS:
   ThingSmartBeacon: 7a8dda14aecd00f32c3c539d927ecce7908937e0
   ThingSmartBeaconKit: e463a3719e90093ab31d93019229ffeb41631b68
   ThingSmartBizCore: ea355445bb7fc4c2ef8c28b6a2cb24c6f4215c53
-  ThingSmartBizKitBizBundle: 45d33014e442d407aca46360a80f8deb0aa10a61
+  ThingSmartBizKitBizBundle: 4b346f2abc7c38baf8d7b52bbd600de5df3488ae
   ThingSmartBLECoreKit: 2e41c0948b45d4de8df1579bd5e4e109449192f3
   ThingSmartBLEKit: 86bce0ba265d0c1000a96ac7167b22f17124930a
   ThingSmartBLEMeshKit: 574ad632de1a9e628687f8a2db76633b25aa1259
@@ -8990,14 +8992,14 @@ SPEC CHECKSUMS:
   ThingSmartCameraBase: 3fb8f2d5defe1a107f7db9b5054e77c32acb4a85
   ThingSmartCameraBizKit: 4a706b405cd92432a414a62731f5af874d0c1e2c
   ThingSmartCameraExtSDK: 3001a5278cdd4ad4217e1e76c0707354bb516af0
-  ThingSmartCameraKit: 23da9b4c1d30b646ee04d3ceee17d8f3c8b61d02
+  ThingSmartCameraKit: 466ef67fb214a2f2bbca1d93942debcd654d62eb
   ThingSmartCameraM: 320a2bc7b5c08e1f1b5a3fc72f72999a77507f76
-  ThingSmartCameraPanelBizBundle: f888db822347c35acda6b428fed3f86e4b106744
+  ThingSmartCameraPanelBizBundle: a867a3bd8cbe4a56f00abe9be851e61e5710cdfa
   ThingSmartCameraRNPanelBizBundle: ccfde9337e0e4096897288a41b82bf4122ce34b1
-  ThingSmartCameraSettingBizBundle: 261d1e2ceaa7d5c42a4719ff3b4e93f78ae09106
+  ThingSmartCameraSettingBizBundle: d133576d08c56d90332ee798ed8d319a82807cab
   ThingSmartCameraSettingConfigModule: 527fb7064296d4e2da41f97044406a4d33d06953
   ThingSmartClientConfigModule: 78cefb9f25489ec008e54d6a72b3c22f2c2a2152
-  ThingSmartCloudServiceBizBundle: 372adad2d9dec92abefe85c74011a323096ef188
+  ThingSmartCloudServiceBizBundle: dfbbf82dc71497a532d8c1138073e74ee700eaf1
   ThingSmartCryption: 33906a7bf4d19f26bf90dccde474e2bcba46c21f
   ThingSmartDeviceCoreKit: 21c56bdbbebfbe1754af524dba6979a05b2a2197
   ThingSmartDeviceDetailBizBundle: d6677d794ff9f11e9fe15c45dceee3d92152ac4f
@@ -9024,22 +9026,22 @@ SPEC CHECKSUMS:
   ThingSmartIAPKit: eb947a02cc44d56f14a3cd2fe33723badaf7e9c1
   ThingSmartIntelligenceApi: 5ba498765c16b5edbf896d4b779dd25dfc37c59a
   ThingSmartIntelligenceModule: f8a01904c5d97da2928d2b5272f99d24e47b21ea
-  ThingSmartIPCKitBizBundle: 7ca0258db0ca8dc809b514ccff92b70546f8b915
+  ThingSmartIPCKitBizBundle: face114f936e3b3926dc3561fad4d87468918c4b
   ThingSmartLocationService: 33ef5b83bf1e78acf9ad0fcfa6e9cb2eca873154
-  ThingSmartMapKitBizBundle: d0ea70a79a85bfccdfc6ea1333b07c732e54a7d0
+  ThingSmartMapKitBizBundle: c6743df7670c03065ec463e5ad78302d90abe9b0
   ThingSmartMatterInterfaceAPI: 07a82e4cb92612bd880dfc3e91ac187113489f08
   ThingSmartMediaKit: 9753b1dc23b8e3237954394349f5eb44c003a954
   ThingSmartMediaServices: 762be816bae62106539e0e3af1661253df507c8b
   ThingSmartMediaUIKit: a03e7ed747b7c7061427ddc55157253b85b2d361
   ThingSmartMessageKit: 1b4fd6b47d30550e8e236ada77089470c2688441
-  ThingSmartMiniAppBizBundle: aa0dea67085cc1f8f4fecf776c1c44b459757ac8
+  ThingSmartMiniAppBizBundle: 82c7422667f183466f799ed6d3793469f4350acc
   ThingSmartMQTTChannelKit: 8401b88a58e913bb7b76c499318c9fb850c39b64
   ThingSmartNetworkKit: 6c8882c7c848279b56402987b3c9ee3ff4656001
   ThingSmartOutdoorKit: 1126c3ff070b2c8f0fc05162fcb6d87c61731a07
   ThingSmartOutdoorPlugAPI: 35bbd7e8d72c4488c2137087c0312aff1219fdbf
   ThingSmartP2pChannelKit: 9118a1fb7109dfe4fdb67dcf2f579dc303c7d011
   ThingSmartPairingCoreKit: dcd3d1108714531480f068b7f26c7c45a87f31b7
-  ThingSmartPanelBizBundle: 762d667601e3c1f5cb259e773833412b9c22a75c
+  ThingSmartPanelBizBundle: 0b24826851964d51096faa908a70c72d787c209e
   ThingSmartPanelLink: 49f32bb6fb3455d79a6fae4bf81bfdb6d66d3e57
   ThingSmartPanoramaSDK: 7f313dcc7927910060060644946f2cd010d64208
   ThingSmartPiPPlugAPI: b6c1a745b157c29a9ab997e1358989e5e3de007c
@@ -9290,8 +9292,8 @@ SPEC CHECKSUMS:
   TUNIWechatManager: 86569655d76a611d8d4ea027fceba2ec0f799693
   TUNIWidgetManager: bf6bf2e436d8a55622ec8f2c1aed7dec807306c0
   UICKeyChainStore: ba3bff2c762b12db1e516f395c837dd25298b05e
-  video_player_avfoundation: 81e49bb3d9fb63dccf9fa0f6d877dc3ddbeac126
-  webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
+  video_player_avfoundation: 7c6c11d8470e1675df7397027218274b6d2360b3
+  webview_flutter_wkwebview: a4af96a051138e28e29f60101d094683b9f82188
   WechatOpenSDK-XCFramework: 36fb2bea0754266c17184adf4963d7e6ff98b69f
   yoga: 2f6c53bd50b0056c4622d0320e1cab6740f1ad85
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30

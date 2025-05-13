@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/hyd/Downloads/flutter_openSDK/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/hyd/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/hyd/Desktop/flutter_smarthome/android/app/.cxx/RelWithDebInfo/405o262c/x86",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/hyd/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/hyd/Desktop/flutter_smarthome/android/app/.cxx/RelWithDebInfo/405o262c/x86",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}

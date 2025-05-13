@@ -47,7 +47,7 @@ class EmptyStateWidget extends StatelessWidget {
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.black),
             ),
-            child: Text(buttonText ?? '点击刷新', style: TextStyle(fontSize: 14.sp)),
+            child: Text(buttonText ?? '点击刷新', style: TextStyle(fontSize: 14.sp,color: Colors.white),),
           ),
         ],
       ),

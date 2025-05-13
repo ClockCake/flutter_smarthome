@@ -88,7 +88,11 @@ class _QuoteRenovationAreaPageWidgetState extends State<QuoteRenovationAreaPageW
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: SingleChildScrollView(
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus(); // 点击空白处收起键盘
+        },
+        child: SingleChildScrollView(
         child: Column(
           children: [
              _buildTips(),
@@ -99,6 +103,7 @@ class _QuoteRenovationAreaPageWidgetState extends State<QuoteRenovationAreaPageW
              )
           ],
         ),
+       ),
       ),
       bottomNavigationBar: _buildBottomButton(),
     );

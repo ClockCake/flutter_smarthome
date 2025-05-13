@@ -105,6 +105,7 @@ class _DesignerHomeWidgteState extends State<DesignerHomeWidget>
                   labelStyle:
                       TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
                   indicatorSize: TabBarIndicatorSize.label,
+                  dividerHeight: 0,
                   tabs: const [
                     Tab(text: '装修案例'),
                     Tab(text: '动态'),

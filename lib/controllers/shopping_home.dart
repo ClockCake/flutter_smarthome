@@ -7,6 +7,7 @@ import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/custom_navbar.dart';
 import 'package:flutter_smarthome/controllers/shopping_home_list.dart';
 import 'package:flutter_smarthome/controllers/shopping_category_list.dart';
+import 'package:flutter_smarthome/utils/network_state_helper.dart';
 
 class ShoppingHomeWidget extends StatefulWidget {
   const ShoppingHomeWidget({Key? key}) : super(key: key);
@@ -21,11 +22,39 @@ class _ShoppingHomeWidgetState extends State<ShoppingHomeWidget>
   List<String> _categoryNameList = []; // 品类名
   List<String> _categoryIds = []; // 品类id
   late TabController _tabController;
+  bool _isInitialLoad = true;
 
   @override
   void initState() {
     super.initState();
-    _getCategory();
+      _initNetworkListener();  // ← 调用网络状态监听
+    _loadInitialData();
+
+  }
+
+  void _initNetworkListener() {
+   NetworkStateHelper.initNetworkListener(() {
+      if (mounted) {
+        // 网络从无到有时自动下拉刷新
+        _getCategory();
+      }
+    });
+  }
+
+  Future<void> _loadInitialData() async {
+    try {
+      await Future.wait([
+        _getCategory(),
+        // 其他需要初始化的数据加载
+      ]);
+    } catch (e) {
+      // 处理错误情况
+    } finally {
+      // 初始加载完成后，设置标志位为false
+      setState(() {
+        _isInitialLoad = false;
+      });
+    }
   }
 
   void _initTabController() {
@@ -89,6 +118,7 @@ class _ShoppingHomeWidgetState extends State<ShoppingHomeWidget>
                               return TabBar(
                                 controller: _tabController,
                                 isScrollable: isScrollable,
+                                dividerHeight: 0,
                                 labelPadding: EdgeInsets.zero,
                                 tabs: List.generate(_categoryNameList.length,
                                     (index) {
@@ -177,11 +207,11 @@ class _ShoppingHomeWidgetState extends State<ShoppingHomeWidget>
     } catch (e) {
       print('获取分类数据错误: $e');
       // 可以添加错误提示
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('获取分类数据失败，请稍后重试')),
-        );
-      }
+      // if (mounted) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(content: Text('获取分类数据失败，请稍后重试')),
+      //   );
+      // }
     }
   }
  

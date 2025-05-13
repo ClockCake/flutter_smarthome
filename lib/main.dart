@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_smarthome/utils/navigation_controller.dart';
-import 'package:fluwx/fluwx.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'dart:io';
 import 'base_tabbar_controller.dart';
@@ -11,6 +10,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import './utils/user_manager.dart';
 import './controllers/login_page.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fluwx/fluwx.dart' as fluwx;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await UserManager.instance.init();
@@ -31,12 +32,23 @@ void main() async {
 
 //注册微信 API
 void _registerWxApi() {
-  registerWxApi(
+  // 创建Fluwx实例并调用registerApi方法
+  final fluwxInstance = fluwx.Fluwx();
+  fluwxInstance.registerApi(
     appId: "wx8531759f373d8a56",
     doOnAndroid: true,
     doOnIOS: true,
     universalLink: "https://crs.gazolife.cn/ios/",
   );
+  // .then((success) { // registerApi 返回 Future<bool>，可以处理结果
+  //   if (success) {
+  //     print("WXAPI 注册成功");
+  //   } else {
+  //     print("WXAPI 注册失败");
+  //   }
+  // }).catchError((e) {
+  //    print("WXAPI 注册时发生错误: $e");
+  // });
 }
 
 class MyHttpOverrides extends HttpOverrides {

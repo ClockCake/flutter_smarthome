@@ -35,7 +35,7 @@ class SmartDeviceHomeHeaderCell: UICollectionViewCell{
         self.backgroundColor = UIColor.white
         
         //加载 URL
-        if let url = URL(string: "http://erf.gazo.net.cn:8087/webExtension/#/case") {
+        if let url = URL(string: "https://vr.justeasy.cn/view/xz165se6x8k14880-1657179172.html") {
             let request = URLRequest(url: url)
             webView.load(request)
         }

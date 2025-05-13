@@ -11,6 +11,7 @@ import 'package:flutter_smarthome/controllers/shopping_detail.dart';
 import 'package:flutter_smarthome/models/product_item.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/network_image_helper.dart';
+import 'package:flutter_smarthome/utils/network_state_helper.dart';
 import 'package:flutter_smarthome/utils/video_page.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -33,21 +34,21 @@ class _ShoppingHomeListWidgetState extends State<ShoppingHomeListWidget> {
   int pageNum = 1;
   final int pageSize = 10;
   List<Map<String,dynamic>> _bannerList = []; // Banner 图片地址
-
+    // 添加标志位
+  bool _isInitialLoad = true;
 
   @override
   void initState() {
     super.initState();
     _getBanner();
-    getHomeData();
-  }
+    getHomeData(); 
 
+  }
   @override
   void dispose() {
     _refreshController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -166,7 +167,7 @@ class _ShoppingHomeListWidgetState extends State<ShoppingHomeListWidget> {
               Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleDetailWidget(title: "", articleId: item['resourceId'] ?? "")));
               break;
             case '3': //活动
-               Navigator.push(context, MaterialPageRoute(builder: (context) => ActivityDetailWiget(title: "", activityId: item['resourceId'] ?? "")));
+               Navigator.push(context, MaterialPageRoute(builder: (context) => ActivityDetailWidget(title: "", activityId: item['resourceId'] ?? "")));
               break;
             default:
           }
@@ -176,16 +177,13 @@ class _ShoppingHomeListWidgetState extends State<ShoppingHomeListWidget> {
     );
   }
 
-  void _onRefresh() async {
+  // 1. _onRefresh 改成 Future<void>
+  Future<void> _onRefresh() async {
     pageNum = 1;
     products.clear();
     recommendProducts.clear();
-    await Future.wait<void>([
-        _getBanner(),
-        getHomeData(),
-    ]);
+    await Future.wait([ _getBanner(), getHomeData() ]);
     _refreshController.refreshCompleted();
-
   }
 
   void _onLoading() async {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/controllers/address_list.dart';
 import 'package:flutter_smarthome/controllers/personal_order_detail.dart';
@@ -543,23 +542,26 @@ class _ShoppingOrderWidgetState extends State<ShoppingOrderWidget>with WidgetsBi
   }
 
   void _shareToWeChat(String payUrl) {
+    final fluwxInstance = fluwx.Fluwx();
 
-    final fluwx.WeChatScene scene = fluwx.WeChatScene.SESSION; // 可以选择 SESSION（会话）或 TIMELINE（朋友圈）
+    final fluwx.WeChatScene scene = fluwx.WeChatScene.session; // 可以选择 SESSION（会话）或 TIMELINE（朋友圈）
 
     final fluwx.WeChatShareWebPageModel shareModel = fluwx.WeChatShareWebPageModel(
       payUrl,
       title: "支付",
       description: "打开支付链接",
-      thumbnail: fluwx.WeChatImage.network('https://image.iweekly.top/i/2025/01/08/677e186e73d4a.png'), // 缩略图 URL
       scene: scene,
     );
  
-    fluwx.shareToWeChat(shareModel).then((success) {
+    fluwxInstance.share(shareModel).then((success) {
       if (success) {
         print("分享成功");
       } else {
         print("分享失败");
       }
     });
+
+
+    
   }
 }

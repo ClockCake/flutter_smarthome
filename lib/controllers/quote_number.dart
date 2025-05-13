@@ -167,19 +167,25 @@ final Map<RenovationType, List<Room>> roomTypeMap = {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _buildTips(),
-            SizedBox(height: 16.h),
-            _buildChoiceWidget(),
-            SizedBox(height: 32.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: _buildGrid(),
-            ),
-            SizedBox(height: 16.h),
-          ],
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus(); // 点击空白处收起键盘
+        },
+        child: SingleChildScrollView( // Your existing SingleChildScrollView
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch, // Ensure Column takes full width
+            children: [
+              _buildTips(),
+              SizedBox(height: 16.h),
+              _buildChoiceWidget(),
+              SizedBox(height: 32.h),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: _buildGrid(),
+              ),
+              SizedBox(height: 16.h), // Add some padding at the bottom if needed
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: _buildBottomButton(),

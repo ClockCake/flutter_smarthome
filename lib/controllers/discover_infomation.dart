@@ -90,6 +90,8 @@ class _DiscoverInformationWidgetState extends State<DiscoverInformationWidget> {
                       children: List.generate(_hotInformationList.length, (index) {
                         final item = _hotInformationList[index];
                         return GestureDetector(
+                          behavior: HitTestBehavior.opaque, // 或者 HitTestBehavior.translucent
+
                           onTap: () {
                               Map<String, dynamic> item = _hotInformationList[index];
                               Navigator.push(context, MaterialPageRoute(builder: (context) => ArticleDetailWidget(title: item['resourceTitle'],articleId: item['id'],)));

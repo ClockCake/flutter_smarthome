@@ -205,17 +205,18 @@ class _ShoppingPayPageWidgetState extends State<ShoppingPayPageWidget> with Widg
 
   void _shareToWeChat(String payUrl) {
     _goPay = true;
-    final fluwx.WeChatScene scene = fluwx.WeChatScene.SESSION; // 可以选择 SESSION（会话）或 TIMELINE（朋友圈）
+    final fluwx.WeChatScene scene = fluwx.WeChatScene.session; // 可以选择 SESSION（会话）或 TIMELINE（朋友圈）
+    final fluwxInstance = fluwx.Fluwx();
 
     final fluwx.WeChatShareWebPageModel shareModel = fluwx.WeChatShareWebPageModel(
       payUrl,
       title: "支付",
       description: "打开支付链接",
-      thumbnail: fluwx.WeChatImage.network("https://image.iweekly.top/i/2025/01/08/677e186e73d4a.png"),
+      // thumbnail: fluwx.WeChatImage.network("https://image.iweekly.top/i/2025/01/08/677e186e73d4a.png"),
       scene: scene,
     );
  
-    fluwx.shareToWeChat(shareModel).then((success) {
+    fluwxInstance.share(shareModel).then((success) {
       if (success) {
         print("分享成功");
       } else {

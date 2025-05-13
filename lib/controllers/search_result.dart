@@ -94,70 +94,78 @@ class _HomeResultPageWidgetState extends State<HomeResultPageWidget> {
   }
 
   Widget _buildSegmentedControl() {
-    return Expanded(
-      child: ContainedTabBarView(
-        tabs: [
-          if (widget.type == 1) ...[
-            Text('产品'),
-            Text('店铺'),
-            Text('商品'),
-            Text('设计师'),
-            Text('案例'),
-          ] else if (widget.type == 2) ...[
-            Text('商品'),
-            Text('店铺'),
-          ]
-        ],
-        tabBarProperties: TabBarProperties(
-          indicatorColor: HexColor('#FFB26D'),
-          indicatorWeight: 2.0,
-          labelColor: Colors.black,
-          unselectedLabelColor: Colors.grey,
-          labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          indicatorSize: TabBarIndicatorSize.label,
+      return Expanded(
+        child: Theme(
+          data: Theme.of(context).copyWith(
+            tabBarTheme: const TabBarThemeData(
+              dividerColor: Colors.transparent, // 隐藏分割线
+              dividerHeight: 0,
+            ),
+          ),
+          child: ContainedTabBarView(
+            tabs: [
+              if (widget.type == 1) ...[
+                Text('产品'),
+                Text('店铺'),
+                Text('商品'),
+                Text('设计师'),
+                Text('案例'),
+              ] else if (widget.type == 2) ...[
+                Text('商品'),
+                Text('店铺'),
+              ]
+            ],
+            tabBarProperties: TabBarProperties(
+              indicatorColor: HexColor('#FFB26D'),
+              indicatorWeight: 2.0,
+              labelColor: Colors.black,
+              unselectedLabelColor: Colors.grey,
+              labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              indicatorSize: TabBarIndicatorSize.label,
+            ),
+            views: [
+              if (widget.type == 1) ...[
+                SearchGridPageWidget(
+                  searchTypes: [4],
+                  searchValue: _controller.text,
+                  onRefresh: _refreshSearchGridPage,
+                ), // 产品
+                SearchGridPageWidget(
+                  searchTypes: [6],
+                  searchValue: _controller.text,
+                  onRefresh: _refreshSearchGridPage,
+                ), // 店铺
+                SearchGridPageWidget(
+                  searchTypes: [3],
+                  searchValue: _controller.text,
+                  onRefresh: _refreshSearchGridPage,
+                ), // 商品
+                SearchGridPageWidget(
+                  searchTypes: [1],
+                  searchValue: _controller.text,
+                  onRefresh: _refreshSearchGridPage,
+                ), // 设计师
+                SearchGridPageWidget(
+                  searchTypes: [2],
+                  searchValue: _controller.text,
+                  onRefresh: _refreshSearchGridPage,
+                ), // 案例
+              ] else if (widget.type == 2) ...[
+                SearchGridPageWidget(
+                  searchTypes: [3],
+                  searchValue: _controller.text,
+                  onRefresh: _refreshSearchGridPage,
+                ), // 商品
+                SearchGridPageWidget(
+                  searchTypes: [6],
+                  searchValue: _controller.text,
+                  onRefresh: _refreshSearchGridPage,
+                ), // 店铺
+              ],
+            ],
+            onChange: (index) => print(index),
+          ),
         ),
-        views: [
-          if (widget.type == 1) ...[
-            SearchGridPageWidget(
-              searchTypes: [4],
-              searchValue: _controller.text,
-              onRefresh: _refreshSearchGridPage,
-            ), // 产品
-            SearchGridPageWidget(
-              searchTypes: [6],
-              searchValue: _controller.text,
-              onRefresh: _refreshSearchGridPage,
-            ), // 商店铺
-            SearchGridPageWidget(
-              searchTypes: [3],
-              searchValue: _controller.text,
-              onRefresh: _refreshSearchGridPage,
-            ), // 商品
-            SearchGridPageWidget(
-              searchTypes: [1],
-              searchValue: _controller.text,
-              onRefresh: _refreshSearchGridPage,
-            ), // 设计师
-            SearchGridPageWidget(
-              searchTypes: [2],
-              searchValue: _controller.text,
-              onRefresh: _refreshSearchGridPage,
-            ), // 案例
-          ] else if (widget.type == 2) ...[
-            SearchGridPageWidget(
-              searchTypes: [3],
-              searchValue: _controller.text,
-              onRefresh: _refreshSearchGridPage,
-            ), // 商品
-            SearchGridPageWidget(
-              searchTypes: [6],
-              searchValue: _controller.text,
-              onRefresh: _refreshSearchGridPage,
-            ), // 店铺
-          ],
-        ],
-        onChange: (index) => print(index),
-      ),
-    );
+      );
   }
 }

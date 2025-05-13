@@ -1,6 +1,6 @@
 import Flutter
 import UIKit
-@UIApplicationMain
+@main
 @objc class AppDelegate: FlutterAppDelegate,CLLocationManagerDelegate{
     private let tuyaAppkey = "ktuupjsdgaheh7gtxhfn"
     private let tuyaSecretKey = "u73nktdvmrxd979aexxx5ug9khum9vhc"

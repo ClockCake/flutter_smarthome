@@ -2,7 +2,6 @@ import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_smarthome/network/api_manager.dart';
 import 'package:flutter_smarthome/utils/custom_tab_indicator.dart';
@@ -79,34 +78,40 @@ class _DecorationLogsProjectListWidgetState extends State<DecorationLogsProjectL
         child: Column(
           children: [
             Expanded(
-              child:ContainedTabBarView(
-                tabs: _projectList
-                  .map((e) => Text(
-                        '${e['roomName']}${e['landArea'] ?? 0}㎡',
-                        
-                      ))
-                  .toList(),
-                tabBarProperties:  TabBarProperties(
-                  isScrollable: true,
-                  labelPadding: EdgeInsets.symmetric(horizontal: 16.w),
-                  labelColor: Colors.black,
-                  unselectedLabelColor: Colors.grey,
-                  labelStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
-                  indicatorSize: TabBarIndicatorSize.label,
-                  indicator: CustomTabIndicator(
-                    indicatorWidth: 20.w,  // 自定义宽度
-                    indicatorColor: HexColor('#FFB26D'),  // 指示器颜色
-                    indicatorHeight: 4.w,  // 指示器高度
+              child: Theme(
+                    data: Theme.of(context).copyWith(
+                      tabBarTheme: const TabBarThemeData(
+                        dividerColor: Colors.transparent,
+                        dividerHeight: 0,
+                      ),
+                    ),
+                    child: ContainedTabBarView(
+                      tabs: _projectList
+                          .map((e) => Text('${e['roomName']}${e['landArea'] ?? 0}㎡'))
+                          .toList(),
+                      tabBarProperties: TabBarProperties(
+                        isScrollable: true,
+                        labelPadding: EdgeInsets.symmetric(horizontal: 16.w),
+                        labelColor: Colors.black,
+                        unselectedLabelColor: Colors.grey,
+                        labelStyle:
+                            TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+                        indicatorSize: TabBarIndicatorSize.label,
+                        indicator: CustomTabIndicator(
+                          indicatorWidth: 20.w,
+                          indicatorColor: HexColor('#FFB26D'),
+                          indicatorHeight: 4.w,
+                        ),
+                      ),
+                      views: _projectList
+                          .map((e) => DecorationLogsSimpleListPage(
+                                projectList:
+                                    List<Map<String, dynamic>>.from(e['rows']),
+                              ))
+                          .toList(),
+                    ),
                   ),
-                
                 ),
-                views: _projectList
-                    .map((e) => DecorationLogsSimpleListPage(
-                          projectList: List<Map<String, dynamic>>.from(e['rows'])
-                        ))
-                    .toList(),                
-              ),
-            ),
           ],
         )
       ),

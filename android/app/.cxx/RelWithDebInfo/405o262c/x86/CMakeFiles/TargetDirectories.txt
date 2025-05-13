@@ -1,0 +1,2 @@
+/Users/hyd/Desktop/flutter_smarthome/android/app/.cxx/RelWithDebInfo/405o262c/x86/CMakeFiles/edit_cache.dir
+/Users/hyd/Desktop/flutter_smarthome/android/app/.cxx/RelWithDebInfo/405o262c/x86/CMakeFiles/rebuild_cache.dir
